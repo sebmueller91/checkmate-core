@@ -24,11 +24,11 @@ jobs:
 
     - name: Extract version
       id: extract_version
-      run: echo "VERSION=$(grep '^version' build.gradle.kts | awk '{print $3}' | tr -d '\"')" >> $GITHUB_ENV
+      run: echo "VERSION=$(grep '^version' checkmate-core/build.gradle.kts | awk '{print $3}' | tr -d '\"')" >> $GITHUB_ENV
 
     - name: Build with Gradle
       run: ./gradlew build
-      working-directory: ${{ github.workspace }}
+      working-directory: checkmate-core
 
     - name: Create GitHub Release
       id: create_release
@@ -47,6 +47,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.WORKFLOW_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./build/libs/checkmate-core-${{ env.VERSION }}.jar
+        asset_path: checkmate-core/build/libs/checkmate-core-${{ env.VERSION }}.jar
         asset_name: checkmate-core-${{ env.VERSION }}.jar
         asset_content_type: application/java-archive
