@@ -1,10 +1,6 @@
-package com.github.sebmu91.checkmate.checkmate.model
+package checkmate.model
 
-enum class Piece {
-    PAWN,
-    KNIGHT,
-    BISHOP,
-    ROOK,
-    QUEEN,
-    KING
-}
+data class Piece(
+    val type: Type,
+    val isMoved: Boolean
+)

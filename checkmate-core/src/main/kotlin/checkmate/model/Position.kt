@@ -1,4 +1,4 @@
-package com.github.sebmu91.checkmate.checkmate.model
+package checkmate.model
 
 data class Position(
     val row: Int,

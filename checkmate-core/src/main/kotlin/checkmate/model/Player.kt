@@ -1,4 +1,4 @@
-package com.github.sebmu91.checkmate.checkmate.model
+package checkmate.model
 
 enum class Player {
     BLACK,

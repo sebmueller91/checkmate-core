@@ -1,0 +1,4 @@
+package checkmate
+
+class CheckmateCoreBuilder {
+}
