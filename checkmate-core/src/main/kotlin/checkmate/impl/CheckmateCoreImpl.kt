@@ -6,6 +6,10 @@ import checkmate.model.Move
 import checkmate.model.Position
 
 internal class CheckmateCoreImpl: CheckmateCore {
+    override fun generateInitialState(): GameState {
+        TODO("Not yet implemented")
+    }
+    
     override fun isValidMove(move: Move, gameState: GameState) {
         TODO("Not yet implemented")
     }
