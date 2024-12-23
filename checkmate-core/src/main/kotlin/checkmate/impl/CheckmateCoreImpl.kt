@@ -17,5 +17,4 @@ internal class CheckmateCoreImpl: CheckmateCore {
     override fun executeMove(move: Move, gameState: GameState): GameState {
         TODO("Not yet implemented")
     }
-
 }
