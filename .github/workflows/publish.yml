@@ -32,21 +32,12 @@ jobs:
       run: ./gradlew test
       working-directory: checkmate-core
 
-    - name: Upload test results
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v2
       if: always()
-      uses: actions/upload-artifact@v4
       with:
-        name: test-results
-        path: checkmate-core/build/reports/tests/test
-
-    - name: Display test results
-      if: always()
-      uses: dorny/test-reporter@v1
-      with:
-        name: 'JUnit Report'
-        path: 'checkmate-core/build/test-results/test/*.xml'
-        reporter: 'java-junit'
-        fail-on-error: false
+        files: |
+          checkmate-core/build/test-results/test/*.xml
 
     - name: Build with Gradle
       run: ./gradlew build
