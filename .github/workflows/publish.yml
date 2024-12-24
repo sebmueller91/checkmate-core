@@ -33,11 +33,17 @@ jobs:
       working-directory: checkmate-core
 
     - name: Upload test results
-      if: failure()
-      uses: actions/upload-artifact@v3
+      if: always()
+      uses: actions/upload-artifact@v4
       with:
         name: test-results
         path: checkmate-core/build/reports/tests/test
+
+    - name: Display test results
+      if: always()
+      uses: actions/upload-test-report@v1
+      with:
+        report_paths: checkmate-core/build/test-results/test/*.xml
 
     - name: Build with Gradle
       run: ./gradlew build
