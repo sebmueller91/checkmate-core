@@ -45,7 +45,7 @@ jobs:
       with:
         name: 'JUnit Report'
         path: 'checkmate-core/build/test-results/test/*.xml'
-        reporter: 'junit'
+        reporter: 'junit-xml'
         fail-on-error: false
 
     - name: Build with Gradle
