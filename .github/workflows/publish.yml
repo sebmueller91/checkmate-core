@@ -28,6 +28,17 @@ jobs:
         VERSION=$(grep '^version' checkmate-core/build.gradle.kts | awk '{print $3}' | tr -d '"')
         echo "VERSION=$VERSION" >> $GITHUB_ENV
 
+    - name: Run tests
+      run: ./gradlew test
+      working-directory: checkmate-core
+
+    - name: Upload test results
+      if: failure()
+      uses: actions/upload-artifact@v3
+      with:
+        name: test-results
+        path: checkmate-core/build/reports/tests/test
+
     - name: Build with Gradle
       run: ./gradlew build
       working-directory: checkmate-core
