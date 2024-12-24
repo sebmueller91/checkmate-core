@@ -41,9 +41,12 @@ jobs:
 
     - name: Display test results
       if: always()
-      uses: actions/upload-test-report@v1
+      uses: dorny/test-reporter@v1
       with:
-        report_paths: checkmate-core/build/test-results/test/*.xml
+        name: 'JUnit Report'
+        path: 'checkmate-core/build/test-results/test/*.xml'
+        reporter: 'junit'
+        fail-on-error: false
 
     - name: Build with Gradle
       run: ./gradlew build
