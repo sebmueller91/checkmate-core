@@ -1,6 +1,5 @@
 package checkmate
 
-import checkmate.impl.CheckmateCoreImpl
 import checkmate.model.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -16,17 +15,20 @@ internal class CheckmateTest {
     @Test
     fun `generateInitialState should return a chess board with initial setup`() {
 
-        val result: GameState = checkmateCore.generateInitialState()
+        val result: Game = checkmateCore.generateInitialState()
 
-        assert(result.currentPlayer == Player.WHITE)
-        assert(result.moveHistory.isEmpty())
-        assert(result.gameStatus == GameStatus.ONGOING)
+        assert(result.gameStates.size == 1)
+        val gameState = result.gameStates[0]
 
-        assert(result.board.flatten().size == 16)
-        assert(result.board.flatten().filterNotNull().size == 16)
-        assert(result.board.flatten().none { !it!!.isMoved })
+        assert(gameState.currentPlayer == Player.WHITE)
+        assert(gameState.gameStatus == GameStatus.ONGOING)
 
-        val board = result.board
+        assert(gameState.board.flatten().filterNotNull().size == 32)
+        assert(gameState.halfMoveClock == 0)
+        assert(gameState.fullMoveNumber == 1)
+        assert(gameState.castlingRights  == CastlingRights(true, true, true, true))
+
+        val board = gameState.board
         assert(board[0][0]?.type == Type.ROOK && board[0][0]?.color == Player.BLACK)
         assert(board[0][1]?.type == Type.KNIGHT && board[0][1]?.color == Player.BLACK)
         assert(board[0][2]?.type == Type.BISHOP && board[0][2]?.color == Player.BLACK)
