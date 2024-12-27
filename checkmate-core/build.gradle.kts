@@ -3,7 +3,7 @@ plugins {
 }
 
 group = "com.github.sebmu91.checkmate"
-version = "0.1.1-SNAPSHOT"
+version = "0.1.2-SNAPSHOT"
 
 repositories {
     mavenCentral()

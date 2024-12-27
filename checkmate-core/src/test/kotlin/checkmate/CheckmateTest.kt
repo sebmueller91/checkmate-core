@@ -1,8 +1,10 @@
 package checkmate
 
 import checkmate.model.*
+import checkmate.util.toBitmapGameState
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import toGameState
 
 internal class CheckmateTest {
     private lateinit var checkmateCore: CheckmateCore
@@ -52,5 +54,29 @@ internal class CheckmateTest {
         assert(board[7][5]?.type == Type.BISHOP && board[7][5]?.color == Player.WHITE)
         assert(board[7][6]?.type == Type.KNIGHT && board[7][6]?.color == Player.WHITE)
         assert(board[7][7]?.type == Type.ROOK && board[7][7]?.color == Player.WHITE)
+    }
+
+    @Test
+    fun `transformation from initial GameState to BitmapGameState and back to GameState should be correct`() {
+        val initialState: GameState = checkmateCore.generateInitialState().gameStates[0]
+        val bitmapGameState = initialState.toBitmapGameState()
+        val transformedGameState = bitmapGameState.toGameState(null)
+
+        assert(initialState == transformedGameState)
+    }
+
+    @Test
+    fun `transformation from mofified GameState to BitmapGameState and back to GameState should be correct`() {
+        val modifiedState: GameState = checkmateCore.generateInitialState().gameStates[0].copy(
+            currentPlayer = Player.BLACK,
+            castlingRights = CastlingRights(false, true, false, false),
+            halfMoveClock = 102,
+            fullMoveNumber = 24,
+            lastMove = Move(Position(1, 0), Position(2, 0))
+        )
+        val bitmapGameState = modifiedState.toBitmapGameState()
+        val transformedGameState = bitmapGameState.toGameState(modifiedState.lastMove)
+
+        assert(modifiedState == transformedGameState)
     }
 }

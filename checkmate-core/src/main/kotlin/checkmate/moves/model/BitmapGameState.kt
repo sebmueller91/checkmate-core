@@ -22,7 +22,7 @@ internal class BitmapGameState {
     var enPassantTarget: ULong = 0UL
     var halfmoveClock: Int = 0
     var fullmoveNumber: Int = 1
-    
+
     fun updateAllPieces() {
         allPieces = whitePawns or whiteKnights or whiteBishops or whiteRooks or whiteQueens or whiteKing or
                 blackPawns or blackKnights or blackBishops or blackRooks or blackQueens or blackKing

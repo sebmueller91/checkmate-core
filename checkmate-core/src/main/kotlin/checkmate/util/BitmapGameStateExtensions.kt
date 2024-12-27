@@ -1,5 +1,6 @@
+
 import checkmate.model.*
-import checkmate.moves.model.BitmapGameState
+import checkmate.moves.model.*
 
 internal fun BitmapGameState.toGameState(lastMove: Move?): GameState {
     val board = List(8) { MutableList<Piece?>(8) { null } }
@@ -33,10 +34,10 @@ internal fun BitmapGameState.toGameState(lastMove: Move?): GameState {
     val gameStatus = GameStatus.ONGOING
 
     val castlingRights = CastlingRights(
-        blackKingSide = (castlingRights and 0b0001) != 0,
-        blackQueenSide = (castlingRights and 0b0010) != 0,
-        whiteKingSide = (castlingRights and 0b0100) != 0,
-        whiteQueenSide = (castlingRights and 0b1000) != 0,
+        blackKingSide = (castlingRights and BLACK_KING_SIDE_CASTLING) != 0,
+        blackQueenSide = (castlingRights and BLACK_QUEEN_SIDE_CASTLING) != 0,
+        whiteKingSide = (castlingRights and WHITE_KING_SIDE_CASTLING) != 0,
+        whiteQueenSide = (castlingRights and WHITE_QUEEN_SIDE_CASTLING) != 0,
     )
 
     return GameState(
