@@ -1,12 +1,14 @@
 package checkmate
 
 import checkmate.model.*
+import checkmate.moves.model.FILE_A
+import checkmate.moves.model.RANK_3
 import checkmate.util.toBitmapGameState
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import toGameState
 
-internal class CheckmateTest {
+internal class ConversionTest {
     private lateinit var checkmateCore: CheckmateCore
 
     @BeforeEach
@@ -67,16 +69,43 @@ internal class CheckmateTest {
 
     @Test
     fun `transformation from mofified GameState to BitmapGameState and back to GameState should be correct`() {
-        val modifiedState: GameState = checkmateCore.generateInitialState().gameStates[0].copy(
+        val initialState = checkmateCore.generateInitialState().gameStates[0]
+        val modifiedState: GameState = initialState.copy(
             currentPlayer = Player.BLACK,
             castlingRights = CastlingRights(false, true, false, false),
             halfMoveClock = 102,
             fullMoveNumber = 24,
-            lastMove = Move(Position(1, 0), Position(2, 0))
+            lastMove = Move(from = Position(1, 0), to = Position(3, 0)),
+            board = initialState.board.map { it.toMutableList() }.toMutableList().apply {
+                this[1][0] = null
+                this[3][0] = Piece(type = Type.PAWN, color = Player.WHITE)
+            },
         )
         val bitmapGameState = modifiedState.toBitmapGameState()
         val transformedGameState = bitmapGameState.toGameState(modifiedState.lastMove)
 
+        assert(bitmapGameState.enPassantTarget == (RANK_3 and FILE_A))
+        assert(modifiedState == transformedGameState)
+    }
+
+    @Test
+    fun `transformation from mofified GameState to BitmapGameState and back to GameState should be correct with no en passant target`() {
+        val initialState = checkmateCore.generateInitialState().gameStates[0]
+        val modifiedState: GameState = initialState.copy(
+            currentPlayer = Player.BLACK,
+            castlingRights = CastlingRights(false, true, false, false),
+            halfMoveClock = 102,
+            fullMoveNumber = 24,
+            lastMove = Move(from = Position(2, 0), to = Position(4, 0)),
+            board = initialState.board.map { it.toMutableList() }.toMutableList().apply {
+                this[2][0] = null
+                this[4][0] = Piece(type = Type.PAWN, color = Player.WHITE)
+            },
+        )
+        val bitmapGameState = modifiedState.toBitmapGameState()
+        val transformedGameState = bitmapGameState.toGameState(modifiedState.lastMove)
+
+        assert(bitmapGameState.enPassantTarget == 0UL)
         assert(modifiedState == transformedGameState)
     }
 }

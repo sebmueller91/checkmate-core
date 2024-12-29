@@ -5,7 +5,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import kotlin.test.assertTrue
 
-class CheckmatePawnTests {
+class WhitePawnMovesTest {
     private lateinit var checkmateCore: CheckmateCore
 
     @BeforeEach
@@ -75,6 +75,24 @@ class CheckmatePawnTests {
     }
 
     @Test
+    fun `white pawn should capture diagonally to the left`() {
+        val game = checkmateCore.generateInitialState()
+        val gameState = game.gameStates.last().let { state ->
+            state.copy(
+                board = state.board.map { it.toMutableList() }.toMutableList().apply {
+                    this[4][4] = Piece(type = Type.PAWN, color = Player.WHITE)
+                    this[5][3] = Piece(type = Type.KNIGHT, color = Player.BLACK)
+                }
+            )
+        }
+
+        val validMoves = checkmateCore.getValidMoves(Position(4, 4), gameState)
+
+        val expectedMove = Move(from = Position(4, 4), to = Position(5, 3))
+        assertTrue(validMoves.contains(expectedMove))
+    }
+
+    @Test
     fun `white pawn should capture diagonally to the right`() {
         val game = checkmateCore.generateInitialState()
         val gameState = game.gameStates.last().let { state ->
@@ -93,23 +111,24 @@ class CheckmatePawnTests {
     }
 
     @Test
-    fun `white pawn should capture diagonally to the left`() {
+    fun `white pawn should be able to perform left en-passant`() {
         val game = checkmateCore.generateInitialState()
         val gameState = game.gameStates.last().let { state ->
             state.copy(
                 board = state.board.map { it.toMutableList() }.toMutableList().apply {
-                    this[4][4] = Piece(type = Type.PAWN, color = Player.WHITE)
-                    this[5][3] = Piece(type = Type.KNIGHT, color = Player.BLACK)
-                }
+                    this[4][1] = Piece(type = Type.PAWN, color = Player.WHITE)
+                    this[4][0] = Piece(type = Type.PAWN, color = Player.BLACK)
+                    this[6][0] = null
+                },
+                lastMove = Move(Position(6, 0), Position(4, 0))
             )
         }
 
-        val validMoves = checkmateCore.getValidMoves(Position(4, 4), gameState)
+        val validMoves = checkmateCore.getValidMoves(Position(4, 1), gameState)
 
-        val expectedMove = Move(from = Position(4, 4), to = Position(5, 3))
+        val expectedMove = Move(from = Position(4, 1), to = Position(5, 0))
         assertTrue(validMoves.contains(expectedMove))
     }
-
 
     @Test
     fun `white pawn should be able to perform right en-passant`() {
@@ -119,6 +138,7 @@ class CheckmatePawnTests {
                 board = state.board.map { it.toMutableList() }.toMutableList().apply {
                     this[4][4] = Piece(type = Type.PAWN, color = Player.WHITE)
                     this[4][5] = Piece(type = Type.PAWN, color = Player.BLACK)
+                    this[2][5] = null
                 },
                 lastMove = Move(Position(2, 5), Position(4, 5))
             )
@@ -127,25 +147,6 @@ class CheckmatePawnTests {
         val validMoves = checkmateCore.getValidMoves(Position(4, 4), gameState)
 
         val expectedMove = Move(from = Position(4, 4), to = Position(5, 5))
-        assertTrue(validMoves.contains(expectedMove))
-    }
-
-    @Test
-    fun `white pawn should be able to perform left en-passant`() {
-        val game = checkmateCore.generateInitialState()
-        val gameState = game.gameStates.last().let { state ->
-            state.copy(
-                board = state.board.map { it.toMutableList() }.toMutableList().apply {
-                    this[4][4] = Piece(type = Type.PAWN, color = Player.WHITE)
-                    this[4][3] = Piece(type = Type.PAWN, color = Player.BLACK)
-                },
-                lastMove = Move(Position(2, 3), Position(4, 3))
-            )
-        }
-
-        val validMoves = checkmateCore.getValidMoves(Position(4, 4), gameState)
-
-        val expectedMove = Move(from = Position(4, 4), to = Position(5, 3))
         assertTrue(validMoves.contains(expectedMove))
     }
 }

@@ -18,6 +18,8 @@ internal fun BitmapGameState.generateWhitePawnMovesList(): List<Move> {
     val doubleMoves = whitePawnDoubleMoves()
     val leftCaptures = whitePawnLeftCaptures()
     val rightCaptures = whitePawnRightCaptures()
+    val enPassantLeftCaptures = whitePawnLeftEnPassant()
+    val enPassantRightCaptures = whitePawnRightEnPassant()
 
     val singleMovePositions = extractPositions(singleMoves and RANK_8.inv())
     for (toPos in singleMovePositions) {
@@ -63,6 +65,28 @@ internal fun BitmapGameState.generateWhitePawnMovesList(): List<Move> {
         )
     }
 
+    val enPassantLeftCapturePositions = extractPositions(enPassantLeftCaptures and RANK_8.inv())
+    for (toPos in enPassantLeftCapturePositions) {
+        val fromPosIndex = toPos - 7
+        moves.add(
+            Move(
+                from = Position(rank = fromPosIndex / 8, file = fromPosIndex % 8),
+                to = Position(rank = toPos / 8, file = toPos % 8),
+            )
+        )
+    }
+
+    val enPassantRightCapturePositions = extractPositions(enPassantRightCaptures and RANK_8.inv())
+    for (toPos in enPassantRightCapturePositions) {
+        val fromPosIndex = toPos - 9
+        moves.add(
+            Move(
+                from = Position(rank = fromPosIndex / 8, file = fromPosIndex % 8),
+                to = Position(rank = toPos / 8, file = toPos % 8),
+            )
+        )
+    }
+
     return moves
 }
 
@@ -87,4 +111,18 @@ private fun BitmapGameState.whitePawnDoubleMoves(): ULong {
 }
 
 private fun BitmapGameState.whitePawnLeftCaptures(): ULong =(whitePawns shl 7) and blackPieces and FILE_H.inv()
+
 private fun BitmapGameState.whitePawnRightCaptures(): ULong =(whitePawns shl 9) and blackPieces and FILE_H.inv()
+
+private fun BitmapGameState.whitePawnLeftEnPassant(): ULong {
+    return if (enPassantTarget != 0UL) {
+        return (whitePawns shl 7) and enPassantTarget and FILE_H.inv()
+    } else 0UL
+}
+
+private fun BitmapGameState.whitePawnRightEnPassant(): ULong {
+    return if (enPassantTarget != 0UL) {
+        (whitePawns shl 9) and enPassantTarget and FILE_H.inv()
+    } else 0UL
+}
+
