@@ -15,7 +15,10 @@ internal class BitmapGameState {
     var blackQueens: ULong = 0UL
     var blackKing: ULong = 0UL
 
+    var whitePieces: ULong = 0UL
+    var blackPieces: ULong = 0UL
     var allPieces: ULong = 0UL
+
     var isWhiteTurn: Boolean = true
 
     var castlingRights: Int = BLACK_QUEEN_SIDE_CASTLING or BLACK_KING_SIDE_CASTLING or WHITE_KING_SIDE_CASTLING or WHITE_QUEEN_SIDE_CASTLING
@@ -24,24 +27,25 @@ internal class BitmapGameState {
     var fullmoveNumber: Int = 1
 
     fun updateAllPieces() {
-        allPieces = whitePawns or whiteKnights or whiteBishops or whiteRooks or whiteQueens or whiteKing or
-                blackPawns or blackKnights or blackBishops or blackRooks or blackQueens or blackKing
+        whitePieces = whitePawns or whiteKnights or whiteBishops or whiteRooks or whiteQueens or whiteKing
+        blackPieces = blackPawns or blackKnights or blackBishops or blackRooks or blackQueens or blackKing
+        allPieces = whitePieces or blackPieces
     }
 
     fun initializeStartingPosition() {
-        blackPawns = 0x000000000000FF00UL
-        blackKnights = 0x0000000000000042UL
-        blackBishops = 0x0000000000000024UL
-        blackRooks = 0x0000000000000081UL
-        blackQueens = 0x0000000000000008UL
-        blackKing = 0x0000000000000010UL
+        blackPawns = RANK_7
+        blackKnights = (RANK_8 and FILE_B) or (RANK_8 and FILE_G)
+        blackBishops = (RANK_8 and FILE_C) or (RANK_8 and FILE_F)
+        blackRooks = (RANK_8 and FILE_A) or (RANK_8 and FILE_H)
+        blackQueens = RANK_8 and FILE_D
+        blackKing = RANK_8 and FILE_E
 
-        whitePawns = 0x00FF000000000000UL
-        whiteKnights = 0x4200000000000000UL
-        whiteBishops = 0x2400000000000000UL
-        whiteRooks = 0x8100000000000000UL
-        whiteQueens = 0x0800000000000000UL
-        whiteKing = 0x1000000000000000UL
+        whitePawns = RANK_2
+        whiteKnights = (RANK_1 and FILE_B) or (RANK_1 and FILE_G)
+        whiteBishops = (RANK_1 and FILE_C) or (RANK_1 and FILE_F)
+        whiteRooks = (RANK_1 and FILE_A) or (RANK_1 and FILE_H)
+        whiteQueens = RANK_1 and FILE_D
+        whiteKing = RANK_1 and FILE_E
 
         updateAllPieces()
 

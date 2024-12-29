@@ -23,74 +23,49 @@ class CheckmatePawnTests {
     }
 
     @Test
-    fun `black pawn should move 1 or 2 fields forward from initial position`() {
-        val startingPos = Position(1, 1)
-
-
-        val game = checkmateCore.generateInitialState()
-        val gameState = game.gameStates.last()
-        val blackPawnPosition = Position(1, 1)
-        val validMoves = checkmateCore.getValidMoves(blackPawnPosition, gameState)
-
-        val expectedMoves =
-            listOf(
-                Move(from = startingPos, to = startingPos - Position(1, 0)),
-                Move(from = startingPos, to = startingPos - Position(2, 0))
-            )
-        assertTrue(validMoves.containsAll(expectedMoves))
-    }
-
-    @Test
     fun `white pawn should move 1 or 2 fields forward from initial position`() {
-        val startingPos = Position(6, 4)
+        val startingPos = Position(1, 4)
 
         val game = checkmateCore.generateInitialState()
-        val gameState = game.gameStates.last()
-        val blackPawnPosition = startingPos
-        val validMoves = checkmateCore.getValidMoves(blackPawnPosition, gameState)
+        val gameState = game.gameStates.last().copy(currentPlayer = Player.WHITE)
+        val whitePawnPosition = startingPos
+        val validMoves = checkmateCore.getValidMoves(whitePawnPosition, gameState)
 
-        val expectedMoves =
-            listOf(
-                Move(from = startingPos, to = startingPos + Position(1, 0)),
-                Move(from = startingPos, to = startingPos + Position(2, 0))
-            )
+        val expectedMoves = listOf(
+            Move(from = startingPos, to = startingPos + Position(1, 0)),
+            Move(from = startingPos, to = startingPos + Position(2, 0))
+        )
         assertTrue(validMoves.containsAll(expectedMoves))
     }
 
     @Test
-    fun `white and black pawns should move in the correct direction from the middle of the field`() {
+    fun `white pawn should move 1 field forward from the middle of the board`() {
         val game = checkmateCore.generateInitialState()
         val gameState = game.gameStates.last().let { state ->
             state.copy(
                 board = state.board.map { it.toMutableList() }.toMutableList().apply {
                     this[4][2] = Piece(type = Type.PAWN, color = Player.WHITE)
-                    this[4][4] = Piece(type = Type.PAWN, color = Player.BLACK)
                 }
             )
         }
 
         val whitePawnPosition = Position(4, 2)
-        val blackPawnPosition = Position(4, 4)
-
         val whitePawnMoves = checkmateCore.getValidMoves(whitePawnPosition, gameState)
-        val blackPawnMoves = checkmateCore.getValidMoves(blackPawnPosition, gameState)
 
         val expectedWhitePawnMove = Move(from = whitePawnPosition, to = whitePawnPosition + Position(1, 0))
-        val expectedBlackPawnMove = Move(from = blackPawnPosition, to = blackPawnPosition - Position(1, 0))
 
         assertTrue(whitePawnMoves.contains(expectedWhitePawnMove))
-        assertTrue(blackPawnMoves.contains(expectedBlackPawnMove))
     }
 
     @Test
-    fun `pawn should not move when blocked by another piece`() {
+    fun `white pawn should not move when blocked by another piece`() {
         val game = checkmateCore.generateInitialState()
         val gameState = game.gameStates.last().let { state ->
             state.copy(
                 board = state.board.map { it.toMutableList() }.toMutableList()
                     .apply {
-                        this[1][1] = Piece(type = Type.PAWN, color = Player.WHITE)
-                        this[2][1] = Piece(type = Type.PAWN, color = Player.BLACK)
+                        this[1][1] = Piece(type = Type.PAWN, color = Player.BLACK)
+                        this[2][1] = Piece(type = Type.PAWN, color = Player.WHITE)
                     })
         }
 
@@ -100,15 +75,14 @@ class CheckmatePawnTests {
     }
 
     @Test
-    fun `white pawn should be able to perform en-passant`() {
+    fun `white pawn should capture diagonally to the right`() {
         val game = checkmateCore.generateInitialState()
         val gameState = game.gameStates.last().let { state ->
             state.copy(
                 board = state.board.map { it.toMutableList() }.toMutableList().apply {
                     this[4][4] = Piece(type = Type.PAWN, color = Player.WHITE)
-                    this[6][5] = Piece(type = Type.PAWN, color = Player.BLACK)
-                },
-                lastMove = Move(Position(6, 5), Position(4, 5))
+                    this[5][5] = Piece(type = Type.ROOK, color = Player.BLACK)
+                }
             )
         }
 
@@ -119,21 +93,59 @@ class CheckmatePawnTests {
     }
 
     @Test
-    fun `black pawn should be able to perform en-passant`() {
+    fun `white pawn should capture diagonally to the left`() {
         val game = checkmateCore.generateInitialState()
         val gameState = game.gameStates.last().let { state ->
             state.copy(
                 board = state.board.map { it.toMutableList() }.toMutableList().apply {
-                    this[3][3] = Piece(type = Type.PAWN, color = Player.BLACK)
-                    this[1][4] = Piece(type = Type.PAWN, color = Player.WHITE)
-                },
-                lastMove = Move(Position(1, 4), Position(3, 4))
+                    this[4][4] = Piece(type = Type.PAWN, color = Player.WHITE)
+                    this[5][3] = Piece(type = Type.KNIGHT, color = Player.BLACK)
+                }
             )
         }
 
-        val validMoves = checkmateCore.getValidMoves(Position(3, 3), gameState)
+        val validMoves = checkmateCore.getValidMoves(Position(4, 4), gameState)
 
-        val expectedMove = Move(from = Position(3, 3), to = Position(2, 4))
+        val expectedMove = Move(from = Position(4, 4), to = Position(5, 3))
+        assertTrue(validMoves.contains(expectedMove))
+    }
+
+
+    @Test
+    fun `white pawn should be able to perform right en-passant`() {
+        val game = checkmateCore.generateInitialState()
+        val gameState = game.gameStates.last().let { state ->
+            state.copy(
+                board = state.board.map { it.toMutableList() }.toMutableList().apply {
+                    this[4][4] = Piece(type = Type.PAWN, color = Player.WHITE)
+                    this[4][5] = Piece(type = Type.PAWN, color = Player.BLACK)
+                },
+                lastMove = Move(Position(2, 5), Position(4, 5))
+            )
+        }
+
+        val validMoves = checkmateCore.getValidMoves(Position(4, 4), gameState)
+
+        val expectedMove = Move(from = Position(4, 4), to = Position(5, 5))
+        assertTrue(validMoves.contains(expectedMove))
+    }
+
+    @Test
+    fun `white pawn should be able to perform left en-passant`() {
+        val game = checkmateCore.generateInitialState()
+        val gameState = game.gameStates.last().let { state ->
+            state.copy(
+                board = state.board.map { it.toMutableList() }.toMutableList().apply {
+                    this[4][4] = Piece(type = Type.PAWN, color = Player.WHITE)
+                    this[4][3] = Piece(type = Type.PAWN, color = Player.BLACK)
+                },
+                lastMove = Move(Position(2, 3), Position(4, 3))
+            )
+        }
+
+        val validMoves = checkmateCore.getValidMoves(Position(4, 4), gameState)
+
+        val expectedMove = Move(from = Position(4, 4), to = Position(5, 3))
         assertTrue(validMoves.contains(expectedMove))
     }
 }
