@@ -116,17 +116,17 @@ class WhitePawnMovesTest {
         val gameState = game.gameStates.last().let { state ->
             state.copy(
                 board = state.board.map { it.toMutableList() }.toMutableList().apply {
-                    this[4][1] = Piece(type = Type.PAWN, color = Player.WHITE)
-                    this[4][0] = Piece(type = Type.PAWN, color = Player.BLACK)
-                    this[6][0] = null
+                    this[4][4] = Piece(type = Type.PAWN, color = Player.WHITE)
+                    this[4][3] = Piece(type = Type.PAWN, color = Player.BLACK)
+                    this[6][3] = null
                 },
-                lastMove = Move(Position(6, 0), Position(4, 0))
+                lastMove = Move(Position(6, 3), Position(4, 3))
             )
         }
 
-        val validMoves = checkmateCore.getValidMoves(Position(4, 1), gameState)
+        val validMoves = checkmateCore.getValidMoves(Position(4, 4), gameState)
 
-        val expectedMove = Move(from = Position(4, 1), to = Position(5, 0))
+        val expectedMove = Move(from = Position(4, 4), to = Position(5, 3))
         assertTrue(validMoves.contains(expectedMove))
     }
 
@@ -138,9 +138,9 @@ class WhitePawnMovesTest {
                 board = state.board.map { it.toMutableList() }.toMutableList().apply {
                     this[4][4] = Piece(type = Type.PAWN, color = Player.WHITE)
                     this[4][5] = Piece(type = Type.PAWN, color = Player.BLACK)
-                    this[2][5] = null
+                    this[6][5] = null
                 },
-                lastMove = Move(Position(2, 5), Position(4, 5))
+                lastMove = Move(Position(6, 5), Position(4, 5))
             )
         }
 

@@ -2,7 +2,7 @@ package checkmate
 
 import checkmate.model.*
 import checkmate.moves.model.BitmapGameState
-import checkmate.moves.movementBitboards.generatePawnMovesList
+import checkmate.moves.generatePawnMovesList
 import checkmate.util.toBitmapGameState
 import toGameState
 

@@ -1,7 +1,8 @@
-package checkmate.moves.movementBitboards
+package checkmate.moves
 
 import checkmate.model.Move
 import checkmate.model.Position
+import checkmate.moves.model.*
 import checkmate.moves.model.BitmapGameState
 import checkmate.moves.model.FILE_H
 import checkmate.moves.model.RANK_2
@@ -110,19 +111,19 @@ private fun BitmapGameState.whitePawnDoubleMoves(): ULong {
     return doubleMoves and pathBlocked.inv() and allPieces.inv()
 }
 
-private fun BitmapGameState.whitePawnLeftCaptures(): ULong =(whitePawns shl 7) and blackPieces and FILE_H.inv()
+private fun BitmapGameState.whitePawnLeftCaptures(): ULong = (whitePawns shl 7) and blackPieces and FILE_H.inv()
 
-private fun BitmapGameState.whitePawnRightCaptures(): ULong =(whitePawns shl 9) and blackPieces and FILE_H.inv()
+private fun BitmapGameState.whitePawnRightCaptures(): ULong = (whitePawns shl 9) and blackPieces and FILE_H.inv()
 
 private fun BitmapGameState.whitePawnLeftEnPassant(): ULong {
     return if (enPassantTarget != 0UL) {
-        return (whitePawns shl 7) and enPassantTarget and FILE_H.inv()
+        (whitePawns shl 7) and enPassantTarget and FILE_H.inv()
     } else 0UL
 }
 
 private fun BitmapGameState.whitePawnRightEnPassant(): ULong {
     return if (enPassantTarget != 0UL) {
-        (whitePawns shl 9) and enPassantTarget and FILE_H.inv()
+        (whitePawns shl 9) and enPassantTarget and FILE_A.inv()
     } else 0UL
 }
 

@@ -53,13 +53,6 @@ private fun GameState.calculateEnPassantTarget(): ULong {
     if (fromPiece?.type == Type.PAWN && abs(lastMove.from.rank - lastMove.to.rank) == 2) {
         val enPassantRank = lastMove.from.rank + ((lastMove.to.rank - lastMove.from.rank) / 2)
         val enPassantFile = lastMove.to.file
-        // TODO: Remove
-        println()
-        println(lastMove.from.file)
-        println(lastMove.to.file)
-        println(enPassantRank)
-        println(enPassantFile)
-        println()
         return 1UL shl (enPassantRank * 8 + enPassantFile)
     }
 

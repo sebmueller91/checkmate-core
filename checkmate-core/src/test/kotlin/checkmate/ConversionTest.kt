@@ -99,7 +99,7 @@ internal class ConversionTest {
             lastMove = Move(from = Position(2, 0), to = Position(4, 0)),
             board = initialState.board.map { it.toMutableList() }.toMutableList().apply {
                 this[2][0] = null
-                this[4][0] = Piece(type = Type.PAWN, color = Player.WHITE)
+                this[3][0] = Piece(type = Type.PAWN, color = Player.WHITE)
             },
         )
         val bitmapGameState = modifiedState.toBitmapGameState()
