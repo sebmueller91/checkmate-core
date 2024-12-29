@@ -2,8 +2,10 @@ package checkmate.moves.movementBitboards
 
 import checkmate.model.Move
 import checkmate.model.Position
-import checkmate.model.Type
-import checkmate.moves.model.*
+import checkmate.moves.model.BitmapGameState
+import checkmate.moves.model.FILE_H
+import checkmate.moves.model.RANK_2
+import checkmate.moves.model.RANK_8
 
 internal fun BitmapGameState.generatePawnMovesList(isWhiteTurn: Boolean): List<Move> {
     updateAllPieces()
@@ -14,9 +16,8 @@ internal fun BitmapGameState.generateWhitePawnMovesList(): List<Move> {
     val moves = mutableListOf<Move>()
     val singleMoves = whitePawnSingleMoves()
     val doubleMoves = whitePawnDoubleMoves()
-    val captures = whitePawnCaptures()
-    val leftEnPassant = whitePawnLeftEnPassant()
-    val rightEnPassant = whitePawnRightEnPassant()
+    val leftCaptures = whitePawnLeftCaptures()
+    val rightCaptures = whitePawnRightCaptures()
 
     val singleMovePositions = extractPositions(singleMoves and RANK_8.inv())
     for (toPos in singleMovePositions) {
@@ -40,9 +41,9 @@ internal fun BitmapGameState.generateWhitePawnMovesList(): List<Move> {
         )
     }
 
-    val capturePositions = extractPositions(captures and RANK_8.inv())
-    for (toPos in capturePositions) {
-        val fromPosIndex = if ((toPos % 8) > (toPos - 9) % 8) toPos - 7 else toPos - 9
+    val leftCapturePositions = extractPositions(leftCaptures and RANK_8.inv())
+    for (toPos in leftCapturePositions) {
+        val fromPosIndex = toPos - 7
         moves.add(
             Move(
                 from = Position(rank = fromPosIndex / 8, file = fromPosIndex % 8),
@@ -51,54 +52,15 @@ internal fun BitmapGameState.generateWhitePawnMovesList(): List<Move> {
         )
     }
 
-    val leftEnPassantPositions = extractPositions(leftEnPassant)
-    for (toPos in leftEnPassantPositions) {
-        val fromPosIndex = toPos - 7
-        if (fromPosIndex % 8 >= toPos % 8) {
-            moves.add(
-                Move(
-                    from = Position(rank = fromPosIndex / 8, file = fromPosIndex % 8),
-                    to = Position(rank = toPos / 8, file = toPos % 8),
-                )
-            )
-        }
-    }
-
-    val rightEnPassantPositions = extractPositions(rightEnPassant)
-    for (toPos in rightEnPassantPositions) {
+    val rightCapturePositions = extractPositions(rightCaptures and RANK_8.inv())
+    for (toPos in rightCapturePositions) {
         val fromPosIndex = toPos - 9
-        if (fromPosIndex % 8 <= toPos % 8) {
-            moves.add(
-                Move(
-                    from = Position(rank = fromPosIndex / 8, file = fromPosIndex % 8),
-                    to = Position(rank = toPos / 8, file = toPos % 8),
-                )
+        moves.add(
+            Move(
+                from = Position(rank = fromPosIndex / 8, file = fromPosIndex % 8),
+                to = Position(rank = toPos / 8, file = toPos % 8)
             )
-        }
-    }
-
-    val promotionPositions = extractPositions(singleMoves and RANK_8)
-    for (toPos in promotionPositions) {
-        val fromPosIndex = toPos - 8
-        val from = Position(rank = fromPosIndex / 8, file = fromPosIndex % 8)
-        val to = Position(rank = toPos / 8, file = toPos % 8)
-
-        moves.add(Move(from = from, to = to, promotion = Type.QUEEN))
-        moves.add(Move(from = from, to = to, promotion = Type.ROOK))
-        moves.add(Move(from = from, to = to, promotion = Type.BISHOP))
-        moves.add(Move(from = from, to = to, promotion = Type.KNIGHT))
-    }
-
-    val promotionCapturePositions = extractPositions(captures and RANK_8)
-    for (toPos in promotionCapturePositions) {
-        val fromPosIndex = if ((toPos % 8) > (toPos - 9) % 8) toPos - 7 else toPos - 9
-        val from = Position(rank = fromPosIndex / 8, file = fromPosIndex % 8)
-        val to = Position(rank = toPos / 8, file = toPos % 8)
-
-        moves.add(Move(from = from, to = to, promotion = Type.QUEEN))
-        moves.add(Move(from = from, to = to, promotion = Type.ROOK))
-        moves.add(Move(from = from, to = to, promotion = Type.BISHOP))
-        moves.add(Move(from = from, to = to, promotion = Type.KNIGHT))
+        )
     }
 
     return moves
@@ -124,20 +86,5 @@ private fun BitmapGameState.whitePawnDoubleMoves(): ULong {
     return doubleMoves and pathBlocked.inv() and allPieces.inv()
 }
 
-private fun BitmapGameState.whitePawnCaptures(): ULong {
-    val leftCapture = (whitePawns shr 7) and blackPieces and FILE_H.inv()
-    val rightCapture = (whitePawns shr 9) and blackPieces and FILE_A.inv()
-    return leftCapture or rightCapture
-}
-
-private fun BitmapGameState.whitePawnLeftEnPassant(): ULong {
-    return if (enPassantTarget != 0UL) {
-       return (whitePawns shr 7) and enPassantTarget and FILE_H.inv()
-    } else 0UL
-}
-
-private fun BitmapGameState.whitePawnRightEnPassant(): ULong {
-    return if (enPassantTarget != 0UL) {
-        return (whitePawns shr 9) and enPassantTarget and FILE_A.inv()
-    } else 0UL
-}
+private fun BitmapGameState.whitePawnLeftCaptures(): ULong =(whitePawns shl 7) and blackPieces and FILE_H.inv()
+private fun BitmapGameState.whitePawnRightCaptures(): ULong =(whitePawns shl 9) and blackPieces and FILE_H.inv()
