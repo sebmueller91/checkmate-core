@@ -1,8 +1,8 @@
 package checkmate
 
 import checkmate.model.*
-import checkmate.moves.model.BitmapGameState
 import checkmate.moves.generatePawnMovesList
+import checkmate.moves.model.BitmapGameState
 import checkmate.util.toBitmapGameState
 import toGameState
 
@@ -42,5 +42,4 @@ internal class CheckmateCoreImpl : CheckmateCore {
     override fun executeMove(move: Move, game: Game): Game {
         TODO("Not yet implemented")
     }
-
 }

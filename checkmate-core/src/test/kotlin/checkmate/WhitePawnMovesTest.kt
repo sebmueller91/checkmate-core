@@ -3,7 +3,6 @@ package checkmate
 import checkmate.model.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 class WhitePawnMovesTest {
@@ -229,5 +228,93 @@ class WhitePawnMovesTest {
         val validMoves = checkmateCore.getValidMoves(Position(5, 3), gameState)
 
         assertTrue(validMoves.none { it.promotion != null })
+    }
+
+    @Test
+    fun `white pawn should capture en-passant only immediately after the opponent's double move`() {
+        val game = checkmateCore.generateInitialState()
+        val gameState = game.gameStates.last().let { state ->
+            state.copy(
+                board = state.board.map { it.toMutableList() }.toMutableList().apply {
+                    this[4][4] = Piece(type = Type.PAWN, color = Player.WHITE)
+                    this[4][3] = Piece(type = Type.PAWN, color = Player.BLACK)
+                },
+                lastMove = null
+            )
+        }
+
+        val validMoves = checkmateCore.getValidMoves(Position(4, 4), gameState)
+
+        assertTrue(validMoves.none { it.to == Position(5, 3) })
+    }
+
+    @Test
+    fun `white pawn should not capture from left edge to right edge of the board`() {
+        val game = checkmateCore.generateInitialState()
+        val gameState = game.gameStates.last().let { state ->
+            state.copy(
+                board = state.board.map { it.toMutableList() }.toMutableList().apply {
+                    this[4][0] = Piece(type = Type.PAWN, color = Player.WHITE)
+                    this[5][7] = Piece(type = Type.ROOK, color = Player.BLACK)
+                }
+            )
+        }
+
+        val validMoves = checkmateCore.getValidMoves(Position(4, 0), gameState)
+
+        assertTrue(validMoves.none { it.to == Position(5, 7) })
+    }
+
+    @Test
+    fun `white pawn should not capture from right edge to left edge of the board`() {
+        val game = checkmateCore.generateInitialState()
+        val gameState = game.gameStates.last().let { state ->
+            state.copy(
+                board = state.board.map { it.toMutableList() }.toMutableList().apply {
+                    this[4][7] = Piece(type = Type.PAWN, color = Player.WHITE)
+                    this[5][0] = Piece(type = Type.KNIGHT, color = Player.BLACK)
+                }
+            )
+        }
+
+        val validMoves = checkmateCore.getValidMoves(Position(4, 7), gameState)
+
+        assertTrue(validMoves.none { it.to == Position(5, 0) })
+    }
+
+    @Test
+    fun `white pawn should not perform left en-passant from left edge to right edge`() {
+        val game = checkmateCore.generateInitialState()
+        val gameState = game.gameStates.last().let { state ->
+            state.copy(
+                board = state.board.map { it.toMutableList() }.toMutableList().apply {
+                    this[4][0] = Piece(type = Type.PAWN, color = Player.WHITE)
+                    this[4][7] = Piece(type = Type.PAWN, color = Player.BLACK)
+                },
+                lastMove = Move(Position(6, 7), Position(4, 7))
+            )
+        }
+
+        val validMoves = checkmateCore.getValidMoves(Position(4, 0), gameState)
+
+        assertTrue(validMoves.none { it.to == Position(5, 7) })
+    }
+
+    @Test
+    fun `white pawn should not perform right en-passant from right edge to left edge`() {
+        val game = checkmateCore.generateInitialState()
+        val gameState = game.gameStates.last().let { state ->
+            state.copy(
+                board = state.board.map { it.toMutableList() }.toMutableList().apply {
+                    this[4][7] = Piece(type = Type.PAWN, color = Player.WHITE)
+                    this[4][0] = Piece(type = Type.PAWN, color = Player.BLACK)
+                },
+                lastMove = Move(Position(6, 0), Position(4, 0))
+            )
+        }
+
+        val validMoves = checkmateCore.getValidMoves(Position(4, 7), gameState)
+
+        assertTrue(validMoves.none { it.to == Position(5, 0) })
     }
 }
