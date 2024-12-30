@@ -52,7 +52,8 @@ internal fun BitmapGameState.generateWhitePawnMovesList(): List<Move> {
         moves.add(
             Move(
                 from = Position(rank = fromPosIndex / 8, file = fromPosIndex % 8),
-                to = Position(rank = toPos / 8, file = toPos % 8)
+                to = Position(rank = toPos / 8, file = toPos % 8),
+                capture = Position(rank = toPos / 8, file = toPos % 8)
             )
         )
     }
@@ -63,7 +64,8 @@ internal fun BitmapGameState.generateWhitePawnMovesList(): List<Move> {
         moves.add(
             Move(
                 from = Position(rank = fromPosIndex / 8, file = fromPosIndex % 8),
-                to = Position(rank = toPos / 8, file = toPos % 8)
+                to = Position(rank = toPos / 8, file = toPos % 8),
+                capture = Position(rank = toPos / 8, file = toPos % 8)
             )
         )
     }
@@ -75,6 +77,7 @@ internal fun BitmapGameState.generateWhitePawnMovesList(): List<Move> {
             Move(
                 from = Position(rank = fromPosIndex / 8, file = fromPosIndex % 8),
                 to = Position(rank = toPos / 8, file = toPos % 8),
+                capture = Position(rank = (toPos / 8) - 1, file = toPos % 8)
             )
         )
     }
@@ -86,6 +89,7 @@ internal fun BitmapGameState.generateWhitePawnMovesList(): List<Move> {
             Move(
                 from = Position(rank = fromPosIndex / 8, file = fromPosIndex % 8),
                 to = Position(rank = toPos / 8, file = toPos % 8),
+                capture = Position(rank = (toPos / 8) - 1, file = toPos % 8)
             )
         )
     }
@@ -107,7 +111,8 @@ internal fun BitmapGameState.generateWhitePawnMovesList(): List<Move> {
         moves.addAll(
             getPromotionMoves(
                 from = Position(rank = fromPosIndex / 8, file = fromPosIndex % 8),
-                to = Position(rank = toPos / 8, file = toPos % 8)
+                to = Position(rank = toPos / 8, file = toPos % 8),
+                capture = Position(rank = toPos / 8, file = toPos % 8)
             )
         )
     }
@@ -118,7 +123,8 @@ internal fun BitmapGameState.generateWhitePawnMovesList(): List<Move> {
         moves.addAll(
             getPromotionMoves(
                 from = Position(rank = fromPosIndex / 8, file = fromPosIndex % 8),
-                to = Position(rank = toPos / 8, file = toPos % 8)
+                to = Position(rank = toPos / 8, file = toPos % 8),
+                capture = Position(rank = toPos / 8, file = toPos % 8)
             )
         )
     }
@@ -126,25 +132,29 @@ internal fun BitmapGameState.generateWhitePawnMovesList(): List<Move> {
     return moves
 }
 
-private fun getPromotionMoves(from: Position, to: Position): List<Move> = listOf(
+private fun getPromotionMoves(from: Position, to: Position, capture: Position? = null): List<Move> = listOf(
     Move(
         from = from,
         to = to,
+        capture = capture,
         promotion = Type.QUEEN
     ),
     Move(
         from = from,
         to = to,
+        capture = capture,
         promotion = Type.BISHOP
     ),
     Move(
         from = from,
         to = to,
+        capture = capture,
         promotion = Type.KNIGHT
     ),
     Move(
         from = from,
         to = to,
+        capture = capture,
         promotion = Type.ROOK
     )
 )

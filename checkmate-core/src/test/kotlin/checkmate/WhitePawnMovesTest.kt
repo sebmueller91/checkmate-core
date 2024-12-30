@@ -89,7 +89,7 @@ class WhitePawnMovesTest {
 
         val validMoves = checkmateCore.getValidMoves(Position(4, 4), gameState)
 
-        val expectedMove = Move(from = Position(4, 4), to = Position(5, 3))
+        val expectedMove = Move(from = Position(4, 4), to = Position(5, 3), capture = Position(5, 3))
         assertTrue(validMoves.contains(expectedMove))
     }
 
@@ -107,7 +107,7 @@ class WhitePawnMovesTest {
 
         val validMoves = checkmateCore.getValidMoves(Position(4, 4), gameState)
 
-        val expectedMove = Move(from = Position(4, 4), to = Position(5, 5))
+        val expectedMove = Move(from = Position(4, 4), to = Position(5, 5), capture = Position(5, 5))
         assertTrue(validMoves.contains(expectedMove))
     }
 
@@ -127,7 +127,7 @@ class WhitePawnMovesTest {
 
         val validMoves = checkmateCore.getValidMoves(Position(4, 4), gameState)
 
-        val expectedMove = Move(from = Position(4, 4), to = Position(5, 3))
+        val expectedMove = Move(from = Position(4, 4), to = Position(5, 3), capture = Position(4, 3))
         assertTrue(validMoves.contains(expectedMove))
     }
 
@@ -147,7 +147,7 @@ class WhitePawnMovesTest {
 
         val validMoves = checkmateCore.getValidMoves(Position(4, 4), gameState)
 
-        val expectedMove = Move(from = Position(4, 4), to = Position(5, 5))
+        val expectedMove = Move(from = Position(4, 4), to = Position(5, 5), capture = Position(4, 5))
         assertTrue(validMoves.contains(expectedMove))
     }
 
@@ -205,26 +205,10 @@ class WhitePawnMovesTest {
         val validMoves = checkmateCore.getValidMoves(Position(6, 4), gameState)
 
         val expectedMoves = listOf(
-            Move(
-                from = Position(6, 4),
-                to = Position(7, 5),
-                promotion = Type.QUEEN
-            ),
-            Move(
-                from = Position(6, 4),
-                to = Position(7, 5),
-                promotion = Type.ROOK
-            ),
-            Move(
-                from = Position(6, 4),
-                to = Position(7, 5),
-                promotion = Type.KNIGHT
-            ),
-            Move(
-                from = Position(6, 4),
-                to = Position(7, 5),
-                promotion = Type.BISHOP
-            )
+            Move(from = Position(6, 4), to = Position(7, 5), capture = Position(7, 5), promotion = Type.QUEEN),
+            Move(from = Position(6, 4), to = Position(7, 5), capture = Position(7, 5), promotion = Type.ROOK),
+            Move(from = Position(6, 4), to = Position(7, 5), capture = Position(7, 5), promotion = Type.KNIGHT),
+            Move(from = Position(6, 4), to = Position(7, 5), capture = Position(7, 5), promotion = Type.BISHOP)
         )
 
         assertTrue(validMoves.containsAll(expectedMoves))
@@ -246,5 +230,4 @@ class WhitePawnMovesTest {
 
         assertTrue(validMoves.none { it.promotion != null })
     }
-
 }
