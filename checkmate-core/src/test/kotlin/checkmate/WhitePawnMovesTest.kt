@@ -10,7 +10,7 @@ class WhitePawnMovesTest {
 
     @BeforeEach
     fun setUp() {
-        checkmateCore = CheckmateCoreImpl()
+        checkmateCore = CheckmateCore()
     }
 
     @Test

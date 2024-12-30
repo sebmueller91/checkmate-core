@@ -13,7 +13,7 @@ internal class ConversionTest {
 
     @BeforeEach
     fun setUp() {
-        checkmateCore = CheckmateCoreImpl()
+        checkmateCore = CheckmateCore()
     }
 
     @Test
