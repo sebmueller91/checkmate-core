@@ -3,6 +3,7 @@ package checkmate
 import checkmate.model.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 class WhitePawnMovesTest {
@@ -149,4 +150,101 @@ class WhitePawnMovesTest {
         val expectedMove = Move(from = Position(4, 4), to = Position(5, 5))
         assertTrue(validMoves.contains(expectedMove))
     }
+
+    @Test
+    fun `white pawn should promote when reaching the last row`() {
+        val game = checkmateCore.generateInitialState()
+        val gameState = game.gameStates.last().let { state ->
+            state.copy(
+                board = state.board.map { it.toMutableList() }.toMutableList().apply {
+                    this[6][4] = Piece(type = Type.PAWN, color = Player.WHITE)
+                    this[7][4] = null
+                }
+            )
+        }
+
+        val validMoves = checkmateCore.getValidMoves(Position(6, 4), gameState)
+
+        val expectedMoves = listOf(
+            Move(
+                from = Position(6, 4),
+                to = Position(7, 4),
+                promotion = Type.QUEEN
+            ),
+            Move(
+                from = Position(6, 4),
+                to = Position(7, 4),
+                promotion = Type.ROOK
+            ),
+            Move(
+                from = Position(6, 4),
+                to = Position(7, 4),
+                promotion = Type.KNIGHT
+            ),
+            Move(
+                from = Position(6, 4),
+                to = Position(7, 4),
+                promotion = Type.BISHOP
+            )
+        )
+        assertTrue(validMoves.containsAll(expectedMoves))
+    }
+
+    @Test
+    fun `white pawn should promote when capturing on the last row`() {
+        val game = checkmateCore.generateInitialState()
+        val gameState = game.gameStates.last().let { state ->
+            state.copy(
+                board = state.board.map { it.toMutableList() }.toMutableList().apply {
+                    this[6][4] = Piece(type = Type.PAWN, color = Player.WHITE)
+                    this[7][5] = Piece(type = Type.ROOK, color = Player.BLACK)
+                }
+            )
+        }
+
+        val validMoves = checkmateCore.getValidMoves(Position(6, 4), gameState)
+
+        val expectedMoves = listOf(
+            Move(
+                from = Position(6, 4),
+                to = Position(7, 5),
+                promotion = Type.QUEEN
+            ),
+            Move(
+                from = Position(6, 4),
+                to = Position(7, 5),
+                promotion = Type.ROOK
+            ),
+            Move(
+                from = Position(6, 4),
+                to = Position(7, 5),
+                promotion = Type.KNIGHT
+            ),
+            Move(
+                from = Position(6, 4),
+                to = Position(7, 5),
+                promotion = Type.BISHOP
+            )
+        )
+
+        assertTrue(validMoves.containsAll(expectedMoves))
+    }
+
+    @Test
+    fun `white pawn should not promote if not on the last row`() {
+        val game = checkmateCore.generateInitialState()
+        val gameState = game.gameStates.last().let { state ->
+            state.copy(
+                board = state.board.map { it.toMutableList() }.toMutableList().apply {
+                    this[5][3] = Piece(type = Type.PAWN, color = Player.WHITE)
+                    this[6][3] = null
+                }
+            )
+        }
+
+        val validMoves = checkmateCore.getValidMoves(Position(5, 3), gameState)
+
+        assertTrue(validMoves.none { it.promotion != null })
+    }
+
 }

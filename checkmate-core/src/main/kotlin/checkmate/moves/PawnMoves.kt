@@ -2,11 +2,13 @@ package checkmate.moves
 
 import checkmate.model.Move
 import checkmate.model.Position
+import checkmate.model.Type
 import checkmate.moves.model.*
 import checkmate.moves.model.BitmapGameState
 import checkmate.moves.model.FILE_H
 import checkmate.moves.model.RANK_2
 import checkmate.moves.model.RANK_8
+import checkmate.util.extractPositions
 
 internal fun BitmapGameState.generatePawnMovesList(isWhiteTurn: Boolean): List<Move> {
     updateAllPieces()
@@ -88,19 +90,64 @@ internal fun BitmapGameState.generateWhitePawnMovesList(): List<Move> {
         )
     }
 
+    val forwardPromotionPositions = extractPositions(singleMoves and RANK_8)
+    for (toPos in forwardPromotionPositions) {
+        val fromPosIndex = toPos - 8
+        moves.addAll(
+            getPromotionMoves(
+                from = Position(rank = fromPosIndex / 8, file = fromPosIndex % 8),
+                to = Position(rank = toPos / 8, file = toPos % 8)
+            )
+        )
+    }
+
+    val leftCapturePromotionPositions = extractPositions(leftCaptures and RANK_8)
+    for (toPos in leftCapturePromotionPositions) {
+        val fromPosIndex = toPos - 7
+        moves.addAll(
+            getPromotionMoves(
+                from = Position(rank = fromPosIndex / 8, file = fromPosIndex % 8),
+                to = Position(rank = toPos / 8, file = toPos % 8)
+            )
+        )
+    }
+
+    val rightCapturePromotionPositions = extractPositions(rightCaptures and RANK_8)
+    for (toPos in rightCapturePromotionPositions) {
+        val fromPosIndex = toPos - 9
+        moves.addAll(
+            getPromotionMoves(
+                from = Position(rank = fromPosIndex / 8, file = fromPosIndex % 8),
+                to = Position(rank = toPos / 8, file = toPos % 8)
+            )
+        )
+    }
+
     return moves
 }
 
-internal fun extractPositions(bitboard: ULong): List<Int> {
-    val positions = mutableListOf<Int>()
-    var board = bitboard
-    while (board != 0UL) {
-        val lsb = board and (board.inv() + 1UL) // Isolate the least significant bit
-        positions.add(lsb.countTrailingZeroBits()) // Convert the bit to an index
-        board = board xor lsb // Clear the least significant bit
-    }
-    return positions
-}
+private fun getPromotionMoves(from: Position, to: Position): List<Move> = listOf(
+    Move(
+        from = from,
+        to = to,
+        promotion = Type.QUEEN
+    ),
+    Move(
+        from = from,
+        to = to,
+        promotion = Type.BISHOP
+    ),
+    Move(
+        from = from,
+        to = to,
+        promotion = Type.KNIGHT
+    ),
+    Move(
+        from = from,
+        to = to,
+        promotion = Type.ROOK
+    )
+)
 
 private fun BitmapGameState.whitePawnSingleMoves(): ULong = (whitePawns shl 8) and allPieces.inv()
 
