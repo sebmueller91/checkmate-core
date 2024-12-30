@@ -6,7 +6,7 @@ import checkmate.moves.model.BitmapGameState
 import checkmate.util.toBitmapGameState
 import toGameState
 
-internal class CheckmateCore{
+class CheckmateCore{
     fun generateInitialState(): Game = Game(
         gameStates = listOf(BitmapGameState().apply { initializeStartingPosition() }.toGameState(lastMove = null))
     )
