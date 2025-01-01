@@ -15,7 +15,7 @@ internal class RookMovesTest {
     }
 
     @Test
-    fun `white rook should not move when blocked from all sides from own pieces`() {
+    fun `rook should not move when blocked from all sides from own pieces`() {
         val game = checkmateCore.generateInitialState()
         val gameStateWhite = game.gameStates.last().copy(currentPlayer = Player.WHITE)
         val gameStateBlack = game.gameStates.last().copy(currentPlayer = Player.BLACK)
@@ -24,20 +24,6 @@ internal class RookMovesTest {
         validMoves.addAll(checkmateCore.getValidMoves(Position(0, 7), gameStateBlack))
         validMoves.addAll(checkmateCore.getValidMoves(Position(7, 0), gameStateWhite))
         validMoves.addAll(checkmateCore.getValidMoves(Position(7, 7), gameStateWhite))
-
-        assertTrue(validMoves.isEmpty())
-    }
-
-    @Test
-    fun `black rook should not move when blocked from all sides from own pieces`() {
-        val game = checkmateCore.generateInitialState()
-        val gameStateBlack = game.gameStates.last().copy(currentPlayer = Player.BLACK)
-        val gameStateWhite = game.gameStates.last().copy(currentPlayer = Player.WHITE)
-        val validMoves = mutableListOf<Move>()
-        validMoves.addAll(checkmateCore.getValidMoves(Position(0, 0), gameStateWhite))
-        validMoves.addAll(checkmateCore.getValidMoves(Position(0, 7), gameStateWhite))
-        validMoves.addAll(checkmateCore.getValidMoves(Position(7, 0), gameStateBlack))
-        validMoves.addAll(checkmateCore.getValidMoves(Position(7, 7), gameStateBlack))
 
         assertTrue(validMoves.isEmpty())
     }
@@ -72,8 +58,6 @@ internal class RookMovesTest {
         assertEquals(expectedMoves.toSet(), validMoves.toSet())
     }
 
-    private fun List<Move>.sortMoves() = this.sortedWith(compareBy<Move>{it.to.rank}.thenBy { it.to.file })
-
     @Test
     fun `black rook should be able to perform expected moves`() {
         val game = checkmateCore.generateInitialState()
@@ -100,7 +84,7 @@ internal class RookMovesTest {
             Move(from = Position(4, 4), to = Position(4, 6)),
             Move(from = Position(4, 4), to = Position(4, 7)),
             )
-        
+
         assertEquals(expectedMoves.toSet(), validMoves.toSet())
     }
 }
