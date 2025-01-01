@@ -1,3 +1,6 @@
+import checkmate.moves.model.FILE_MASKS
+import checkmate.moves.model.RANK_MASKS
+
 internal object PrecomputedMovementMasks {
 
     val straightMasks = Array(64) { 0UL }
@@ -15,14 +18,7 @@ internal object PrecomputedMovementMasks {
             val rank = square / 8
             val file = square % 8
 
-            val horizontalMask = (0xFFUL shl (rank * 8))
-
-            var verticalMask = 0UL
-            for (r in 0..7) {
-                verticalMask = verticalMask or (1UL shl (r * 8 + file))
-            }
-
-            straightMasks[square] = (horizontalMask or verticalMask) and (1UL shl square).inv()
+            straightMasks[square] = (RANK_MASKS[rank] or FILE_MASKS[file]) and (1UL shl square).inv()
         }
     }
 

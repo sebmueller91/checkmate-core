@@ -23,7 +23,18 @@ internal const val BLACK_KING_SIDE_CASTLING = 0b0010
 internal const val WHITE_QUEEN_SIDE_CASTLING = 0b0100
 internal const val WHITE_KING_SIDE_CASTLING = 0b1000
 
-internal val FILE_MASK = arrayOf(
+internal val RANK_MASKS = arrayOf(
+    RANK_1,
+    RANK_2,
+    RANK_3,
+    RANK_4,
+    RANK_5,
+    RANK_6,
+    RANK_7,
+    RANK_8,
+)
+
+internal val FILE_MASKS = arrayOf(
     FILE_A,
     FILE_B,
     FILE_C,

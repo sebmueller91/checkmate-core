@@ -4,8 +4,9 @@ import PrecomputedMovementMasks
 import checkmate.model.Move
 import checkmate.model.Position
 import checkmate.moves.model.BitmapGameState
-import checkmate.moves.model.FILE_MASK
+import checkmate.moves.model.FILE_MASKS
 import checkmate.util.extractPositions
+import checkmate.util.printAsBoard
 
 internal fun BitmapGameState.generateRookMovesList(isWhiteTurn: Boolean): List<Move> {
     val rookBitmap = if (isWhiteTurn) whiteRooks else blackRooks
@@ -18,20 +19,18 @@ private fun BitmapGameState.generateRookMoves(rookBitmap: ULong, isWhiteTurn: Bo
     val occupied = allPieces
 
     for (fromPos in extractPositions(rookBitmap)) {
+        PrecomputedMovementMasks.straightMasks[fromPos].printAsBoard("position")
         val mask = PrecomputedMovementMasks.straightMasks[fromPos]
 
-        // Calculate reachable squares
-        val reachableSquares = calculateReachableSquares(mask, fromPos, occupied)
+        val reachableSquares = calculateReachableSquares(mask, fromPos, occupied, opponentPieces)
 
-        val validMoves = reachableSquares and (opponentPieces.inv()) // Exclude opponent pieces for regular moves
-        val captures = reachableSquares and opponentPieces           // Include only opponent pieces for captures
+        val validMoves = reachableSquares and (opponentPieces.inv())
+        val captures = reachableSquares and opponentPieces
 
-        // Generate moves for empty squares
         moves.addAll(extractPositions(validMoves).map { toPos ->
             createMove(fromPos, toPos, null)
         })
 
-        // Generate moves for capture squares
         moves.addAll(extractPositions(captures).map { toPos ->
             createMove(fromPos, toPos, Position(rank = toPos / 8, file = toPos % 8))
         })
@@ -40,13 +39,13 @@ private fun BitmapGameState.generateRookMoves(rookBitmap: ULong, isWhiteTurn: Bo
     return moves
 }
 
-private fun calculateReachableSquares(mask: ULong, fromPos: Int, occupied: ULong): ULong {
+private fun calculateReachableSquares(mask: ULong, fromPos: Int, occupied: ULong, opponentPieces: ULong): ULong {
     val rank = fromPos / 8
     val file = fromPos % 8
 
     // Blockers in all directions
     val horizontalBlockers = mask and occupied and (0xFFUL shl (rank * 8))
-    val verticalBlockers = mask and occupied and FILE_MASK[file]
+    val verticalBlockers = mask and occupied and FILE_MASKS[file]
 
     // Nearest blockers (west, east, north, south)
     val westBlocker = (horizontalBlockers and (0xFFFFFFFFFFFFFFFFUL shl fromPos)).takeLowestSetBit()
@@ -54,14 +53,37 @@ private fun calculateReachableSquares(mask: ULong, fromPos: Int, occupied: ULong
     val northBlocker = (verticalBlockers and (0xFFFFFFFFFFFFFFFFUL shl fromPos)).takeLowestSetBit()
     val southBlocker = (verticalBlockers and (0xFFFFFFFFFFFFFFFFUL.unsignedShr(63 - fromPos))).takeHighestSetBit()
 
-    // Calculate valid rays by stopping at blockers
-    val westRay = if (westBlocker != 0UL) (0xFFFFFFFFFFFFFFFFUL.unsignedShr(63 - fromPos)) and (0xFFFFFFFFFFFFFFFFUL shl westBlocker.bitPosition()) else (0xFFFFFFFFFFFFFFFFUL.unsignedShr(63 - fromPos))
-    val eastRay = if (eastBlocker != 0UL) (0xFFFFFFFFFFFFFFFFUL.unsignedShr(63 - eastBlocker.bitPosition())) and (0xFFFFFFFFFFFFFFFFUL shl fromPos) else (0xFFFFFFFFFFFFFFFFUL shl fromPos)
-    val northRay = if (northBlocker != 0UL) (0xFFFFFFFFFFFFFFFFUL.unsignedShr(63 - fromPos)) and (0xFFFFFFFFFFFFFFFFUL shl northBlocker.bitPosition()) else (0xFFFFFFFFFFFFFFFFUL.unsignedShr(63 - fromPos))
-    val southRay = if (southBlocker != 0UL) (0xFFFFFFFFFFFFFFFFUL.unsignedShr(63 - southBlocker.bitPosition())) and (0xFFFFFFFFFFFFFFFFUL shl fromPos) else (0xFFFFFFFFFFFFFFFFUL shl fromPos)
+    // Calculate valid rays
+    val westRay = calculateRay(fromPos, westBlocker, isPositiveDirection = false, opponentPieces, occupied)
+    val eastRay = calculateRay(fromPos, eastBlocker, isPositiveDirection = true, opponentPieces, occupied)
+    val northRay = calculateRay(fromPos, northBlocker, isPositiveDirection = false, opponentPieces, occupied, isVertical = true)
+    val southRay = calculateRay(fromPos, southBlocker, isPositiveDirection = true, opponentPieces, occupied, isVertical = true)
 
     return (westRay or eastRay or northRay or southRay) and mask
 }
+
+private fun calculateRay(
+    fromPos: Int,
+    blocker: ULong,
+    isPositiveDirection: Boolean,
+    opponentPieces: ULong,
+    occupied: ULong,
+    isVertical: Boolean = false
+): ULong {
+    if (blocker == 0UL) return 0xFFFFFFFFFFFFFFFFUL // No blockers, full ray
+
+    val blockerPos = blocker.bitPosition()
+    val ray = if (isPositiveDirection) {
+        val shift = if (isVertical) 8 else 1
+        (0xFFFFFFFFFFFFFFFFUL shl fromPos) and (0xFFFFFFFFFFFFFFFFUL.unsignedShr(63 - blockerPos))
+    } else {
+        val shift = if (isVertical) -8 else -1
+        (0xFFFFFFFFFFFFFFFFUL.unsignedShr(fromPos)) and (0xFFFFFFFFFFFFFFFFUL shl blockerPos)
+    }
+
+    return if (opponentPieces and blocker != 0UL) ray else ray and blocker.inv()
+}
+
 
 private fun ULong.unsignedShr(bits: Int): ULong = (this shr bits) and (ULong.MAX_VALUE shr bits)
 private fun ULong.takeHighestSetBit(): ULong = this.takeLowestSetBit().rotateRight(63)
