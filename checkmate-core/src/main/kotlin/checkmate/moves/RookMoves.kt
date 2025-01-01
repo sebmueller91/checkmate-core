@@ -4,6 +4,7 @@ import PrecomputedMovementMasks
 import checkmate.model.Move
 import checkmate.model.Position
 import checkmate.moves.model.BitmapGameState
+import checkmate.util.createMove
 import checkmate.util.extractPositions
 import checkmate.util.printAsBoard
 
@@ -74,17 +75,4 @@ private fun calculateRay(
     }
 
     return ray
-}
-
-private fun createMove(fromPos: Int, toPos: Int, capture: Position?): Move {
-    val fromRank = fromPos / 8
-    val fromFile = fromPos % 8
-    val toRank = toPos / 8
-    val toFile = toPos % 8
-
-    return Move(
-        from = Position(rank = fromRank, file = fromFile),
-        to = Position(rank = toRank, file = toFile),
-        capture = capture
-    )
 }
