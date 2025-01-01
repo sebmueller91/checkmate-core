@@ -1,6 +1,7 @@
 package checkmate
 
 import checkmate.model.*
+import checkmate.moves.generateKnightsMovesList
 import checkmate.moves.generatePawnMovesList
 import checkmate.moves.generateRookMovesList
 import checkmate.moves.model.BitmapGameState
@@ -27,12 +28,13 @@ class CheckmateCore {
         }
 
         val bitmapGameState = gameState.toBitmapGameState()
+        val isWhiteTurn = gameState.currentPlayer == Player.WHITE
         val movesList = when (gameState.board[position.rank][position.file]?.type) {
             null -> listOf()
-            Type.PAWN -> bitmapGameState.generatePawnMovesList(isWhiteTurn = gameState.currentPlayer == Player.WHITE)
-            Type.KNIGHT -> TODO()
+            Type.PAWN -> bitmapGameState.generatePawnMovesList(isWhiteTurn)
+            Type.KNIGHT -> bitmapGameState.generateKnightsMovesList(isWhiteTurn)
             Type.BISHOP -> TODO()
-            Type.ROOK -> bitmapGameState.generateRookMovesList(isWhiteTurn = gameState.currentPlayer == Player.WHITE)
+            Type.ROOK -> bitmapGameState.generateRookMovesList(isWhiteTurn)
             Type.QUEEN -> TODO()
             Type.KING -> TODO()
         }

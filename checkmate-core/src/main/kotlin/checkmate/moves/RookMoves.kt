@@ -9,12 +9,12 @@ import checkmate.util.extractPositions
 import checkmate.util.printAsBoard
 
 internal fun BitmapGameState.generateRookMovesList(isWhiteTurn: Boolean): List<Move> {
-    val rookBitmap = if (isWhiteTurn) whiteRooks else blackRooks
-    return generateRookMoves(rookBitmap, isWhiteTurn)
+    return generateRookMoves(isWhiteTurn)
 }
 
-private fun BitmapGameState.generateRookMoves(rookBitmap: ULong, isWhiteTurn: Boolean): List<Move> {
+private fun BitmapGameState.generateRookMoves(isWhiteTurn: Boolean): List<Move> {
     val moves = mutableListOf<Move>()
+    val rookBitmap = if (isWhiteTurn) whiteRooks else blackRooks
     val opponentPieces = if (isWhiteTurn) blackPieces else whitePieces
     val occupied = allPieces
 
@@ -24,7 +24,7 @@ private fun BitmapGameState.generateRookMoves(rookBitmap: ULong, isWhiteTurn: Bo
 
         val reachableSquares = calculateReachableSquares(mask, fromPos, occupied, opponentPieces)
 
-        val validMoves = reachableSquares and (opponentPieces.inv())
+        val validMoves = reachableSquares and opponentPieces.inv()
         val captures = reachableSquares and opponentPieces
 
         moves.addAll(extractPositions(validMoves).map { toPos ->

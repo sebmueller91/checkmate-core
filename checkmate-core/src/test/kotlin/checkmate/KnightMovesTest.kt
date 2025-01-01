@@ -67,9 +67,9 @@ class KnightMovesTest {
             Move(Position(4,4), Position(6,3), capture = Position(6,3)),
             Move(Position(4,4), Position(6,5), capture = Position(6,5)),
             Move(Position(4,4), Position(5,2)),
-            Move(Position(4,4), Position(5,7)),
+            Move(Position(4,4), Position(5,6)),
             Move(Position(4,4), Position(3,2)),
-            Move(Position(4,4), Position(3,7)),
+            Move(Position(4,4), Position(3,6)),
             Move(Position(4,4), Position(2,3)),
             Move(Position(4,4), Position(2,5)),
         )
@@ -82,10 +82,10 @@ class KnightMovesTest {
         val game = checkmateCore.generateInitialState()
         val gameState = game.gameStates.last().let { state ->
             state.copy(
-                currentPlayer = Player.WHITE,
+                currentPlayer = Player.BLACK,
                 board = state.board.map { it.toMutableList() }.toMutableList()
                     .apply {
-                        this[3][3] = Piece(type = Type.KNIGHT, color = Player.WHITE)
+                        this[3][3] = Piece(type = Type.KNIGHT, color = Player.BLACK)
                     })
         }
 
