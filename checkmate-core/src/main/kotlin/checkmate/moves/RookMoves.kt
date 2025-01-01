@@ -4,7 +4,6 @@ import PrecomputedMovementMasks
 import checkmate.model.Move
 import checkmate.model.Position
 import checkmate.moves.model.BitmapGameState
-import checkmate.moves.model.FILE_MASKS
 import checkmate.util.extractPositions
 import checkmate.util.printAsBoard
 
@@ -17,6 +16,8 @@ private fun BitmapGameState.generateRookMoves(rookBitmap: ULong, isWhiteTurn: Bo
     val moves = mutableListOf<Move>()
     val opponentPieces = if (isWhiteTurn) blackPieces else whitePieces
     val occupied = allPieces
+
+    opponentPieces.printAsBoard("opponentPieces")
 
     for (fromPos in extractPositions(rookBitmap)) {
         PrecomputedMovementMasks.straightMasks[fromPos].printAsBoard("position")
@@ -40,59 +41,39 @@ private fun BitmapGameState.generateRookMoves(rookBitmap: ULong, isWhiteTurn: Bo
 }
 
 private fun calculateReachableSquares(mask: ULong, fromPos: Int, occupied: ULong, opponentPieces: ULong): ULong {
-    val rank = fromPos / 8
-    val file = fromPos % 8
-
-    // Blockers in all directions
-    val horizontalBlockers = mask and occupied and (0xFFUL shl (rank * 8))
-    val verticalBlockers = mask and occupied and FILE_MASKS[file]
-
-    // Nearest blockers (west, east, north, south)
-    val westBlocker = (horizontalBlockers and (0xFFFFFFFFFFFFFFFFUL shl fromPos)).takeLowestSetBit()
-    val eastBlocker = (horizontalBlockers and (0xFFFFFFFFFFFFFFFFUL.unsignedShr(63 - fromPos))).takeHighestSetBit()
-    val northBlocker = (verticalBlockers and (0xFFFFFFFFFFFFFFFFUL shl fromPos)).takeLowestSetBit()
-    val southBlocker = (verticalBlockers and (0xFFFFFFFFFFFFFFFFUL.unsignedShr(63 - fromPos))).takeHighestSetBit()
-
-    // Calculate valid rays
-    val westRay = calculateRay(fromPos, westBlocker, isPositiveDirection = false, opponentPieces, occupied)
-    val eastRay = calculateRay(fromPos, eastBlocker, isPositiveDirection = true, opponentPieces, occupied)
-    val northRay = calculateRay(fromPos, northBlocker, isPositiveDirection = false, opponentPieces, occupied, isVertical = true)
-    val southRay = calculateRay(fromPos, southBlocker, isPositiveDirection = true, opponentPieces, occupied, isVertical = true)
+    val westRay = calculateRay(fromPos, step = -1, occupied, opponentPieces)
+    val eastRay = calculateRay(fromPos, step = 1, occupied, opponentPieces)
+    val northRay = calculateRay(fromPos, step = 8, occupied, opponentPieces)
+    val southRay = calculateRay(fromPos, step = -8, occupied, opponentPieces)
 
     return (westRay or eastRay or northRay or southRay) and mask
 }
 
+
 private fun calculateRay(
     fromPos: Int,
-    blocker: ULong,
-    isPositiveDirection: Boolean,
-    opponentPieces: ULong,
+    step: Int,
     occupied: ULong,
-    isVertical: Boolean = false
+    opponentPieces: ULong
 ): ULong {
-    if (blocker == 0UL) return 0xFFFFFFFFFFFFFFFFUL // No blockers, full ray
+    var ray = 0UL
+    var pos = fromPos + step
 
-    val blockerPos = blocker.bitPosition()
-    val ray = if (isPositiveDirection) {
-        val shift = if (isVertical) 8 else 1
-        (0xFFFFFFFFFFFFFFFFUL shl fromPos) and (0xFFFFFFFFFFFFFFFFUL.unsignedShr(63 - blockerPos))
-    } else {
-        val shift = if (isVertical) -8 else -1
-        (0xFFFFFFFFFFFFFFFFUL.unsignedShr(fromPos)) and (0xFFFFFFFFFFFFFFFFUL shl blockerPos)
+    while (pos in 0..63 && ((pos / 8 == fromPos / 8) || step % 8 == 0)) {
+        val posBitmap = 1UL shl pos
+
+        if ((posBitmap and occupied) != 0UL) {
+            if ((posBitmap and opponentPieces) != 0UL) {
+                ray = ray or posBitmap
+            }
+            break
+        }
+
+        ray = ray or posBitmap
+        pos += step
     }
 
-    return if (opponentPieces and blocker != 0UL) ray else ray and blocker.inv()
-}
-
-
-private fun ULong.unsignedShr(bits: Int): ULong = (this shr bits) and (ULong.MAX_VALUE shr bits)
-private fun ULong.takeHighestSetBit(): ULong = this.takeLowestSetBit().rotateRight(63)
-private fun ULong.takeLowestSetBit(): ULong {
-    return this and (this.inv() + 1UL)
-}
-
-private fun ULong.bitPosition(): Int {
-    return this.countTrailingZeroBits()
+    return ray
 }
 
 private fun createMove(fromPos: Int, toPos: Int, capture: Position?): Move {

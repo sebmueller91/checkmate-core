@@ -55,8 +55,10 @@ internal class RookMovesTest {
             Move(from = Position(4, 4), to = Position(4, 7)),
         )
 
-        assertEquals(expectedMoves.toSet(), validMoves.toSet())
+        assertEquals(expectedMoves.sortMoves(), validMoves.sortMoves())
     }
+
+    private fun List<Move>.sortMoves() = this.sortedWith(compareBy<Move>{it.to.rank}.thenBy { it.to.file })
 
     @Test
     fun `black rook should be able to perform expected moves`() {
