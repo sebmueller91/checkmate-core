@@ -2,11 +2,12 @@ package checkmate
 
 import checkmate.model.*
 import checkmate.moves.generatePawnMovesList
+import checkmate.moves.generateRookMovesList
 import checkmate.moves.model.BitmapGameState
 import checkmate.util.toBitmapGameState
 import toGameState
 
-class CheckmateCore{
+class CheckmateCore {
     fun generateInitialState(): Game = Game(
         gameStates = listOf(BitmapGameState().apply { initializeStartingPosition() }.toGameState(lastMove = null))
     )
@@ -25,18 +26,17 @@ class CheckmateCore{
             return listOf()
         }
 
-        return when (gameState.board[position.rank][position.file]?.type) {
+        val bitmapGameState = gameState.toBitmapGameState()
+        val movesList = when (gameState.board[position.rank][position.file]?.type) {
             null -> listOf()
-            Type.PAWN -> gameState.toBitmapGameState()
-                .generatePawnMovesList(isWhiteTurn = gameState.currentPlayer == Player.WHITE)
-                .filter { it.from == position }
-
+            Type.PAWN -> bitmapGameState.generatePawnMovesList(isWhiteTurn = gameState.currentPlayer == Player.WHITE)
             Type.KNIGHT -> TODO()
             Type.BISHOP -> TODO()
-            Type.ROOK -> TODO()
+            Type.ROOK -> bitmapGameState.generateRookMovesList(isWhiteTurn = gameState.currentPlayer == Player.WHITE)
             Type.QUEEN -> TODO()
             Type.KING -> TODO()
         }
+        return movesList.filter { it.from == position }
     }
 
     fun executeMove(move: Move, game: Game): Game {

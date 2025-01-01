@@ -55,4 +55,8 @@ internal class BitmapGameState {
         halfmoveClock = 0
         fullmoveNumber = 1
     }
+
+    init {
+        updateAllPieces()
+    }
 }

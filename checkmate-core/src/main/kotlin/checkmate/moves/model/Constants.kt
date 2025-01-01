@@ -18,8 +18,18 @@ internal const val RANK_6 = 0x0000FF0000000000UL
 internal const val RANK_7 = 0x00FF000000000000UL
 internal const val RANK_8 = 0xFF00000000000000UL
 
-
 internal const val BLACK_QUEEN_SIDE_CASTLING = 0b0001
 internal const val BLACK_KING_SIDE_CASTLING = 0b0010
 internal const val WHITE_QUEEN_SIDE_CASTLING = 0b0100
 internal const val WHITE_KING_SIDE_CASTLING = 0b1000
+
+internal val FILE_MASK = arrayOf(
+    FILE_A,
+    FILE_B,
+    FILE_C,
+    FILE_D,
+    FILE_E,
+    FILE_F,
+    FILE_G,
+    FILE_H
+)

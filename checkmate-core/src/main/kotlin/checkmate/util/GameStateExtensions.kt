@@ -34,6 +34,7 @@ internal fun GameState.toBitmapGameState(): BitmapGameState {
     bitmapGameState.halfmoveClock = halfMoveClock
     bitmapGameState.fullmoveNumber = fullMoveNumber
 
+    bitmapGameState.updateAllPieces()
     return bitmapGameState
 }
 

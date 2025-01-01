@@ -5,7 +5,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import kotlin.test.assertTrue
 
-class WhitePawnMovesTest {
+internal class WhitePawnMovesTest {
     private lateinit var checkmateCore: CheckmateCore
 
     @BeforeEach
