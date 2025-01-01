@@ -18,8 +18,6 @@ private fun BitmapGameState.generateRookMoves(rookBitmap: ULong, isWhiteTurn: Bo
     val opponentPieces = if (isWhiteTurn) blackPieces else whitePieces
     val occupied = allPieces
 
-    opponentPieces.printAsBoard("opponentPieces")
-
     for (fromPos in extractPositions(rookBitmap)) {
         PrecomputedMovementMasks.straightMasks[fromPos].printAsBoard("position")
         val mask = PrecomputedMovementMasks.straightMasks[fromPos]
