@@ -87,4 +87,60 @@ internal class RookMovesTest {
 
         assertEquals(expectedMoves.toSet(), validMoves.toSet())
     }
+
+    @Test
+    fun `white rook should not move through own or opponent pieces`() {
+        val game = checkmateCore.generateInitialState()
+        val gameState = game.gameStates.last().let { state ->
+            state.copy(
+                currentPlayer = Player.WHITE,
+                board = state.board.map { it.toMutableList() }.toMutableList()
+                    .apply {
+                        this[4][4] = Piece(type = Type.ROOK, color = Player.WHITE)
+                        this[4][2] = Piece(type = Type.PAWN, color = Player.WHITE)
+                        this[5][4] = Piece(type = Type.PAWN, color = Player.WHITE)
+                        this[3][4] = Piece(type = Type.PAWN, color = Player.BLACK)
+                        this[4][6] = Piece(type = Type.PAWN, color = Player.BLACK)
+                    })
+        }
+
+        val validMoves = checkmateCore.getValidMoves(Position(4,4), gameState)
+
+        val expectedMoves = listOf(
+            Move(Position(4,4), Position(4,3)),
+            Move(Position(4,4), Position(4,5)),
+            Move(Position(4,4), Position(4,6), capture = Position(4,6)),
+            Move(Position(4,4), Position(3,4), capture = Position(3,4)),
+        )
+
+        assertEquals(expectedMoves.toSet(), validMoves.toSet())
+    }
+
+    @Test
+    fun `black rook should not move through own or opponent pieces`() {
+        val game = checkmateCore.generateInitialState()
+        val gameState = game.gameStates.last().let { state ->
+            state.copy(
+                currentPlayer = Player.BLACK,
+                board = state.board.map { it.toMutableList() }.toMutableList()
+                    .apply {
+                        this[4][4] = Piece(type = Type.ROOK, color = Player.BLACK)
+                        this[4][2] = Piece(type = Type.PAWN, color = Player.BLACK)
+                        this[5][4] = Piece(type = Type.PAWN, color = Player.BLACK)
+                        this[3][4] = Piece(type = Type.PAWN, color = Player.WHITE)
+                        this[4][6] = Piece(type = Type.PAWN, color = Player.WHITE)
+                    })
+        }
+
+        val validMoves = checkmateCore.getValidMoves(Position(4,4), gameState)
+
+        val expectedMoves = listOf(
+            Move(Position(4,4), Position(4,3)),
+            Move(Position(4,4), Position(4,5)),
+            Move(Position(4,4), Position(4,6), capture = Position(4,6)),
+            Move(Position(4,4), Position(3,4), capture = Position(3,4)),
+        )
+
+        assertEquals(expectedMoves.toSet(), validMoves.toSet())
+    }
 }
