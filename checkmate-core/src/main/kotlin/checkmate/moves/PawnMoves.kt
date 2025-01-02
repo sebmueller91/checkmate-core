@@ -6,10 +6,10 @@ import checkmate.model.Type
 import checkmate.moves.model.*
 import checkmate.util.extractPositions
 
-internal fun BitmapGameState.generatePawnMovesList(isWhiteTurn: Boolean): List<Move> =
-    if (isWhiteTurn) generateWhitePawnMovesList() else generateBlackPawnMovesList()
+internal fun BitmapGameState.generatePawnMoves(isWhiteTurn: Boolean): List<Move> =
+    if (isWhiteTurn) generateWhitePawnMoves() else generateBlackPawnMoves()
 
-private fun BitmapGameState.generateWhitePawnMovesList(): List<Move> {
+private fun BitmapGameState.generateWhitePawnMoves(): List<Move> {
     val moves = mutableListOf<Move>()
     val singleMoves = whitePawnSingleMoves()
     val doubleMoves = whitePawnDoubleMoves()
@@ -126,7 +126,7 @@ private fun BitmapGameState.generateWhitePawnMovesList(): List<Move> {
     return moves
 }
 
-private fun BitmapGameState.generateBlackPawnMovesList(): List<Move> {
+private fun BitmapGameState.generateBlackPawnMoves(): List<Move> {
     val moves = mutableListOf<Move>()
     val singleMoves = blackPawnSingleMoves()
     val doubleMoves = blackPawnDoubleMoves()

@@ -3,17 +3,17 @@ package checkmate.moves
 import checkmate.model.Move
 import checkmate.model.Position
 import checkmate.moves.model.BitmapGameState
-import checkmate.util.calculateStraightRay
+import checkmate.util.calculateDiagonalRay
 import checkmate.util.createMove
 import checkmate.util.extractPositions
 
-internal fun BitmapGameState.generateRookMoves(isWhiteTurn: Boolean): List<Move> {
+internal fun BitmapGameState.generateBishopMoves(isWhiteTurn: Boolean): List<Move> {
     val moves = mutableListOf<Move>()
-    val rooks = if (isWhiteTurn) whiteRooks else blackRooks
+    val bishops = if (isWhiteTurn) whiteBishops else blackBishops
     val opponentPieces = if (isWhiteTurn) blackPieces else whitePieces
     val occupied = allPieces
 
-    for (fromPos in extractPositions(rooks)) {
+    for (fromPos in extractPositions(bishops)) {
         val reachableSquares = calculateReachableSquares(fromPos, occupied, opponentPieces)
 
         val validMoves = reachableSquares and opponentPieces.inv()
@@ -28,14 +28,15 @@ internal fun BitmapGameState.generateRookMoves(isWhiteTurn: Boolean): List<Move>
         })
     }
 
+    println(moves.size)
     return moves
 }
 
 private fun calculateReachableSquares(fromPos: Int, occupied: ULong, opponentPieces: ULong): ULong {
-    val westRay = calculateStraightRay(fromPos, step = -1, occupied, opponentPieces)
-    val eastRay = calculateStraightRay(fromPos, step = 1, occupied, opponentPieces)
-    val northRay = calculateStraightRay(fromPos, step = 8, occupied, opponentPieces)
-    val southRay = calculateStraightRay(fromPos, step = -8, occupied, opponentPieces)
+    val northEastRay = calculateDiagonalRay(fromPos, step = 9, occupied, opponentPieces)
+    val southWestRay = calculateDiagonalRay(fromPos, step = -9, occupied, opponentPieces)
+    val northWestRay = calculateDiagonalRay(fromPos, step = 7, occupied, opponentPieces)
+    val southEastRay = calculateDiagonalRay(fromPos, step = -7, occupied, opponentPieces)
 
-    return (westRay or eastRay or northRay or southRay)
+    return (northEastRay or southWestRay or northWestRay or southEastRay)
 }

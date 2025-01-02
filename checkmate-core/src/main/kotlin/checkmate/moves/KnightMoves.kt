@@ -7,11 +7,7 @@ import checkmate.moves.model.BitmapGameState
 import checkmate.util.createMove
 import checkmate.util.extractPositions
 
-internal fun BitmapGameState.generateKnightsMovesList(isWhiteTurn: Boolean): List<Move> {
-    return generateKnightMoves(isWhiteTurn)
-}
-
-private fun BitmapGameState.generateKnightMoves(isWhiteTurn: Boolean): List<Move> {
+internal fun BitmapGameState.generateKnightMoves(isWhiteTurn: Boolean): List<Move> {
     val knights = if (isWhiteTurn) whiteKnights else blackKnights
     val opponents = if (isWhiteTurn) blackPieces else whitePieces
 

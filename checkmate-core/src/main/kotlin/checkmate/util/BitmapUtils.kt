@@ -42,3 +42,66 @@ internal fun ULong.printAsBoard(title: String = "") {
     println()
 }
 
+internal fun calculateStraightRay(
+    fromPos: Int,
+    step: Int,
+    occupied: ULong,
+    opponentPieces: ULong
+): ULong {
+    var ray = 0UL
+    var pos = fromPos + step
+
+    while (pos in 0..63 && ((pos / 8 == fromPos / 8) || step % 8 == 0)) {
+        val posBitmap = 1UL shl pos
+
+        if ((posBitmap and occupied) != 0UL) {
+            if ((posBitmap and opponentPieces) != 0UL) {
+                ray = ray or posBitmap
+            }
+            break
+        }
+
+        ray = ray or posBitmap
+        pos += step
+    }
+
+    return ray
+}
+
+internal fun calculateDiagonalRay(
+    fromPos: Int,
+    step: Int,
+    occupied: ULong,
+    opponentPieces: ULong
+): ULong {
+    var ray = 0UL
+    var pos = fromPos + step
+
+    while (pos in 0..63 && isValidDiagonalMove(fromPos, pos, step)) {
+        val posBitmap = 1UL shl pos
+
+        if ((posBitmap and occupied) != 0UL) {
+            if ((posBitmap and opponentPieces) != 0UL) {
+                ray = ray or posBitmap
+            }
+            break
+        }
+
+        ray = ray or posBitmap
+        pos += step
+    }
+
+    return ray
+}
+
+private fun isValidDiagonalMove(fromPos: Int, toPos: Int, step: Int): Boolean {
+    val fromFile = fromPos % 8
+    val toFile = toPos % 8
+    val toRank = toPos / 8
+
+    return when (step) {
+        -7, 9 -> toFile > fromFile
+        -9, 7 -> toFile < fromFile
+        else -> false
+    } && (toRank in 0..7)
+}
