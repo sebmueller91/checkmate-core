@@ -87,7 +87,215 @@ internal class KingMovesTest {
     }
 
     @Test
-    fun `white king should be able to perform castling queen side`() {
+    fun `white king should be able to perform queen side castling`() {
+        val game = checkmateCore.generateInitialState()
+        val gameState = game.gameStates.last().let { state ->
+            state.copy(
+                currentPlayer = Player.WHITE,
+                board = state.board.map { it.toMutableList() }.toMutableList().apply {
+                    this[0][1] = null
+                    this[0][2] = null
+                    this[0][3] = null
+                }
+            )
+        }
 
+        val validMoves = checkmateCore.getValidMoves(Position(0, 4), gameState)
+        assert(!validMoves.contains(Move(Position(0, 4), Position(0, 2))))
+    }
+
+    @Test
+    fun `white king should not be able to perform queen side castling when its not possible`() {
+        val game = checkmateCore.generateInitialState()
+        val gameState = game.gameStates.last().let { state ->
+            state.copy(
+                currentPlayer = Player.WHITE,
+                castlingRights = state.castlingRights.copy(whiteQueenSide = false),
+                board = state.board.map { it.toMutableList() }.toMutableList().apply {
+                    this[0][1] = null
+                    this[0][2] = null
+                    this[0][3] = null
+                }
+            )
+        }
+
+        val validMoves = checkmateCore.getValidMoves(Position(0, 4), gameState)
+        assert(!validMoves.contains(Move(Position(0, 4), Position(0, 2))))
+    }
+
+    @Test
+    fun `white king should not be able to perform queen side castling when piece in between`() {
+        val game = checkmateCore.generateInitialState()
+        val gameState = game.gameStates.last().let { state ->
+            state.copy(
+                currentPlayer = Player.WHITE,
+                castlingRights = state.castlingRights.copy(whiteQueenSide = false),
+                board = state.board.map { it.toMutableList() }.toMutableList().apply {
+                    this[0][1] = null
+                    this[0][3] = null
+                }
+            )
+        }
+
+        val validMoves = checkmateCore.getValidMoves(Position(0, 4), gameState)
+        assert(!validMoves.contains(Move(Position(0, 4), Position(0, 2))))
+    }
+
+    @Test
+    fun `white king should be able to perform king side castling`() {
+        val game = checkmateCore.generateInitialState()
+        val gameState = game.gameStates.last().let { state ->
+            state.copy(
+                currentPlayer = Player.WHITE,
+                board = state.board.map { it.toMutableList() }.toMutableList().apply {
+                    this[0][5] = null
+                    this[0][6] = null
+                }
+            )
+        }
+
+        val validMoves = checkmateCore.getValidMoves(Position(0, 4), gameState)
+        assert(validMoves.contains(Move(Position(0, 4), Position(0, 6))))
+    }
+
+    @Test
+    fun `white king should not be able to perform king side castling when its not possible`() {
+        val game = checkmateCore.generateInitialState()
+        val gameState = game.gameStates.last().let { state ->
+            state.copy(
+                currentPlayer = Player.WHITE,
+                castlingRights = state.castlingRights.copy(whiteKingSide = false),
+                board = state.board.map { it.toMutableList() }.toMutableList().apply {
+                    this[0][5] = null
+                    this[0][6] = null
+                }
+            )
+        }
+
+        val validMoves = checkmateCore.getValidMoves(Position(0, 4), gameState)
+        assert(!validMoves.contains(Move(Position(0, 4), Position(0, 6))))
+    }
+
+    @Test
+    fun `white king should not be able to perform king side castling when piece in between`() {
+        val game = checkmateCore.generateInitialState()
+        val gameState = game.gameStates.last().let { state ->
+            state.copy(
+                currentPlayer = Player.WHITE,
+                board = state.board.map { it.toMutableList() }.toMutableList().apply {
+                    this[0][6] = null
+                }
+            )
+        }
+
+        val validMoves = checkmateCore.getValidMoves(Position(0, 4), gameState)
+        assert(!validMoves.contains(Move(Position(0, 4), Position(0, 6))))
+    }
+
+    @Test
+    fun `black king should be able to perform queen side castling`() {
+        val game = checkmateCore.generateInitialState()
+        val gameState = game.gameStates.last().let { state ->
+            state.copy(
+                currentPlayer = Player.BLACK,
+                board = state.board.map { it.toMutableList() }.toMutableList().apply {
+                    this[6][1] = null
+                    this[6][2] = null
+                    this[6][3] = null
+                }
+            )
+        }
+
+        val validMoves = checkmateCore.getValidMoves(Position(6, 4), gameState)
+        assert(validMoves.contains(Move(Position(6, 4), Position(6, 2))))
+    }
+
+    @Test
+    fun `black king should not be able to perform queen side castling when its not possible`() {
+        val game = checkmateCore.generateInitialState()
+        val gameState = game.gameStates.last().let { state ->
+            state.copy(
+                currentPlayer = Player.BLACK,
+                castlingRights = state.castlingRights.copy(whiteQueenSide = false),
+                board = state.board.map { it.toMutableList() }.toMutableList().apply {
+                    this[6][1] = null
+                    this[6][2] = null
+                    this[6][3] = null
+                }
+            )
+        }
+
+        val validMoves = checkmateCore.getValidMoves(Position(6, 4), gameState)
+        assert(!validMoves.contains(Move(Position(6, 4), Position(6, 2))))
+    }
+
+    @Test
+    fun `black king should not be able to perform queen side castling when piece in between`() {
+        val game = checkmateCore.generateInitialState()
+        val gameState = game.gameStates.last().let { state ->
+            state.copy(
+                currentPlayer = Player.BLACK,
+                castlingRights = state.castlingRights.copy(blackQueenSide = false),
+                board = state.board.map { it.toMutableList() }.toMutableList().apply {
+                    this[6][1] = null
+                    this[6][3] = null
+                }
+            )
+        }
+
+        val validMoves = checkmateCore.getValidMoves(Position(6, 4), gameState)
+        assert(!validMoves.contains(Move(Position(6, 4), Position(6, 2))))
+    }
+
+    @Test
+    fun `black king should be able to perform king side castling`() {
+        val game = checkmateCore.generateInitialState()
+        val gameState = game.gameStates.last().let { state ->
+            state.copy(
+                currentPlayer = Player.BLACK,
+                board = state.board.map { it.toMutableList() }.toMutableList().apply {
+                    this[6][5] = null
+                    this[6][6] = null
+                }
+            )
+        }
+
+        val validMoves = checkmateCore.getValidMoves(Position(6, 4), gameState)
+
+        assert(validMoves.contains(Move(Position(6, 4), Position(6, 6))))
+    }
+
+    @Test
+    fun `black king should not be able to perform king side castling when its not possible`() {
+        val game = checkmateCore.generateInitialState()
+        val gameState = game.gameStates.last().let { state ->
+            state.copy(
+                currentPlayer = Player.BLACK,
+                castlingRights = state.castlingRights.copy(blackKingSide = false),
+                board = state.board.map { it.toMutableList() }.toMutableList().apply {
+                    this[6][5] = null
+                    this[6][6] = null
+                }
+            )
+        }
+
+        val validMoves = checkmateCore.getValidMoves(Position(6, 4), gameState)
+        assert(!validMoves.contains(Move(Position(6, 4), Position(6, 6))))
+    }
+
+    @Test
+    fun `black king should not be able to perform king side castling when piece in between`() {
+        val game = checkmateCore.generateInitialState()
+        val gameState = game.gameStates.last().let { state ->
+            state.copy(
+                currentPlayer = Player.BLACK,
+                board = state.board.map { it.toMutableList() }.toMutableList().apply {
+                    this[6][6] = null
+                }
+            )
+        }
+
+        val validMoves = checkmateCore.getValidMoves(Position(6, 4), gameState)
+        assert(!validMoves.contains(Move(Position(6, 4), Position(6, 6))))
     }
 }
