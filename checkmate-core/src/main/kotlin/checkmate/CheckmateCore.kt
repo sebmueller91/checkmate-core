@@ -34,7 +34,7 @@ class CheckmateCore {
             Type.BISHOP -> bitmapGameState.generateBishopMoves(isWhiteTurn)
             Type.ROOK -> bitmapGameState.generateRookMoves(isWhiteTurn)
             Type.QUEEN -> bitmapGameState.generateQueenMoves(isWhiteTurn)
-            Type.KING -> TODO()
+            Type.KING -> bitmapGameState.generateKingMoves(isWhiteTurn)
         }
         return movesList.filter { it.from == position }
     }
