@@ -1,10 +1,7 @@
 package checkmate
 
 import checkmate.model.*
-import checkmate.moves.generateBishopMoves
-import checkmate.moves.generateKnightMoves
-import checkmate.moves.generatePawnMoves
-import checkmate.moves.generateRookMoves
+import checkmate.moves.*
 import checkmate.moves.model.BitmapGameState
 import checkmate.util.toBitmapGameState
 import toGameState
@@ -36,7 +33,7 @@ class CheckmateCore {
             Type.KNIGHT -> bitmapGameState.generateKnightMoves(isWhiteTurn)
             Type.BISHOP -> bitmapGameState.generateBishopMoves(isWhiteTurn)
             Type.ROOK -> bitmapGameState.generateRookMoves(isWhiteTurn)
-            Type.QUEEN -> TODO()
+            Type.QUEEN -> bitmapGameState.generateQueenMoves(isWhiteTurn)
             Type.KING -> TODO()
         }
         return movesList.filter { it.from == position }
