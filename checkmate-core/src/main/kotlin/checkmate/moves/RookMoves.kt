@@ -1,12 +1,10 @@
 package checkmate.moves
 
-import PrecomputedMovementMasks
 import checkmate.model.Move
 import checkmate.model.Position
 import checkmate.moves.model.BitmapGameState
 import checkmate.util.createMove
 import checkmate.util.extractPositions
-import checkmate.util.printAsBoard
 
 internal fun BitmapGameState.generateRookMovesList(isWhiteTurn: Boolean): List<Move> {
     return generateRookMoves(isWhiteTurn)
@@ -19,10 +17,7 @@ private fun BitmapGameState.generateRookMoves(isWhiteTurn: Boolean): List<Move> 
     val occupied = allPieces
 
     for (fromPos in extractPositions(rookBitmap)) {
-        PrecomputedMovementMasks.straightMasks[fromPos].printAsBoard("position")
-        val mask = PrecomputedMovementMasks.straightMasks[fromPos]
-
-        val reachableSquares = calculateReachableSquares(mask, fromPos, occupied, opponentPieces)
+        val reachableSquares = calculateReachableSquares(fromPos, occupied, opponentPieces)
 
         val validMoves = reachableSquares and opponentPieces.inv()
         val captures = reachableSquares and opponentPieces
@@ -39,13 +34,13 @@ private fun BitmapGameState.generateRookMoves(isWhiteTurn: Boolean): List<Move> 
     return moves
 }
 
-private fun calculateReachableSquares(mask: ULong, fromPos: Int, occupied: ULong, opponentPieces: ULong): ULong {
+private fun calculateReachableSquares(fromPos: Int, occupied: ULong, opponentPieces: ULong): ULong {
     val westRay = calculateRay(fromPos, step = -1, occupied, opponentPieces)
     val eastRay = calculateRay(fromPos, step = 1, occupied, opponentPieces)
     val northRay = calculateRay(fromPos, step = 8, occupied, opponentPieces)
     val southRay = calculateRay(fromPos, step = -8, occupied, opponentPieces)
 
-    return (westRay or eastRay or northRay or southRay) and mask
+    return (westRay or eastRay or northRay or southRay)
 }
 
 
