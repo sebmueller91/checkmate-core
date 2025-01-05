@@ -1,6 +1,7 @@
 package checkmate.moves
 
 import checkmate.model.Move
+import checkmate.model.Player
 import checkmate.model.Position
 import checkmate.model.Type
 import checkmate.moves.model.*
@@ -12,6 +13,12 @@ internal object PawnMoves: PieceMoves() {
 
     override fun generateMoves(gameState: BitmapGameState): List<Move> {
         TODO("Not yet implemented")
+    }
+
+    override fun getAttackMap(gameState: BitmapGameState, player: Player): ULong {
+        val leftCaptures = if (player == Player.WHITE) gameState.whitePawnLeftCaptures() else gameState.blackPawnLeftCaptures()
+        val rightCaptures = if (player == Player.WHITE) gameState.blackPawnRightCaptures() else gameState.blackPawnRightCaptures()
+        return leftCaptures or rightCaptures
     }
 
     private fun BitmapGameState.getWhitePawnMoves(): List<Move> {
@@ -284,10 +291,6 @@ internal object PawnMoves: PieceMoves() {
         return doubleMoves and pathBlocked.inv() and allPieces.inv()
     }
 
-    private fun BitmapGameState.whitePawnLeftCaptures(): ULong = (whitePawns shl 7) and blackPieces and FILE_H.inv()
-
-    private fun BitmapGameState.whitePawnRightCaptures(): ULong = (whitePawns shl 9) and blackPieces and FILE_H.inv()
-
     private fun BitmapGameState.whitePawnLeftEnPassant(): ULong {
         return if (enPassantTarget != 0UL) {
             (whitePawns shl 7) and enPassantTarget and FILE_H.inv()
@@ -308,6 +311,10 @@ internal object PawnMoves: PieceMoves() {
         val pathBlocked = (startRank shr 8) and allPieces
         return doubleMoves and pathBlocked.inv() and allPieces.inv()
     }
+
+    private fun BitmapGameState.whitePawnLeftCaptures(): ULong = (whitePawns shl 7) and blackPieces and FILE_H.inv()
+
+    private fun BitmapGameState.whitePawnRightCaptures(): ULong = (whitePawns shl 9) and blackPieces and FILE_H.inv()
 
     private fun BitmapGameState.blackPawnLeftCaptures(): ULong = (blackPawns shr 9) and whitePieces and FILE_A.inv()
 

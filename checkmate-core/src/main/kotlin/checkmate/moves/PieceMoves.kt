@@ -1,6 +1,7 @@
 package checkmate.moves
 
 import checkmate.model.Move
+import checkmate.model.Player
 import checkmate.model.Position
 import checkmate.moves.model.BitmapGameState
 
@@ -11,4 +12,5 @@ internal abstract class PieceMoves {
     abstract fun generateMoves(gameState: BitmapGameState): List<Move>
     fun generateMoves(gameState: BitmapGameState, position: Position): List<Move> =
         generateMoves(gameState).filter { it.from == position }
+    abstract fun getAttackMap(gameState: BitmapGameState, player: Player): ULong
 }

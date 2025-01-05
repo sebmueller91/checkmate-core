@@ -1,6 +1,7 @@
 package checkmate.moves
 
 import checkmate.model.Move
+import checkmate.model.Player
 import checkmate.model.Position
 import checkmate.moves.model.BitmapGameState
 import checkmate.util.calculateDiagonalRay
@@ -9,18 +10,11 @@ import checkmate.util.createMove
 import checkmate.util.extractPositions
 
 internal object QueenMoves: PieceMoves() {
-    override fun generatePseudoLegalMoves(gameState: BitmapGameState): List<Move> =
-        gameState.getPseudoLegalMoves()
-
-    override fun generateMoves(gameState: BitmapGameState): List<Move> {
-        TODO("Not yet implemented")
-    }
-
-    private fun BitmapGameState.getPseudoLegalMoves(): List<Move> {
+    override fun generatePseudoLegalMoves(gameState: BitmapGameState): List<Move> {
         val moves = mutableListOf<Move>()
-        val queens = if (isWhiteTurn) whiteQueens else blackQueens
-        val opponentPieces = if (isWhiteTurn) blackPieces else whitePieces
-        val occupied = allPieces
+        val queens = if (gameState.isWhiteTurn) gameState.whiteQueens else gameState.blackQueens
+        val opponentPieces = if (gameState.isWhiteTurn) gameState.blackPieces else gameState.whitePieces
+        val occupied = gameState.allPieces
 
         for (fromPos in extractPositions(queens)) {
             val straightReachable = calculateStraightReachableSquares(fromPos, occupied, opponentPieces)
@@ -41,6 +35,28 @@ internal object QueenMoves: PieceMoves() {
         }
 
         return moves
+    }
+
+    override fun generateMoves(gameState: BitmapGameState): List<Move> {
+        TODO("Not yet implemented")
+    }
+
+    override fun getAttackMap(gameState: BitmapGameState, player: Player): ULong {
+        val queens = if (player == Player.WHITE) gameState.whiteQueens else gameState.blackQueens
+        val opponentPieces = if (player == Player.WHITE) gameState.blackPieces else gameState.whitePieces
+        val occupied = gameState.allPieces
+
+        var attackMap = 0UL
+        for (fromPos in extractPositions(queens)) {
+            val straightReachable = calculateStraightReachableSquares(fromPos, occupied, opponentPieces)
+            val diagonalReachable = calculateDiagonalReachableSquares(fromPos, occupied, opponentPieces)
+
+            val reachableSquares = straightReachable or diagonalReachable
+            
+            attackMap = attackMap or reachableSquares
+        }
+
+        return attackMap
     }
 
     private fun calculateStraightReachableSquares(fromPos: Int, occupied: ULong, opponentPieces: ULong): ULong {
