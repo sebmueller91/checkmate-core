@@ -50,3 +50,7 @@ internal fun BitmapGameState.toGameState(lastMove: Move?): GameState {
         lastMove = lastMove
     )
 }
+
+internal fun BitmapGameState.isValidMove(move: Move): Boolean {
+    return true
+}

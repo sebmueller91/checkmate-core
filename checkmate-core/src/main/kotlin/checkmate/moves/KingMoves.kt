@@ -31,7 +31,9 @@ internal object KingMoves : PieceMoves() {
     }
 
     override fun generateMoves(gameState: BitmapGameState): List<Move> {
-        TODO("Not yet implemented")
+        val legalMoves = generatePseudoLegalMoves(gameState).filter { isLegalMove(it, gameState) }.toMutableList()
+        // TODO: Add castlings
+        return legalMoves
     }
 
     override fun getAttackMap(gameState: BitmapGameState, player: Player): ULong {

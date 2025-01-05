@@ -11,13 +11,23 @@ class CheckmateCore {
         gameStates = listOf(BitmapGameState().apply { initializeStartingPosition() }.toGameState(lastMove = null))
     )
 
-    fun isValidMove(move: Move, gameState: GameState) {
-        TODO("Not yet implemented")
+    fun getValidMoves(gameState: GameState): List<Move> { // TODO: Test
+        val validMoves = mutableListOf<Move>()
+        for (rank in 0..7) {
+            for (file in 0..7) {
+                val piece = gameState.board[rank][file] ?: continue
+                if (piece.color != gameState.currentPlayer) {
+                    continue
+                }
+
+                validMoves.addAll(getValidMoves(gameState, Position(rank, file)))
+            }
+        }
+        return validMoves
     }
 
-    fun getValidMoves(gameState: GameState): List<Move> {
-        TODO("Not yet implemented")
-    }
+    fun isValidMove(gameState: GameState, move: Move): Boolean = // TODO: Test
+        move in getValidMoves(gameState)
 
     fun getValidMoves(gameState: GameState, position: Position): List<Move> {
         if (position.rank !in 0..7 || position.file !in 0..7) {

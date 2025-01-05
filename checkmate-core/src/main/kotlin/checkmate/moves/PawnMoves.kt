@@ -11,9 +11,8 @@ internal object PawnMoves: PieceMoves() {
     override fun generatePseudoLegalMoves(gameState: BitmapGameState): List<Move> =
         if (gameState.isWhiteTurn) gameState.getWhitePawnMoves() else gameState.getBlackPawnMoves()
 
-    override fun generateMoves(gameState: BitmapGameState): List<Move> {
-        TODO("Not yet implemented")
-    }
+    override fun generateMoves(gameState: BitmapGameState): List<Move> =
+        KingMoves.generatePseudoLegalMoves(gameState).filter { isLegalMove(it, gameState) }.toMutableList()
 
     override fun getAttackMap(gameState: BitmapGameState, player: Player): ULong {
         val leftCaptures = if (player == Player.WHITE) gameState.whitePawnLeftCaptures() else gameState.blackPawnLeftCaptures()

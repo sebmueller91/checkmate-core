@@ -33,9 +33,8 @@ internal object RookMoves: PieceMoves() {
         return moves
     }
 
-    override fun generateMoves(gameState: BitmapGameState): List<Move> {
-        TODO("Not yet implemented")
-    }
+    override fun generateMoves(gameState: BitmapGameState): List<Move> =
+        KingMoves.generatePseudoLegalMoves(gameState).filter { isLegalMove(it, gameState) }.toMutableList()
 
     override fun getAttackMap(gameState: BitmapGameState, player: Player): ULong {
         val rooks = if (player == Player.WHITE) gameState.whiteRooks else gameState.blackRooks
@@ -45,7 +44,7 @@ internal object RookMoves: PieceMoves() {
         var attackMap = 0UL
         for (fromPos in extractPositions(rooks)) {
             val reachableSquares = calculateReachableSquares(fromPos, occupied, opponentPieces)
-            
+
             attackMap = attackMap or reachableSquares
         }
 

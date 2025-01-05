@@ -37,9 +37,8 @@ internal object QueenMoves: PieceMoves() {
         return moves
     }
 
-    override fun generateMoves(gameState: BitmapGameState): List<Move> {
-        TODO("Not yet implemented")
-    }
+    override fun generateMoves(gameState: BitmapGameState): List<Move> =
+        KingMoves.generatePseudoLegalMoves(gameState).filter { isLegalMove(it, gameState) }.toMutableList()
 
     override fun getAttackMap(gameState: BitmapGameState, player: Player): ULong {
         val queens = if (player == Player.WHITE) gameState.whiteQueens else gameState.blackQueens
@@ -52,7 +51,7 @@ internal object QueenMoves: PieceMoves() {
             val diagonalReachable = calculateDiagonalReachableSquares(fromPos, occupied, opponentPieces)
 
             val reachableSquares = straightReachable or diagonalReachable
-            
+
             attackMap = attackMap or reachableSquares
         }
 
