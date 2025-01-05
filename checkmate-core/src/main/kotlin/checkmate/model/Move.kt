@@ -5,4 +5,5 @@ data class Move(
     val to: Position,
     val capture: Position? = null,
     val promotion: Type? = null,
+    val castlingRookFromTo: Pair<Position, Position>? = null
 )

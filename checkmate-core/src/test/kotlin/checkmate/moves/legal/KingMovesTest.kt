@@ -28,7 +28,15 @@ internal class KingMovesTest {
         }
 
         val validMoves = checkmateCore.getValidMoves(gameState, Position(0, 4))
-        assert(validMoves.contains(Move(Position(0, 4), Position(0, 2))))
+        assert(
+            validMoves.contains(
+                Move(
+                    Position(0, 4),
+                    Position(0, 2),
+                    castlingRookFromTo = Pair(Position(0, 0), Position(0, 3))
+                )
+            )
+        )
     }
 
     @Test
@@ -122,7 +130,15 @@ internal class KingMovesTest {
         }
 
         val validMoves = checkmateCore.getValidMoves(gameState, Position(0, 4))
-        assert(validMoves.contains(Move(Position(0, 4), Position(0, 6))))
+        assert(
+            validMoves.contains(
+                Move(
+                    Position(0, 4),
+                    Position(0, 6),
+                    castlingRookFromTo = Pair(Position(0, 7), Position(0, 5))
+                )
+            )
+        )
     }
 
     @Test
@@ -212,7 +228,15 @@ internal class KingMovesTest {
         }
 
         val validMoves = checkmateCore.getValidMoves(gameState, Position(7, 4))
-        assert(validMoves.contains(Move(Position(7, 4), Position(7, 2))))
+        assert(
+            validMoves.contains(
+                Move(
+                    Position(7, 4),
+                    Position(7, 2),
+                    castlingRookFromTo = Pair(Position(7, 0), Position(7, 3))
+                )
+            )
+        )
     }
 
     @Test
@@ -221,7 +245,7 @@ internal class KingMovesTest {
         val gameState = game.gameStates.last().let { state ->
             state.copy(
                 currentPlayer = Player.BLACK,
-                castlingRights = state.castlingRights.copy(whiteQueenSide = false),
+                castlingRights = state.castlingRights.copy(blackQueenSide = false),
                 board = state.board.map { it.toMutableList() }.toMutableList().apply {
                     this[7][1] = null
                     this[7][2] = null
@@ -263,7 +287,7 @@ internal class KingMovesTest {
                     this[7][1] = null
                     this[7][2] = null
                     this[7][3] = null
-                    this[5][5] = Piece(Type.KNIGHT, Player.BLACK)
+                    this[5][5] = Piece(Type.KNIGHT, Player.WHITE)
                 }
             )
         }
@@ -278,12 +302,11 @@ internal class KingMovesTest {
         val gameState = game.gameStates.last().let { state ->
             state.copy(
                 currentPlayer = Player.BLACK,
-                castlingRights = state.castlingRights.copy(),
                 board = state.board.map { it.toMutableList() }.toMutableList().apply {
                     this[7][1] = null
                     this[7][2] = null
                     this[7][3] = null
-                    this[5][4] = Piece(Type.KNIGHT, Player.BLACK)
+                    this[5][4] = Piece(Type.KNIGHT, Player.WHITE)
                 }
             )
         }
@@ -307,7 +330,15 @@ internal class KingMovesTest {
 
         val validMoves = checkmateCore.getValidMoves(gameState, Position(7, 4))
 
-        assert(validMoves.contains(Move(Position(7, 4), Position(7, 6))))
+        assert(
+            validMoves.contains(
+                Move(
+                    Position(7, 4),
+                    Position(7, 6),
+                    castlingRookFromTo = Pair(Position(7, 7), Position(7, 5))
+                )
+            )
+        )
     }
 
     @Test
@@ -350,11 +381,10 @@ internal class KingMovesTest {
         val gameState = game.gameStates.last().let { state ->
             state.copy(
                 currentPlayer = Player.BLACK,
-                castlingRights = state.castlingRights.copy(),
                 board = state.board.map { it.toMutableList() }.toMutableList().apply {
                     this[7][5] = null
                     this[7][6] = null
-                    this[5][3] = Piece(Type.KNIGHT, Player.BLACK)
+                    this[5][3] = Piece(Type.KNIGHT, Player.WHITE)
                 }
             )
         }
@@ -373,7 +403,7 @@ internal class KingMovesTest {
                 board = state.board.map { it.toMutableList() }.toMutableList().apply {
                     this[7][1] = null
                     this[7][3] = null
-                    this[5][4] = Piece(Type.KNIGHT, Player.BLACK)
+                    this[5][4] = Piece(Type.KNIGHT, Player.WHITE)
                 }
             )
         }

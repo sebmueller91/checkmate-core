@@ -12,5 +12,5 @@ internal abstract class PieceMoves {
     abstract fun generateMoves(gameState: BitmapGameState): List<Move>
     fun generateMoves(gameState: BitmapGameState, position: Position): List<Move> =
         generateMoves(gameState).filter { it.from == position }
-    abstract fun getAttackMap(gameState: BitmapGameState, player: Player): ULong
+    abstract fun generateAttackMap(gameState: BitmapGameState, player: Player): ULong
 }

@@ -1,11 +1,16 @@
 package checkmate
 
+import checkmate.exception.InvalidMoveException
+import checkmate.exception.InvalidPositionException
 import checkmate.model.*
 import checkmate.moves.*
 import checkmate.moves.model.BitmapGameState
 import checkmate.util.toBitmapGameState
+import executeMove
 import toGameState
+import java.security.InvalidParameterException
 
+// TODO: Document interface
 class CheckmateCore {
     fun generateInitialState(): Game = Game(
         gameStates = listOf(BitmapGameState().apply { initializeStartingPosition() }.toGameState(lastMove = null))
@@ -31,8 +36,7 @@ class CheckmateCore {
 
     fun getValidMoves(gameState: GameState, position: Position): List<Move> {
         if (position.rank !in 0..7 || position.file !in 0..7) {
-            // TODO: Throw exception
-            return listOf()
+            throw InvalidPositionException("Position $position is not valid.") // TODO: Test
         }
 
         if (gameState.currentPlayer != gameState.board[position.rank][position.file]?.color) {
@@ -46,11 +50,20 @@ class CheckmateCore {
         return pieceMoves.generateMoves(bitmapGameState, position)
     }
 
-    fun executeMove(move: Move, game: Game): Game {
-        TODO("Not yet implemented")
+    fun executeMove(move: Move, game: Game, moveIndex: Int? = null): Game { // TODO: Test
+        if (moveIndex != null && moveIndex !in game.gameStates.indices) {
+            throw InvalidParameterException("Can not execute move at index $moveIndex. Valid indices are between 0 and ${game.gameStates.size - 1}.")
+        }
+        val toIndex = moveIndex ?: (game.gameStates.size - 1)
+        val curGameState = game.gameStates[toIndex]
+        if (!isValidMove(curGameState, move)) {
+            throw InvalidMoveException("Can not execute move because it is not valid. Move: $move")
+        }
+        val newGameState = curGameState.toBitmapGameState().executeMove(move).toGameState(move)
+        return game.copy(gameStates = game.gameStates.subList(0, toIndex+1) + newGameState)
     }
 
-    private fun getPieceMoves(type: Type) = when(type) {
+    private fun getPieceMoves(type: Type) = when (type) {
         Type.PAWN -> PawnMoves
         Type.KNIGHT -> KnightMoves
         Type.BISHOP -> BishopMoves

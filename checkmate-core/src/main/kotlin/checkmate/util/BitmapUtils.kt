@@ -10,7 +10,9 @@ internal fun extractPositions(bitboard: ULong): List<Int> {
         .toList() // Convert the sequence to a list
 }
 
-fun createMove(fromPos: Int, toPos: Int, capture: Position?): Move {
+internal fun Position.toBitboard(): ULong = 1UL shl (rank * 8 + file)
+
+internal fun createMove(fromPos: Int, toPos: Int, capture: Position? = null, castlingRookFromTo: Pair<Position, Position>? = null): Move {
     val fromRank = fromPos / 8
     val fromFile = fromPos % 8
     val toRank = toPos / 8
@@ -19,7 +21,8 @@ fun createMove(fromPos: Int, toPos: Int, capture: Position?): Move {
     return Move(
         from = Position(rank = fromRank, file = fromFile),
         to = Position(rank = toRank, file = toFile),
-        capture = capture
+        capture = capture,
+        castlingRookFromTo = castlingRookFromTo
     )
 }
 

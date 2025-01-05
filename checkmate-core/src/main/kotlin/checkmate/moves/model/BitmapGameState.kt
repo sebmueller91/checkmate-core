@@ -59,4 +59,34 @@ internal class BitmapGameState {
     init {
         updateAllPieces()
     }
+
+    fun copy(): BitmapGameState {
+        val copy = BitmapGameState()
+        copy.whitePawns = whitePawns
+        copy.whiteKnights = whiteKnights
+        copy.whiteBishops = whiteBishops
+        copy.whiteRooks = whiteRooks
+        copy.whiteQueens = whiteQueens
+        copy.whiteKing = whiteKing
+
+        copy.blackPawns = blackPawns
+        copy.blackKnights = blackKnights
+        copy.blackBishops = blackBishops
+        copy.blackRooks = blackRooks
+        copy.blackQueens = blackQueens
+        copy.blackKing = blackKing
+
+        copy.whitePieces = whitePieces
+        copy.blackPieces = blackPieces
+        copy.allPieces = allPieces
+
+        copy.isWhiteTurn = isWhiteTurn
+
+        copy.castlingRights = castlingRights
+        copy.enPassantTarget = enPassantTarget
+        copy.halfmoveClock = halfmoveClock
+        copy.fullmoveNumber = fullmoveNumber
+
+        return copy
+    }
 }
