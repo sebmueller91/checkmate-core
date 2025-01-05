@@ -100,6 +100,9 @@ private fun BitmapGameState.executeWhiteMove(move: Move): BitmapGameState {
         newGameState.whiteQueens = whiteQueens and (1UL shl (move.from.rank * 8 + move.from.file)).inv()
         newGameState.whiteQueens = whiteQueens or (1UL shl (move.to.rank * 8 + move.to.file))
     }
+    // TODO: Update castling rook
+    // TODO: Perform promotion
+    // TODO: Evaluate game state
     newGameState.updateAllPieces()
     return newGameState
 }
