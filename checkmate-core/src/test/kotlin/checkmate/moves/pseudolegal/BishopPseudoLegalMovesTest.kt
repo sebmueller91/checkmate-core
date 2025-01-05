@@ -1,12 +1,15 @@
-package checkmate
+package checkmate.moves.pseudolegal
 
+import checkmate.CheckmateCore
 import checkmate.model.*
+import checkmate.moves.BishopMoves
+import checkmate.util.toBitmapGameState
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
-class BishopMovesTest {
+class BishopPseudoLegalMovesTest {
     private lateinit var checkmateCore: CheckmateCore
 
     @BeforeEach
@@ -17,13 +20,14 @@ class BishopMovesTest {
     @Test
     fun `bishop should not move when blocked from all sides from own pieces`() {
         val game = checkmateCore.generateInitialState()
-        val gameStateWhite = game.gameStates.last().copy(currentPlayer = Player.WHITE)
-        val gameStateBlack = game.gameStates.last().copy(currentPlayer = Player.BLACK)
+        val gameStateWhite = game.gameStates.last().copy(currentPlayer = Player.WHITE).toBitmapGameState()
+        val gameStateBlack = game.gameStates.last().copy(currentPlayer = Player.BLACK).toBitmapGameState()
+
         val validMoves = mutableListOf<Move>()
-        validMoves.addAll(checkmateCore.getValidMoves(Position(0, 2), gameStateBlack))
-        validMoves.addAll(checkmateCore.getValidMoves(Position(0, 5), gameStateBlack))
-        validMoves.addAll(checkmateCore.getValidMoves(Position(7, 2), gameStateWhite))
-        validMoves.addAll(checkmateCore.getValidMoves(Position(7, 5), gameStateWhite))
+        validMoves.addAll(BishopMoves.generatePseudoLegalMoves(gameStateWhite, Position(0,2)))
+        validMoves.addAll(BishopMoves.generatePseudoLegalMoves(gameStateWhite, Position(0,5)))
+        validMoves.addAll(BishopMoves.generatePseudoLegalMoves(gameStateBlack, Position(7,2)))
+        validMoves.addAll(BishopMoves.generatePseudoLegalMoves(gameStateBlack, Position(7,5)))
 
         assertTrue(validMoves.isEmpty())
     }
@@ -38,9 +42,10 @@ class BishopMovesTest {
                     this[4][4] = Piece(type = Type.BISHOP, color = Player.WHITE)
                 }
             )
-        }
+        }.toBitmapGameState()
 
-        val validMoves = checkmateCore.getValidMoves(Position(4, 4), gameState)
+        val validMoves = BishopMoves.generatePseudoLegalMoves(gameState, Position(4,4))
+
         val expectedMoves = listOf(
             Move(from = Position(4, 4), to = Position(6, 2), capture = Position(6, 2)),
             Move(from = Position(4, 4), to = Position(6, 6), capture = Position(6, 6)),
@@ -65,9 +70,10 @@ class BishopMovesTest {
                     this[4][4] = Piece(type = Type.BISHOP, color = Player.BLACK)
                 }
             )
-        }
+        }.toBitmapGameState()
 
-        val validMoves = checkmateCore.getValidMoves(Position(4, 4), gameState)
+        val validMoves = BishopMoves.generatePseudoLegalMoves(gameState, Position(4,4))
+
         val expectedMoves = listOf(
             Move(from = Position(4, 4), to = Position(5, 3)),
             Move(from = Position(4, 4), to = Position(5, 5)),
@@ -95,10 +101,9 @@ class BishopMovesTest {
                         this[3][3] = Piece(type = Type.PAWN, color = Player.WHITE)
                         this[3][5] = Piece(type = Type.PAWN, color = Player.BLACK)
                     })
-        }
+        }.toBitmapGameState()
 
-        val validMoves = checkmateCore.getValidMoves(Position(4,4), gameState)
-
+        val validMoves = BishopMoves.generatePseudoLegalMoves(gameState, Position(4,4))
         val expectedMoves = listOf(
             Move(from = Position(4, 4), to = Position(6, 2), capture = Position(6, 2)),
             Move(from = Position(4, 4), to = Position(6, 6), capture = Position(6, 6)),
@@ -122,10 +127,9 @@ class BishopMovesTest {
                         this[3][3] = Piece(type = Type.PAWN, color = Player.BLACK)
                         this[3][5] = Piece(type = Type.PAWN, color = Player.WHITE)
                     })
-        }
+        }.toBitmapGameState()
 
-        val validMoves = checkmateCore.getValidMoves(Position(4,4), gameState)
-
+        val validMoves = BishopMoves.generatePseudoLegalMoves(gameState, Position(4,4))
         val expectedMoves = listOf(
             Move(from = Position(4, 4), to = Position(5, 3)),
             Move(from = Position(4, 4), to = Position(5, 5)),

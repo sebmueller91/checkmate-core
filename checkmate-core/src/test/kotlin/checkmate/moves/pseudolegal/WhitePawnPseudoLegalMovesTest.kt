@@ -1,11 +1,15 @@
-package checkmate
+package checkmate.moves.pseudolegal
 
+import checkmate.CheckmateCore
 import checkmate.model.*
+import checkmate.moves.BishopMoves
+import checkmate.moves.PawnMoves
+import checkmate.util.toBitmapGameState
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import kotlin.test.assertTrue
 
-internal class WhitePawnMovesTest {
+internal class WhitePawnPseudoLegalMovesTest {
     private lateinit var checkmateCore: CheckmateCore
 
     @BeforeEach
@@ -16,9 +20,9 @@ internal class WhitePawnMovesTest {
     @Test
     fun `getValidMoves should return an empty list for an empty field`() {
         val game = checkmateCore.generateInitialState()
-        val gameState = game.gameStates.last()
+        val gameState = game.gameStates.last().toBitmapGameState()
         val emptyPosition = Position(4, 4)
-        val validMoves = checkmateCore.getValidMoves(emptyPosition, gameState)
+        val validMoves = BishopMoves.generatePseudoLegalMoves(gameState, emptyPosition)
         assertTrue(validMoves.isEmpty())
     }
 
@@ -27,10 +31,8 @@ internal class WhitePawnMovesTest {
         val startingPos = Position(1, 4)
 
         val game = checkmateCore.generateInitialState()
-        val gameState = game.gameStates.last().copy(currentPlayer = Player.WHITE)
-        val whitePawnPosition = startingPos
-        val validMoves = checkmateCore.getValidMoves(whitePawnPosition, gameState)
-
+        val gameState = game.gameStates.last().copy(currentPlayer = Player.WHITE).toBitmapGameState()
+        val validMoves = PawnMoves.generatePseudoLegalMoves(gameState, startingPos)
         val expectedMoves = listOf(
             Move(from = startingPos, to = startingPos + Position(1, 0)),
             Move(from = startingPos, to = startingPos + Position(2, 0))
@@ -47,11 +49,10 @@ internal class WhitePawnMovesTest {
                     this[4][2] = Piece(type = Type.PAWN, color = Player.WHITE)
                 }
             )
-        }
+        }.toBitmapGameState()
 
         val whitePawnPosition = Position(4, 2)
-        val whitePawnMoves = checkmateCore.getValidMoves(whitePawnPosition, gameState)
-
+        val whitePawnMoves = PawnMoves.generatePseudoLegalMoves(gameState, whitePawnPosition)
         val expectedWhitePawnMove = Move(from = whitePawnPosition, to = whitePawnPosition + Position(1, 0))
 
         assertTrue(whitePawnMoves.contains(expectedWhitePawnMove))
@@ -67,10 +68,9 @@ internal class WhitePawnMovesTest {
                         this[1][1] = Piece(type = Type.PAWN, color = Player.BLACK)
                         this[2][1] = Piece(type = Type.PAWN, color = Player.WHITE)
                     })
-        }
+        }.toBitmapGameState()
 
-        val validMoves = checkmateCore.getValidMoves(Position(1, 1), gameState)
-
+        val validMoves = PawnMoves.generatePseudoLegalMoves(gameState, Position(1,1))
         assertTrue(validMoves.isEmpty())
     }
 
@@ -84,10 +84,9 @@ internal class WhitePawnMovesTest {
                     this[5][3] = Piece(type = Type.KNIGHT, color = Player.BLACK)
                 }
             )
-        }
+        }.toBitmapGameState()
 
-        val validMoves = checkmateCore.getValidMoves(Position(4, 4), gameState)
-
+        val validMoves = PawnMoves.generatePseudoLegalMoves(gameState, Position(4,4))
         val expectedMove = Move(from = Position(4, 4), to = Position(5, 3), capture = Position(5, 3))
         assertTrue(validMoves.contains(expectedMove))
     }
@@ -102,10 +101,9 @@ internal class WhitePawnMovesTest {
                     this[5][5] = Piece(type = Type.ROOK, color = Player.BLACK)
                 }
             )
-        }
+        }.toBitmapGameState()
 
-        val validMoves = checkmateCore.getValidMoves(Position(4, 4), gameState)
-
+        val validMoves = PawnMoves.generatePseudoLegalMoves(gameState, Position(4,4))
         val expectedMove = Move(from = Position(4, 4), to = Position(5, 5), capture = Position(5, 5))
         assertTrue(validMoves.contains(expectedMove))
     }
@@ -122,10 +120,9 @@ internal class WhitePawnMovesTest {
                 },
                 lastMove = Move(Position(6, 3), Position(4, 3))
             )
-        }
+        }.toBitmapGameState()
 
-        val validMoves = checkmateCore.getValidMoves(Position(4, 4), gameState)
-
+        val validMoves = PawnMoves.generatePseudoLegalMoves(gameState, Position(4,4))
         val expectedMove = Move(from = Position(4, 4), to = Position(5, 3), capture = Position(4, 3))
         assertTrue(validMoves.contains(expectedMove))
     }
@@ -142,10 +139,9 @@ internal class WhitePawnMovesTest {
                 },
                 lastMove = Move(Position(6, 5), Position(4, 5))
             )
-        }
+        }.toBitmapGameState()
 
-        val validMoves = checkmateCore.getValidMoves(Position(4, 4), gameState)
-
+        val validMoves = PawnMoves.generatePseudoLegalMoves(gameState, Position(4,4))
         val expectedMove = Move(from = Position(4, 4), to = Position(5, 5), capture = Position(4, 5))
         assertTrue(validMoves.contains(expectedMove))
     }
@@ -160,10 +156,9 @@ internal class WhitePawnMovesTest {
                     this[7][4] = null
                 }
             )
-        }
+        }.toBitmapGameState()
 
-        val validMoves = checkmateCore.getValidMoves(Position(6, 4), gameState)
-
+        val validMoves = PawnMoves.generatePseudoLegalMoves(gameState, Position(6,4))
         val expectedMoves = listOf(
             Move(
                 from = Position(6, 4),
@@ -199,10 +194,9 @@ internal class WhitePawnMovesTest {
                     this[7][5] = Piece(type = Type.ROOK, color = Player.BLACK)
                 }
             )
-        }
+        }.toBitmapGameState()
 
-        val validMoves = checkmateCore.getValidMoves(Position(6, 4), gameState)
-
+        val validMoves = PawnMoves.generatePseudoLegalMoves(gameState, Position(6,4))
         val expectedMoves = listOf(
             Move(from = Position(6, 4), to = Position(7, 5), capture = Position(7, 5), promotion = Type.QUEEN),
             Move(from = Position(6, 4), to = Position(7, 5), capture = Position(7, 5), promotion = Type.ROOK),
@@ -223,10 +217,9 @@ internal class WhitePawnMovesTest {
                     this[6][3] = null
                 }
             )
-        }
+        }.toBitmapGameState()
 
-        val validMoves = checkmateCore.getValidMoves(Position(5, 3), gameState)
-
+        val validMoves = PawnMoves.generatePseudoLegalMoves(gameState, Position(5,3))
         assertTrue(validMoves.none { it.promotion != null })
     }
 
@@ -241,10 +234,9 @@ internal class WhitePawnMovesTest {
                 },
                 lastMove = null
             )
-        }
+        }.toBitmapGameState()
 
-        val validMoves = checkmateCore.getValidMoves(Position(4, 4), gameState)
-
+        val validMoves = PawnMoves.generatePseudoLegalMoves(gameState, Position(4,4))
         assertTrue(validMoves.none { it.to == Position(5, 3) })
     }
 
@@ -258,10 +250,9 @@ internal class WhitePawnMovesTest {
                     this[5][7] = Piece(type = Type.ROOK, color = Player.BLACK)
                 }
             )
-        }
+        }.toBitmapGameState()
 
-        val validMoves = checkmateCore.getValidMoves(Position(4, 0), gameState)
-
+        val validMoves = PawnMoves.generatePseudoLegalMoves(gameState, Position(4,0))
         assertTrue(validMoves.none { it.to == Position(5, 7) })
     }
 
@@ -275,10 +266,9 @@ internal class WhitePawnMovesTest {
                     this[5][0] = Piece(type = Type.KNIGHT, color = Player.BLACK)
                 }
             )
-        }
+        }.toBitmapGameState()
 
-        val validMoves = checkmateCore.getValidMoves(Position(4, 7), gameState)
-
+        val validMoves = PawnMoves.generatePseudoLegalMoves(gameState, Position(4,7))
         assertTrue(validMoves.none { it.to == Position(5, 0) })
     }
 
@@ -293,10 +283,9 @@ internal class WhitePawnMovesTest {
                 },
                 lastMove = Move(Position(6, 7), Position(4, 7))
             )
-        }
+        }.toBitmapGameState()
 
-        val validMoves = checkmateCore.getValidMoves(Position(4, 0), gameState)
-
+        val validMoves = PawnMoves.generatePseudoLegalMoves(gameState, Position(4,0))
         assertTrue(validMoves.none { it.to == Position(5, 7) })
     }
 
@@ -311,10 +300,9 @@ internal class WhitePawnMovesTest {
                 },
                 lastMove = Move(Position(6, 0), Position(4, 0))
             )
-        }
+        }.toBitmapGameState()
 
-        val validMoves = checkmateCore.getValidMoves(Position(4, 7), gameState)
-
+        val validMoves = PawnMoves.generatePseudoLegalMoves(gameState, Position(4,7))
         assertTrue(validMoves.none { it.to == Position(5, 0) })
     }
 }

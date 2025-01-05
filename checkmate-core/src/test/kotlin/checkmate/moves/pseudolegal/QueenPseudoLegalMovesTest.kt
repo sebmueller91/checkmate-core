@@ -1,12 +1,15 @@
-package checkmate
+package checkmate.moves.pseudolegal
 
+import checkmate.CheckmateCore
 import checkmate.model.*
+import checkmate.moves.QueenMoves
+import checkmate.util.toBitmapGameState
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
-internal class QueenMovesTest {
+internal class QueenPseudoLegalMovesTest {
     private lateinit var checkmateCore: CheckmateCore
 
     @BeforeEach
@@ -17,13 +20,12 @@ internal class QueenMovesTest {
     @Test
     fun `queen should not move when blocked from all sides by own pieces`() {
         val game = checkmateCore.generateInitialState()
-        val gameStateWhite = game.gameStates.last().copy(currentPlayer = Player.WHITE)
-        val gameStateBlack = game.gameStates.last().copy(currentPlayer = Player.BLACK)
+        val gameStateWhite = game.gameStates.last().copy(currentPlayer = Player.WHITE).toBitmapGameState()
+        val gameStateBlack = game.gameStates.last().copy(currentPlayer = Player.BLACK).toBitmapGameState()
 
         val validMoves = mutableListOf<Move>()
-        validMoves.addAll(checkmateCore.getValidMoves(Position(0, 3), gameStateBlack))
-        validMoves.addAll(checkmateCore.getValidMoves(Position(7, 3), gameStateWhite))
-
+        validMoves.addAll(QueenMoves.generatePseudoLegalMoves(gameStateBlack, Position(7,3)))
+        validMoves.addAll(QueenMoves.generatePseudoLegalMoves(gameStateWhite, Position(0,3)))
         assertTrue(validMoves.isEmpty())
     }
 
@@ -37,10 +39,9 @@ internal class QueenMovesTest {
                     this[4][4] = Piece(type = Type.QUEEN, color = Player.WHITE)
                 }
             )
-        }
+        }.toBitmapGameState()
 
-        val validMoves = checkmateCore.getValidMoves(Position(4, 4), gameState)
-
+        val validMoves = QueenMoves.generatePseudoLegalMoves(gameState, Position(4,4))
         val expectedMoves = listOf(
             // Vertical
             Move(Position(4, 4), Position(2, 4)),
@@ -81,10 +82,9 @@ internal class QueenMovesTest {
                     this[4][4] = Piece(type = Type.QUEEN, color = Player.BLACK)
                 }
             )
-        }
+        }.toBitmapGameState()
 
-        val validMoves = checkmateCore.getValidMoves(Position(4, 4), gameState)
-
+        val validMoves = QueenMoves.generatePseudoLegalMoves(gameState, Position(4,4))
         val expectedMoves = listOf(
             // Vertical
             Move(Position(4, 4), Position(1, 4), capture = Position(1, 4)),
@@ -130,10 +130,9 @@ internal class QueenMovesTest {
                         this[3][4] = Piece(type = Type.PAWN, color = Player.WHITE)
                         this[3][5] = Piece(type = Type.PAWN, color = Player.WHITE)
                     })
-        }
+        }.toBitmapGameState()
 
-        val validMoves = checkmateCore.getValidMoves(Position(4, 4), gameState)
-
+        val validMoves = QueenMoves.generatePseudoLegalMoves(gameState, Position(4,4))
         val expectedMoves = listOf(
             // Vertical
             Move(Position(4, 4), Position(5, 4)),
@@ -147,7 +146,7 @@ internal class QueenMovesTest {
             Move(Position(4, 4), Position(6, 6), capture = Position(6, 6)),
             Move(Position(4, 4), Position(5, 3)),
             Move(Position(4, 4), Position(5, 5)),
-            Move(Position(4, 4), Position(3, 3), capture = Position(3,3)),
+            Move(Position(4, 4), Position(3, 3), capture = Position(3, 3)),
         )
 
         assertEquals(expectedMoves.toSet(), validMoves.toSet())
@@ -168,10 +167,9 @@ internal class QueenMovesTest {
                         this[3][4] = Piece(type = Type.PAWN, color = Player.WHITE)
                         this[3][5] = Piece(type = Type.PAWN, color = Player.WHITE)
                     })
-        }
+        }.toBitmapGameState()
 
-        val validMoves = checkmateCore.getValidMoves(Position(4, 4), gameState)
-
+        val validMoves = QueenMoves.generatePseudoLegalMoves(gameState, Position(4,4))
         val expectedMoves = listOf(
             // Vertical
             Move(Position(4, 4), Position(5, 4)),

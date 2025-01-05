@@ -15,7 +15,11 @@ class CheckmateCore {
         TODO("Not yet implemented")
     }
 
-    fun getValidMoves(position: Position, gameState: GameState): List<Move> {
+    fun getValidMoves(gameState: GameState): List<Move> {
+        TODO("Not yet implemented")
+    }
+
+    fun getValidMoves(gameState: GameState, position: Position): List<Move> {
         if (position.rank !in 0..7 || position.file !in 0..7) {
             // TODO: Throw exception
             return listOf()
@@ -26,20 +30,22 @@ class CheckmateCore {
         }
 
         val bitmapGameState = gameState.toBitmapGameState()
-        val isWhiteTurn = gameState.currentPlayer == Player.WHITE
-        val movesList = when (gameState.board[position.rank][position.file]?.type) {
-            null -> listOf()
-            Type.PAWN -> bitmapGameState.generatePawnMoves(isWhiteTurn)
-            Type.KNIGHT -> bitmapGameState.generateKnightMoves(isWhiteTurn)
-            Type.BISHOP -> bitmapGameState.generateBishopMoves(isWhiteTurn)
-            Type.ROOK -> bitmapGameState.generateRookMoves(isWhiteTurn)
-            Type.QUEEN -> bitmapGameState.generateQueenMoves(isWhiteTurn)
-            Type.KING -> bitmapGameState.generateKingMoves(isWhiteTurn)
-        }
-        return movesList.filter { it.from == position }
+        val pieceType = gameState.board[position.rank][position.file]?.type ?: return listOf()
+        val pieceMoves = getPieceMoves(pieceType)
+
+        return pieceMoves.generateMoves(bitmapGameState, position)
     }
 
     fun executeMove(move: Move, game: Game): Game {
         TODO("Not yet implemented")
+    }
+
+    private fun getPieceMoves(type: Type) = when(type) {
+        Type.PAWN -> PawnMoves
+        Type.KNIGHT -> KnightMoves
+        Type.BISHOP -> BishopMoves
+        Type.ROOK -> RookMoves
+        Type.QUEEN -> QueenMoves
+        Type.KING -> KingMoves
     }
 }

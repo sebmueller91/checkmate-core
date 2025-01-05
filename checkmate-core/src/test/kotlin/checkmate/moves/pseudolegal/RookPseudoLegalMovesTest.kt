@@ -1,12 +1,15 @@
-package checkmate
+package checkmate.moves.pseudolegal
 
+import checkmate.CheckmateCore
 import checkmate.model.*
+import checkmate.moves.RookMoves
+import checkmate.util.toBitmapGameState
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
-internal class RookMovesTest {
+internal class RookPseudoLegalMovesTest {
     private lateinit var checkmateCore: CheckmateCore
 
     @BeforeEach
@@ -17,14 +20,14 @@ internal class RookMovesTest {
     @Test
     fun `rook should not move when blocked from all sides from own pieces`() {
         val game = checkmateCore.generateInitialState()
-        val gameStateWhite = game.gameStates.last().copy(currentPlayer = Player.WHITE)
-        val gameStateBlack = game.gameStates.last().copy(currentPlayer = Player.BLACK)
-        val validMoves = mutableListOf<Move>()
-        validMoves.addAll(checkmateCore.getValidMoves(Position(0, 0), gameStateBlack))
-        validMoves.addAll(checkmateCore.getValidMoves(Position(0, 7), gameStateBlack))
-        validMoves.addAll(checkmateCore.getValidMoves(Position(7, 0), gameStateWhite))
-        validMoves.addAll(checkmateCore.getValidMoves(Position(7, 7), gameStateWhite))
+        val gameStateWhite = game.gameStates.last().copy(currentPlayer = Player.WHITE).toBitmapGameState()
+        val gameStateBlack = game.gameStates.last().copy(currentPlayer = Player.BLACK).toBitmapGameState()
 
+        val validMoves = mutableListOf<Move>()
+        validMoves.addAll(RookMoves.generatePseudoLegalMoves(gameStateBlack, Position(0,0)))
+        validMoves.addAll(RookMoves.generatePseudoLegalMoves(gameStateBlack, Position(0,7)))
+        validMoves.addAll(RookMoves.generatePseudoLegalMoves(gameStateWhite, Position(7,0)))
+        validMoves.addAll(RookMoves.generatePseudoLegalMoves(gameStateWhite, Position(7,7)))
         assertTrue(validMoves.isEmpty())
     }
 
@@ -38,9 +41,9 @@ internal class RookMovesTest {
                     this[4][4] = Piece(type = Type.ROOK, color = Player.WHITE)
                 }
             )
-        }
+        }.toBitmapGameState()
 
-        val validMoves = checkmateCore.getValidMoves(Position(4, 4), gameState)
+        val validMoves = RookMoves.generatePseudoLegalMoves(gameState, Position(4,4))
         val expectedMoves = listOf(
             Move(from = Position(4, 4), to = Position(6, 4), capture = Position(6, 4)),
             Move(from = Position(4, 4), to = Position(5, 4)),
@@ -68,9 +71,9 @@ internal class RookMovesTest {
                     this[4][4] = Piece(type = Type.ROOK, color = Player.BLACK)
                 }
             )
-        }
+        }.toBitmapGameState()
 
-        val validMoves = checkmateCore.getValidMoves(Position(4, 4), gameState)
+        val validMoves = RookMoves.generatePseudoLegalMoves(gameState, Position(4,4))
         val expectedMoves = listOf(
             Move(from = Position(4, 4), to = Position(1, 4), capture = Position(1, 4)),
             Move(from = Position(4, 4), to = Position(2, 4)),
@@ -102,10 +105,9 @@ internal class RookMovesTest {
                         this[3][4] = Piece(type = Type.PAWN, color = Player.BLACK)
                         this[4][6] = Piece(type = Type.PAWN, color = Player.BLACK)
                     })
-        }
+        }.toBitmapGameState()
 
-        val validMoves = checkmateCore.getValidMoves(Position(4,4), gameState)
-
+        val validMoves = RookMoves.generatePseudoLegalMoves(gameState, Position(4,4))
         val expectedMoves = listOf(
             Move(Position(4,4), Position(4,3)),
             Move(Position(4,4), Position(4,5)),
@@ -130,10 +132,9 @@ internal class RookMovesTest {
                         this[3][4] = Piece(type = Type.PAWN, color = Player.WHITE)
                         this[4][6] = Piece(type = Type.PAWN, color = Player.WHITE)
                     })
-        }
+        }.toBitmapGameState()
 
-        val validMoves = checkmateCore.getValidMoves(Position(4,4), gameState)
-
+        val validMoves = RookMoves.generatePseudoLegalMoves(gameState, Position(4,4))
         val expectedMoves = listOf(
             Move(Position(4,4), Position(4,3)),
             Move(Position(4,4), Position(4,5)),
