@@ -1,5 +1,7 @@
 package checkmate.moves.model
 
+import checkmate.model.Position
+
 internal const val FILE_A = 0x0101010101010101UL
 internal const val FILE_B = 0x0202020202020202UL
 internal const val FILE_C = 0x0404040404040404UL
@@ -44,3 +46,10 @@ internal val FILE_MASKS = arrayOf(
     FILE_G,
     FILE_H
 )
+
+internal val WHITE_ROOK_LEFT_INITIAL_POS = Position(0,0)
+internal val WHITE_ROOK_RIGHT_INITIAL_POS = Position(0,7)
+internal val BLACK_ROOK_LEFT_INITIAL_POS = Position(7,0)
+internal val BLACK_ROOK_RIGHT_INITIAL_POS = Position(7,7)
+internal val WHITE_KING_INITIAL_POS = Position(0,4)
+internal val BLACK_KING_INITIAL_POS = Position(7,4)

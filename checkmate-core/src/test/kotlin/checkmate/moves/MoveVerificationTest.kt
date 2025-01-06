@@ -69,7 +69,128 @@ internal class MoveVerificationTest {
         }
     }
 
-    // TODO: Create check tests for other piece types
+    @Test
+    fun `move is invalid when own king is in check by bishop`() {
+        val game = checkmateCore.generateInitialState()
+        val gameState = game.gameStates.last().let { state ->
+            state.copy(
+                currentPlayer = Player.WHITE,
+                board = state.board.map { it.toMutableList() }.toMutableList().apply {
+                    this[2][6] = Piece(type = Type.BISHOP, color = Player.BLACK)
+                    this[1][5] = null
+                }
+            )
+        }
+
+        val invalidMoves = listOf(
+            Move(Position(1, 1), Position(2, 1)),
+            Move(Position(1, 1), Position(3, 1))
+        )
+
+        invalidMoves.forEach { invalidMove ->
+            val gameStateBitmap = gameState.toBitmapGameState()
+            assert(!gameStateBitmap.isLegalMove(invalidMove))
+            assertEquals(gameState, gameStateBitmap.toGameState(null))
+        }
+    }
+
+    @Test
+    fun `move is invalid when own king is in check by queen`() {
+        val game = checkmateCore.generateInitialState()
+        val gameState = game.gameStates.last().let { state ->
+            state.copy(
+                currentPlayer = Player.WHITE,
+                board = state.board.map { it.toMutableList() }.toMutableList().apply {
+                    this[2][6] = Piece(type = Type.QUEEN, color = Player.BLACK)
+                    this[1][5] = null
+                }
+            )
+        }
+
+        val invalidMoves = listOf(
+            Move(Position(1, 1), Position(2, 1)),
+            Move(Position(1, 1), Position(3, 1))
+        )
+
+        invalidMoves.forEach { invalidMove ->
+            val gameStateBitmap = gameState.toBitmapGameState()
+            assert(!gameStateBitmap.isLegalMove(invalidMove))
+            assertEquals(gameState, gameStateBitmap.toGameState(null))
+        }
+    }
+
+    @Test
+    fun `move is invalid when own king is in check by rook`() {
+        val game = checkmateCore.generateInitialState()
+        val gameState = game.gameStates.last().let { state ->
+            state.copy(
+                currentPlayer = Player.WHITE,
+                board = state.board.map { it.toMutableList() }.toMutableList().apply {
+                    this[2][4] = Piece(type = Type.ROOK, color = Player.BLACK)
+                    this[1][4] = null
+                }
+            )
+        }
+
+        val invalidMoves = listOf(
+            Move(Position(1, 1), Position(2, 1)),
+            Move(Position(1, 1), Position(3, 1))
+        )
+
+        invalidMoves.forEach { invalidMove ->
+            val gameStateBitmap = gameState.toBitmapGameState()
+            assert(!gameStateBitmap.isLegalMove(invalidMove))
+            assertEquals(gameState, gameStateBitmap.toGameState(null))
+        }
+    }
+
+    @Test
+    fun `move is invalid when own king is in check by other king`() {
+        val game = checkmateCore.generateInitialState()
+        val gameState = game.gameStates.last().let { state ->
+            state.copy(
+                currentPlayer = Player.WHITE,
+                board = state.board.map { it.toMutableList() }.toMutableList().apply {
+                    this[1][4] = Piece(type = Type.KING, color = Player.BLACK)
+                }
+            )
+        }
+
+        val invalidMoves = listOf(
+            Move(Position(1, 1), Position(2, 1)),
+            Move(Position(1, 1), Position(3, 1))
+        )
+
+        invalidMoves.forEach { invalidMove ->
+            val gameStateBitmap = gameState.toBitmapGameState()
+            assert(!gameStateBitmap.isLegalMove(invalidMove))
+            assertEquals(gameState, gameStateBitmap.toGameState(null))
+        }
+    }
+
+    @Test
+    fun `move is invalid when own king is in check by pawn`() {
+        val game = checkmateCore.generateInitialState()
+        val gameState = game.gameStates.last().let { state ->
+            state.copy(
+                currentPlayer = Player.WHITE,
+                board = state.board.map { it.toMutableList() }.toMutableList().apply {
+                    this[1][3] = Piece(type = Type.PAWN, color = Player.BLACK)
+                }
+            )
+        }
+
+        val invalidMoves = listOf(
+            Move(Position(1, 1), Position(2, 1)),
+            Move(Position(1, 1), Position(3, 1))
+        )
+
+        invalidMoves.forEach { invalidMove ->
+            val gameStateBitmap = gameState.toBitmapGameState()
+            assert(!gameStateBitmap.isLegalMove(invalidMove))
+            assertEquals(gameState, gameStateBitmap.toGameState(null))
+        }
+    }
 
     @Test
     fun `player can perform move that frees the king from check`() {

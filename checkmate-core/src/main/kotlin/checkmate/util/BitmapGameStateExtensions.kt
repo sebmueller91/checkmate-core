@@ -57,13 +57,29 @@ internal fun BitmapGameState.isLegalMove(move: Move): Boolean {
     return !isKingInCheck(newGameState, if (isWhiteTurn) Player.WHITE else Player.BLACK)
 }
 
-internal fun BitmapGameState.executeMove(move: Move): BitmapGameState =
-    // TODO: Update castling rights
-
-    when (isWhiteTurn) {
+internal fun BitmapGameState.executeMove(move: Move): BitmapGameState {
+    val newGameState = when (isWhiteTurn) {
         true -> executeWhiteMove(move)
         false -> executeBlackMove(move)
     }
+    newGameState.updateCastingRights(move)
+    return newGameState
+}
+
+private fun BitmapGameState.updateCastingRights(move: Move) {
+    if (move.from == WHITE_ROOK_LEFT_INITIAL_POS || move.from == WHITE_KING_INITIAL_POS) {
+        castlingRights = castlingRights and WHITE_QUEEN_SIDE_CASTLING.inv()
+    }
+    if (move.from == WHITE_ROOK_RIGHT_INITIAL_POS || move.from == WHITE_KING_INITIAL_POS) {
+        castlingRights = castlingRights and WHITE_KING_SIDE_CASTLING.inv()
+    }
+    if (move.from == BLACK_ROOK_LEFT_INITIAL_POS || move.from == BLACK_KING_INITIAL_POS) {
+        castlingRights = castlingRights and BLACK_QUEEN_SIDE_CASTLING.inv()
+    }
+    if (move.from == BLACK_ROOK_RIGHT_INITIAL_POS || move.from == BLACK_KING_INITIAL_POS) {
+        castlingRights = castlingRights and BLACK_KING_SIDE_CASTLING.inv()
+    }
+}
 
 private fun BitmapGameState.executeWhiteMove(move: Move): BitmapGameState {
     val newGameState = this.copy()
