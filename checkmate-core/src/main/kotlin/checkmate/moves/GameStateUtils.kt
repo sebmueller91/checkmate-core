@@ -3,6 +3,7 @@ package checkmate.moves
 import checkmate.model.Move
 import checkmate.model.Player
 import checkmate.moves.model.BitmapGameState
+import checkmate.moves.type.*
 
 internal fun getPlayerAttackMap(gameState: BitmapGameState, player: Player): ULong {
     var attackMap = 0UL
@@ -21,6 +22,11 @@ internal fun isKingInCheck(gameState: BitmapGameState, player: Player): Boolean 
     return attackMap and kingBitboard != 0UL
 }
 
-internal fun isLegalMove(move: Move, gameState: BitmapGameState): Boolean {
-    return true
+internal fun isLegalMove(gameState: BitmapGameState, move: Move): Boolean {
+    val newGameState = gameState.executeMove(move)
+    return !isKingInCheck(newGameState, if (gameState.isWhiteTurn) Player.WHITE else Player.BLACK)
+}
+
+internal fun isCheckmate(gameState: BitmapGameState, player: Player): Boolean {
+    TODO()
 }

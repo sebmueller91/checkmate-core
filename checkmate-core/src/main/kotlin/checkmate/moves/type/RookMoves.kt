@@ -1,8 +1,9 @@
-package checkmate.moves
+package checkmate.moves.type
 
 import checkmate.model.Move
 import checkmate.model.Player
 import checkmate.model.Position
+import checkmate.moves.isLegalMove
 import checkmate.moves.model.BitmapGameState
 import checkmate.util.calculateStraightRay
 import checkmate.util.createMove
@@ -34,7 +35,7 @@ internal object RookMoves: PieceMoves() {
     }
 
     override fun generateMoves(gameState: BitmapGameState): List<Move> =
-        KingMoves.generatePseudoLegalMoves(gameState).filter { isLegalMove(it, gameState) }.toMutableList()
+        KingMoves.generatePseudoLegalMoves(gameState).filter { isLegalMove(gameState, it) }.toMutableList()
 
     override fun generateAttackMap(gameState: BitmapGameState, player: Player): ULong {
         val rooks = if (player == Player.WHITE) gameState.whiteRooks else gameState.blackRooks

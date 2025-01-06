@@ -3,7 +3,6 @@ package checkmate.moves
 import checkmate.CheckmateCore
 import checkmate.model.*
 import checkmate.util.toBitmapGameState
-import isLegalMove
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import toGameState
@@ -38,7 +37,7 @@ internal class MoveVerificationTest {
         )
         moves.forEach { move: Move ->
             val gameStateBitmap = gameState.toBitmapGameState()
-            assert(gameStateBitmap.isLegalMove(move))
+            assert(isLegalMove(gameStateBitmap, move))
             assertEquals(gameState, gameStateBitmap.toGameState(Move(Position(6, 7), Position(4, 7))))
         }
     }
@@ -64,7 +63,7 @@ internal class MoveVerificationTest {
 
         invalidMoves.forEach { invalidMove ->
             val gameStateBitmap = gameState.toBitmapGameState()
-            assert(!gameStateBitmap.isLegalMove(invalidMove))
+            assert(!isLegalMove(gameStateBitmap, invalidMove))
             assertEquals(gameState, gameStateBitmap.toGameState(null))
         }
     }
@@ -89,7 +88,7 @@ internal class MoveVerificationTest {
 
         invalidMoves.forEach { invalidMove ->
             val gameStateBitmap = gameState.toBitmapGameState()
-            assert(!gameStateBitmap.isLegalMove(invalidMove))
+            assert(!isLegalMove(gameStateBitmap, invalidMove))
             assertEquals(gameState, gameStateBitmap.toGameState(null))
         }
     }
@@ -114,7 +113,7 @@ internal class MoveVerificationTest {
 
         invalidMoves.forEach { invalidMove ->
             val gameStateBitmap = gameState.toBitmapGameState()
-            assert(!gameStateBitmap.isLegalMove(invalidMove))
+            assert(!isLegalMove(gameStateBitmap, invalidMove))
             assertEquals(gameState, gameStateBitmap.toGameState(null))
         }
     }
@@ -139,7 +138,7 @@ internal class MoveVerificationTest {
 
         invalidMoves.forEach { invalidMove ->
             val gameStateBitmap = gameState.toBitmapGameState()
-            assert(!gameStateBitmap.isLegalMove(invalidMove))
+            assert(!isLegalMove(gameStateBitmap, invalidMove))
             assertEquals(gameState, gameStateBitmap.toGameState(null))
         }
     }
@@ -163,7 +162,7 @@ internal class MoveVerificationTest {
 
         invalidMoves.forEach { invalidMove ->
             val gameStateBitmap = gameState.toBitmapGameState()
-            assert(!gameStateBitmap.isLegalMove(invalidMove))
+            assert(!isLegalMove(gameStateBitmap, invalidMove))
             assertEquals(gameState, gameStateBitmap.toGameState(null))
         }
     }
@@ -187,7 +186,7 @@ internal class MoveVerificationTest {
 
         invalidMoves.forEach { invalidMove ->
             val gameStateBitmap = gameState.toBitmapGameState()
-            assert(!gameStateBitmap.isLegalMove(invalidMove))
+            assert(!isLegalMove(gameStateBitmap, invalidMove))
             assertEquals(gameState, gameStateBitmap.toGameState(null))
         }
     }
@@ -213,7 +212,7 @@ internal class MoveVerificationTest {
 
         validMoves.forEach { invalidMove ->
             val gameStateBitmap = gameState.toBitmapGameState()
-            assert(gameStateBitmap.isLegalMove(invalidMove))
+            assert(isLegalMove(gameStateBitmap, invalidMove))
             assertEquals(gameState, gameStateBitmap.toGameState(null))
         }
     }

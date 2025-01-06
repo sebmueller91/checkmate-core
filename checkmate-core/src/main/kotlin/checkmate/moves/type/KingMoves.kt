@@ -1,9 +1,11 @@
-package checkmate.moves
+package checkmate.moves.type
 
 import PrecomputedMovementMasks
 import checkmate.model.Move
 import checkmate.model.Player
 import checkmate.model.Position
+import checkmate.moves.getPlayerAttackMap
+import checkmate.moves.isLegalMove
 import checkmate.moves.model.*
 import checkmate.util.createMove
 import checkmate.util.extractPositions
@@ -31,7 +33,7 @@ internal object KingMoves : PieceMoves() {
     }
 
     override fun generateMoves(gameState: BitmapGameState): List<Move> {
-        val legalMoves = generatePseudoLegalMoves(gameState).filter { isLegalMove(it, gameState) }.toMutableList()
+        val legalMoves = generatePseudoLegalMoves(gameState).filter { isLegalMove(gameState, it) }.toMutableList()
         legalMoves.addAll(getCastlingMoves(gameState))
         return legalMoves
     }

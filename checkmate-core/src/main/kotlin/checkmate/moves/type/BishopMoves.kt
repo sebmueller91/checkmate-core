@@ -1,26 +1,23 @@
-package checkmate.moves
+package checkmate.moves.type
 
 import checkmate.model.Move
 import checkmate.model.Player
 import checkmate.model.Position
+import checkmate.moves.isLegalMove
 import checkmate.moves.model.BitmapGameState
 import checkmate.util.calculateDiagonalRay
-import checkmate.util.calculateStraightRay
 import checkmate.util.createMove
 import checkmate.util.extractPositions
 
-internal object QueenMoves: PieceMoves() {
+internal object BishopMoves : PieceMoves() {
     override fun generatePseudoLegalMoves(gameState: BitmapGameState): List<Move> {
         val moves = mutableListOf<Move>()
-        val queens = if (gameState.isWhiteTurn) gameState.whiteQueens else gameState.blackQueens
+        val bishops = if (gameState.isWhiteTurn) gameState.whiteBishops else gameState.blackBishops
         val opponentPieces = if (gameState.isWhiteTurn) gameState.blackPieces else gameState.whitePieces
         val occupied = gameState.allPieces
 
-        for (fromPos in extractPositions(queens)) {
-            val straightReachable = calculateStraightReachableSquares(fromPos, occupied, opponentPieces)
-            val diagonalReachable = calculateDiagonalReachableSquares(fromPos, occupied, opponentPieces)
-
-            val reachableSquares = straightReachable or diagonalReachable
+        for (fromPos in extractPositions(bishops)) {
+            val reachableSquares = calculateReachableSquares(fromPos, occupied, opponentPieces)
 
             val validMoves = reachableSquares and opponentPieces.inv()
             val captures = reachableSquares and opponentPieces
@@ -34,23 +31,21 @@ internal object QueenMoves: PieceMoves() {
             })
         }
 
+        println(moves.size)
         return moves
     }
 
     override fun generateMoves(gameState: BitmapGameState): List<Move> =
-        KingMoves.generatePseudoLegalMoves(gameState).filter { isLegalMove(it, gameState) }.toMutableList()
+        KingMoves.generatePseudoLegalMoves(gameState).filter { isLegalMove(gameState, it) }.toMutableList()
 
     override fun generateAttackMap(gameState: BitmapGameState, player: Player): ULong {
-        val queens = if (player == Player.WHITE) gameState.whiteQueens else gameState.blackQueens
+        val bishops = if (player == Player.WHITE) gameState.whiteBishops else gameState.blackBishops
         val opponentPieces = if (player == Player.WHITE) gameState.blackPieces else gameState.whitePieces
         val occupied = gameState.allPieces
 
         var attackMap = 0UL
-        for (fromPos in extractPositions(queens)) {
-            val straightReachable = calculateStraightReachableSquares(fromPos, occupied, opponentPieces)
-            val diagonalReachable = calculateDiagonalReachableSquares(fromPos, occupied, opponentPieces)
-
-            val reachableSquares = straightReachable or diagonalReachable
+        for (fromPos in extractPositions(bishops)) {
+            val reachableSquares = calculateReachableSquares(fromPos, occupied, opponentPieces)
 
             attackMap = attackMap or reachableSquares
         }
@@ -58,21 +53,12 @@ internal object QueenMoves: PieceMoves() {
         return attackMap
     }
 
-    private fun calculateStraightReachableSquares(fromPos: Int, occupied: ULong, opponentPieces: ULong): ULong {
-        val westRay = calculateStraightRay(fromPos, step = -1, occupied, opponentPieces)
-        val eastRay = calculateStraightRay(fromPos, step = 1, occupied, opponentPieces)
-        val northRay = calculateStraightRay(fromPos, step = 8, occupied, opponentPieces)
-        val southRay = calculateStraightRay(fromPos, step = -8, occupied, opponentPieces)
-
-        return westRay or eastRay or northRay or southRay
-    }
-
-    private fun calculateDiagonalReachableSquares(fromPos: Int, occupied: ULong, opponentPieces: ULong): ULong {
+    private fun calculateReachableSquares(fromPos: Int, occupied: ULong, opponentPieces: ULong): ULong {
         val northEastRay = calculateDiagonalRay(fromPos, step = 9, occupied, opponentPieces)
         val southWestRay = calculateDiagonalRay(fromPos, step = -9, occupied, opponentPieces)
         val northWestRay = calculateDiagonalRay(fromPos, step = 7, occupied, opponentPieces)
         val southEastRay = calculateDiagonalRay(fromPos, step = -7, occupied, opponentPieces)
 
-        return northEastRay or southWestRay or northWestRay or southEastRay
+        return (northEastRay or southWestRay or northWestRay or southEastRay)
     }
 }

@@ -2,8 +2,8 @@ package checkmate.moves.pseudolegal
 
 import checkmate.CheckmateCore
 import checkmate.model.*
-import checkmate.moves.BishopMoves
-import checkmate.moves.PawnMoves
+import checkmate.moves.type.BishopMoves
+import checkmate.moves.type.PawnMoves
 import checkmate.util.toBitmapGameState
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test

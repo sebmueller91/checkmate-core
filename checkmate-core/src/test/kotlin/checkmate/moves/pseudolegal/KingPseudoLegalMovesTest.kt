@@ -2,7 +2,7 @@ package checkmate.moves.pseudolegal
 
 import checkmate.CheckmateCore
 import checkmate.model.*
-import checkmate.moves.KingMoves
+import checkmate.moves.type.KingMoves
 import checkmate.util.toBitmapGameState
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test

@@ -3,10 +3,10 @@ package checkmate
 import checkmate.exception.InvalidMoveException
 import checkmate.exception.InvalidPositionException
 import checkmate.model.*
-import checkmate.moves.*
+import checkmate.moves.executeMove
 import checkmate.moves.model.BitmapGameState
+import checkmate.moves.type.*
 import checkmate.util.toBitmapGameState
-import executeMove
 import toGameState
 import java.security.InvalidParameterException
 

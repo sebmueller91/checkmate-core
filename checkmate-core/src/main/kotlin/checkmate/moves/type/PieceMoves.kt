@@ -1,4 +1,4 @@
-package checkmate.moves
+package checkmate.moves.type
 
 import checkmate.model.Move
 import checkmate.model.Player
