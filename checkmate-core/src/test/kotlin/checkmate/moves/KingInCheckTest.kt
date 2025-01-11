@@ -43,7 +43,6 @@ internal class KingInCheckTest {
 
                 }).toBitmapGameState()
 
-
         val isKingInCheck = isKingInCheck(gameState, Player.WHITE)
         assert(isKingInCheck)
     }

@@ -1,6 +1,7 @@
 package checkmate.moves.legal
 
 import checkmate.CheckmateCore
+import checkmate.generateEmptyBoardGameState
 import checkmate.model.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -410,5 +411,41 @@ internal class KingMovesTest {
 
         val validMoves = checkmateCore.getValidMoves(gameState, Position(7, 4))
         assert(!validMoves.contains(Move(Position(7, 4), Position(7, 2))))
+    }
+
+    @Test
+    fun `white king should not be able to move into check`() {
+        val emptyGameState = generateEmptyBoardGameState()
+        val gameState = emptyGameState.copy(
+            currentPlayer = Player.WHITE,
+            board = emptyGameState.board.map { it.toMutableList() }.toMutableList()
+                .apply {
+                    this[4][4] = Piece(type = Type.KING, color = Player.WHITE)
+                    this[3][0] = Piece(type = Type.ROOK, color = Player.BLACK)
+
+                })
+
+        val validMoves = checkmateCore.getValidMoves(gameState, Position(4, 4))
+        assert(!validMoves.contains(Move(Position(4, 4), Position(3, 3))))
+        assert(!validMoves.contains(Move(Position(4, 4), Position(3, 4))))
+        assert(!validMoves.contains(Move(Position(4, 4), Position(3, 5))))
+    }
+
+    @Test
+    fun `black king should not be able to move into check`() {
+        val emptyGameState = generateEmptyBoardGameState()
+        val gameState = emptyGameState.copy(
+            currentPlayer = Player.BLACK,
+            board = emptyGameState.board.map { it.toMutableList() }.toMutableList()
+                .apply {
+                    this[4][4] = Piece(type = Type.KING, color = Player.BLACK)
+                    this[3][0] = Piece(type = Type.ROOK, color = Player.WHITE)
+
+                })
+
+        val validMoves = checkmateCore.getValidMoves(gameState, Position(4, 4))
+        assert(!validMoves.contains(Move(Position(4, 4), Position(3, 3))))
+        assert(!validMoves.contains(Move(Position(4, 4), Position(3, 4))))
+        assert(!validMoves.contains(Move(Position(4, 4), Position(3, 5))))
     }
 }
