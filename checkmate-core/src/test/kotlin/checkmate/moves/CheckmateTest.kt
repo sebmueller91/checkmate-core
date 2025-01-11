@@ -9,7 +9,7 @@ import checkmate.util.toBitmapGameState
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
-internal class CheckmateTests {
+internal class CheckmateTest {
     private lateinit var checkmateCore: CheckmateCore
 
     @BeforeEach

@@ -9,7 +9,7 @@ import checkmate.util.toBitmapGameState
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
-internal class KingInCheckTests {
+internal class KingInCheckTest {
     private lateinit var checkmateCore: CheckmateCore
 
     @BeforeEach
@@ -139,8 +139,8 @@ internal class KingInCheckTests {
             currentPlayer = Player.WHITE,
             board = emptyGameState.board.map { it.toMutableList() }.toMutableList()
                 .apply {
-                    this[3][4] = Piece(type = Type.KING, color = Player.BLACK)
-                    this[5][3] = Piece(type = Type.PAWN, color = Player.WHITE)
+                    this[4][4] = Piece(type = Type.KING, color = Player.BLACK)
+                    this[3][3] = Piece(type = Type.PAWN, color = Player.WHITE)
                 }).toBitmapGameState()
 
 
@@ -230,5 +230,43 @@ internal class KingInCheckTests {
 
         val isKingInCheck = isKingInCheck(gameState, Player.BLACK)
         assert(isKingInCheck)
+    }
+
+    @Test
+    fun `white not in check when path is blocked`() {
+        val emptyGameState = generateEmptyBoardGameState()
+        val gameState = emptyGameState.copy(
+            currentPlayer = Player.WHITE,
+            board = emptyGameState.board.map { it.toMutableList() }.toMutableList()
+                .apply {
+                    this[4][4] = Piece(type = Type.KING, color = Player.WHITE)
+                    this[4][7] = Piece(type = Type.ROOK, color = Player.BLACK)
+                    this[7][7] = Piece(type = Type.QUEEN, color = Player.BLACK)
+                    this[4][5] = Piece(type = Type.PAWN, color = Player.WHITE)
+                    this[5][5] = Piece(type = Type.PAWN, color = Player.WHITE)
+                }).toBitmapGameState()
+
+
+        val isKingInCheck = isKingInCheck(gameState, Player.WHITE)
+        assert(!isKingInCheck)
+    }
+
+    @Test
+    fun `black not in check when path is blocked`() {
+        val emptyGameState = generateEmptyBoardGameState()
+        val gameState = emptyGameState.copy(
+            currentPlayer = Player.WHITE,
+            board = emptyGameState.board.map { it.toMutableList() }.toMutableList()
+                .apply {
+                    this[4][4] = Piece(type = Type.KING, color = Player.BLACK)
+                    this[4][7] = Piece(type = Type.ROOK, color = Player.WHITE)
+                    this[7][7] = Piece(type = Type.QUEEN, color = Player.WHITE)
+                    this[4][5] = Piece(type = Type.PAWN, color = Player.BLACK)
+                    this[5][5] = Piece(type = Type.PAWN, color = Player.BLACK)
+                }).toBitmapGameState()
+
+
+        val isKingInCheck = isKingInCheck(gameState, Player.BLACK)
+        assert(!isKingInCheck)
     }
 }
