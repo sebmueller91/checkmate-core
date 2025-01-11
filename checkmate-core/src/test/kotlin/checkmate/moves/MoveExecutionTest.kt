@@ -1,5 +1,5 @@
 package checkmate.moves
 
-class MoveExecutionTest {
+internal class MoveExecutionTest {
 
 }

@@ -3,6 +3,6 @@ package checkmate.model
 enum class GameStatus {
     ONGOING,
     DRAW,
-    WIN,
-    CHECKMATE
+    CHECKMATE_WHITE,
+    CHECKMATE_BLACK,
 }

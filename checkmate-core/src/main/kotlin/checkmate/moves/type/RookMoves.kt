@@ -8,6 +8,7 @@ import checkmate.moves.model.BitmapGameState
 import checkmate.util.calculateStraightRay
 import checkmate.util.createMove
 import checkmate.util.extractPositions
+import checkmate.util.printAsBoard
 
 internal object RookMoves: PieceMoves() {
     override fun generatePseudoLegalMoves(gameState: BitmapGameState): List<Move> {
@@ -41,18 +42,22 @@ internal object RookMoves: PieceMoves() {
         val rooks = if (player == Player.WHITE) gameState.whiteRooks else gameState.blackRooks
         val opponentPieces = if (player == Player.WHITE) gameState.blackPieces else gameState.whitePieces
         val occupied = gameState.allPieces
-
+        rooks.printAsBoard("Rooks123")
         var attackMap = 0UL
         for (fromPos in extractPositions(rooks)) {
             val reachableSquares = calculateReachableSquares(fromPos, occupied, opponentPieces)
 
             attackMap = attackMap or reachableSquares
+            reachableSquares.printAsBoard("Rook reachableSquares $player")
         }
 
+        attackMap.printAsBoard("Rook attack map $player")
         return attackMap
     }
 
     private fun calculateReachableSquares(fromPos: Int, occupied: ULong, opponentPieces: ULong): ULong {
+        opponentPieces.printAsBoard("Opponent pieces")
+        occupied.printAsBoard("Occupied")
         val westRay = calculateStraightRay(fromPos, step = -1, occupied, opponentPieces)
         val eastRay = calculateStraightRay(fromPos, step = 1, occupied, opponentPieces)
         val northRay = calculateStraightRay(fromPos, step = 8, occupied, opponentPieces)

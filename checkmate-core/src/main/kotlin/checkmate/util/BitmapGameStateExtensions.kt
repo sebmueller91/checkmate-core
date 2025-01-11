@@ -1,5 +1,5 @@
-
 import checkmate.model.*
+import checkmate.moves.isCheckmate
 import checkmate.moves.model.*
 
 internal fun BitmapGameState.toGameState(lastMove: Move?): GameState {
@@ -30,8 +30,8 @@ internal fun BitmapGameState.toGameState(lastMove: Move?): GameState {
 
     val currentPlayer = if (isWhiteTurn) Player.WHITE else Player.BLACK
 
-    // TODO: Analyze game status
-    val gameStatus = GameStatus.ONGOING
+    // TODO: Test
+    val gameStatus = getGameStatus()
 
     val castlingRights = CastlingRights(
         blackKingSide = (castlingRights and BLACK_KING_SIDE_CASTLING) != 0,
@@ -50,3 +50,12 @@ internal fun BitmapGameState.toGameState(lastMove: Move?): GameState {
         lastMove = lastMove
     )
 }
+
+private fun BitmapGameState.getGameStatus() =
+    if (halfmoveClock >= 100) {
+        GameStatus.DRAW
+    } else if (isCheckmate(this)) {
+        if (isWhiteTurn) GameStatus.CHECKMATE_WHITE else GameStatus.CHECKMATE_BLACK
+    } else {
+        GameStatus.ONGOING
+    }
