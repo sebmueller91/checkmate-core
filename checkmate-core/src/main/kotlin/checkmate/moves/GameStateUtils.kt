@@ -8,27 +8,21 @@ import checkmate.util.printAsBoard
 
 internal fun getPlayerAttackMap(gameState: BitmapGameState, player: Player): ULong {
     var attackMap = 0UL
-    println("attack map $player")
     attackMap = PawnMoves.generateAttackMap(gameState, player) or attackMap
     attackMap = RookMoves.generateAttackMap(gameState, player) or attackMap
     attackMap = BishopMoves.generateAttackMap(gameState, player) or attackMap
     attackMap = KnightMoves.generateAttackMap(gameState, player) or attackMap
     attackMap = QueenMoves.generateAttackMap(gameState, player) or attackMap
     attackMap = KingMoves.generateAttackMap(gameState, player) or attackMap
-    (KnightMoves.generateAttackMap(gameState, player)).printAsBoard("Knight attack map $player")
-    (RookMoves).generateAttackMap(gameState, player).printAsBoard("Rook attack map $player")
-    gameState.blackRooks.printAsBoard("Black rooks")
-    attackMap.printAsBoard("Attack map $player")
     return attackMap
 }
 
 internal fun isKingInCheck(gameState: BitmapGameState, player: Player): Boolean { // TODO: Test
     val attackMap = getPlayerAttackMap(gameState, player.opponent())
     val kingBitboard = if (player == Player.WHITE) gameState.whiteKing else gameState.blackKing
-    (attackMap and kingBitboard).printAsBoard("Attack map")
-    kingBitboard.printAsBoard("King bitboard")
     attackMap.printAsBoard("Attack map")
-    println("$player in check: ${attackMap and kingBitboard != 0UL}")
+    kingBitboard.printAsBoard("King")
+    (attackMap and kingBitboard).printAsBoard("King in check")
     return attackMap and kingBitboard != 0UL
 }
 
@@ -44,9 +38,6 @@ internal fun isStalemate(gameState: BitmapGameState): Boolean { // TODO: Test
 
 internal fun isCheckmate(gameState: BitmapGameState): Boolean { // TODO: Test
     val player = if (gameState.isWhiteTurn) Player.WHITE else Player.BLACK
-    println(player)
-    println("king in check: ${isKingInCheck(gameState, player)}")
-    println("can perform move: ${canPerformMove(gameState)}")
     return isKingInCheck(gameState, player) && !canPerformMove(gameState)
 }
 

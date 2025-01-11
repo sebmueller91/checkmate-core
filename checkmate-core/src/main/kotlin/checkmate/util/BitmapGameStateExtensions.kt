@@ -31,7 +31,8 @@ internal fun BitmapGameState.toGameState(lastMove: Move?): GameState {
     val currentPlayer = if (isWhiteTurn) Player.WHITE else Player.BLACK
 
     // TODO: Test
-    val gameStatus = getGameStatus()
+//    val gameStatus = getGameStatus()
+    val gameStatus = GameStatus.ONGOING
 
     val castlingRights = CastlingRights(
         blackKingSide = (castlingRights and BLACK_KING_SIDE_CASTLING) != 0,

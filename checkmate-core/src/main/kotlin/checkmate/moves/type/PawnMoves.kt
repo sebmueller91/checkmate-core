@@ -8,7 +8,7 @@ import checkmate.moves.isLegalMove
 import checkmate.moves.model.*
 import checkmate.util.extractPositions
 
-internal object PawnMoves: PieceMoves() {
+internal object PawnMoves : PieceMoves() {
     override fun generatePseudoLegalMoves(gameState: BitmapGameState): List<Move> =
         if (gameState.isWhiteTurn) gameState.getWhitePawnMoves() else gameState.getBlackPawnMoves()
 
@@ -16,8 +16,10 @@ internal object PawnMoves: PieceMoves() {
         KingMoves.generatePseudoLegalMoves(gameState).filter { isLegalMove(gameState, it) }.toMutableList()
 
     override fun generateAttackMap(gameState: BitmapGameState, player: Player): ULong {
-        val leftCaptures = if (player == Player.WHITE) gameState.whitePawnLeftCaptures() else gameState.blackPawnLeftCaptures()
-        val rightCaptures = if (player == Player.WHITE) gameState.blackPawnRightCaptures() else gameState.blackPawnRightCaptures()
+        val leftCaptures =
+            if (player == Player.WHITE) gameState.whitePawnLeftForward() else gameState.blackPawnLeftForward()
+        val rightCaptures =
+            if (player == Player.WHITE) gameState.whitePawnRightForward() else gameState.blackPawnRightForward()
         return leftCaptures or rightCaptures
     }
 
@@ -312,13 +314,23 @@ internal object PawnMoves: PieceMoves() {
         return doubleMoves and pathBlocked.inv() and allPieces.inv()
     }
 
-    private fun BitmapGameState.whitePawnLeftCaptures(): ULong = (whitePawns shl 7) and blackPieces and FILE_H.inv()
+    private fun BitmapGameState.whitePawnLeftCaptures(): ULong = whitePawnLeftForward() and blackPieces and FILE_H.inv()
 
-    private fun BitmapGameState.whitePawnRightCaptures(): ULong = (whitePawns shl 9) and blackPieces and FILE_H.inv()
+    private fun BitmapGameState.whitePawnLeftForward(): ULong = whitePawns shl 7
 
-    private fun BitmapGameState.blackPawnLeftCaptures(): ULong = (blackPawns shr 9) and whitePieces and FILE_A.inv()
+    private fun BitmapGameState.whitePawnRightCaptures(): ULong =
+        whitePawnRightForward() and blackPieces and FILE_A.inv()
 
-    private fun BitmapGameState.blackPawnRightCaptures(): ULong = (blackPawns shr 7) and whitePieces and FILE_H.inv()
+    private fun BitmapGameState.whitePawnRightForward(): ULong = whitePawns shl 9
+
+    private fun BitmapGameState.blackPawnLeftCaptures(): ULong = blackPawnLeftForward() and whitePieces and FILE_A.inv()
+
+    private fun BitmapGameState.blackPawnLeftForward(): ULong = blackPawns shr 9
+
+    private fun BitmapGameState.blackPawnRightCaptures(): ULong =
+        blackPawnRightForward() and whitePieces and FILE_H.inv()
+
+    private fun BitmapGameState.blackPawnRightForward(): ULong = blackPawns shr 7
 
     private fun BitmapGameState.blackPawnLeftEnPassant(): ULong {
         return if (enPassantTarget != 0UL) {

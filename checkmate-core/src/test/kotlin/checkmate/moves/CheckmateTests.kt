@@ -5,7 +5,6 @@ import checkmate.generateEmptyBoardGameState
 import checkmate.model.Piece
 import checkmate.model.Player
 import checkmate.model.Type
-import checkmate.util.printAsBoard
 import checkmate.util.toBitmapGameState
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -35,7 +34,6 @@ internal class CheckmateTests {
     @Test
     fun `checkmate returns true if white is checkmate`() {
         val emptyGameState = generateEmptyBoardGameState()
-        emptyGameState.toBitmapGameState().allPieces.printAsBoard("All pieces")
         val gameState = emptyGameState.copy(
             currentPlayer = Player.WHITE,
             board = emptyGameState.board.map { it.toMutableList() }.toMutableList()
