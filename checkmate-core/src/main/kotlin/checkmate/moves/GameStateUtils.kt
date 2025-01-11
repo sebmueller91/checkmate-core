@@ -4,7 +4,6 @@ import checkmate.model.Move
 import checkmate.model.Player
 import checkmate.moves.model.BitmapGameState
 import checkmate.moves.type.*
-import checkmate.util.printAsBoard
 
 internal fun getPlayerAttackMap(gameState: BitmapGameState, player: Player): ULong {
     var attackMap = 0UL
@@ -20,9 +19,6 @@ internal fun getPlayerAttackMap(gameState: BitmapGameState, player: Player): ULo
 internal fun isKingInCheck(gameState: BitmapGameState, player: Player): Boolean { // TODO: Test
     val attackMap = getPlayerAttackMap(gameState, player.opponent())
     val kingBitboard = if (player == Player.WHITE) gameState.whiteKing else gameState.blackKing
-    attackMap.printAsBoard("Attack map")
-    kingBitboard.printAsBoard("King")
-    (attackMap and kingBitboard).printAsBoard("King in check")
     return attackMap and kingBitboard != 0UL
 }
 

@@ -7,7 +7,6 @@ import checkmate.model.Player
 import checkmate.model.Position
 import checkmate.model.Type
 import checkmate.moves.type.*
-import checkmate.util.printAsBoard
 import checkmate.util.toBitmapGameState
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -33,8 +32,6 @@ internal class AttackMapTest {
 
         val attackMap = PawnMoves.generateAttackMap(gameState, Player.WHITE)
         val expectedAttackMap = generateBitmapFromPositions(listOf(Position(2, 2), Position(2, 4)))
-        expectedAttackMap.printAsBoard("Expected attack map")
-        attackMap.printAsBoard("Attack map")
         assertEquals(expectedAttackMap, attackMap)
     }
 
@@ -50,8 +47,6 @@ internal class AttackMapTest {
 
         val attackMap = PawnMoves.generateAttackMap(gameState, Player.BLACK)
         val expectedAttackMap = generateBitmapFromPositions(listOf(Position(5, 2), Position(5, 4)))
-        expectedAttackMap.printAsBoard("Expected attack map")
-        attackMap.printAsBoard("Attack map")
         assertEquals(expectedAttackMap, attackMap)
     }
 
