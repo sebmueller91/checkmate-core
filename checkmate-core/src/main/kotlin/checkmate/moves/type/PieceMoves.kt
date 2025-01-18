@@ -7,7 +7,7 @@ import checkmate.moves.model.BitmapGameState
 
 internal abstract class PieceMoves {
     abstract fun generatePseudoLegalMoves(gameState: BitmapGameState): List<Move>
-    
+
     fun generatePseudoLegalMoves(gameState: BitmapGameState, position: Position): List<Move> =
         generatePseudoLegalMoves(gameState).filter { it.from == position }
 
