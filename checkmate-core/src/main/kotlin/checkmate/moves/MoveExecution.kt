@@ -1,6 +1,7 @@
 package checkmate.moves
 
 import checkmate.model.Move
+import checkmate.model.Position
 import checkmate.model.Type
 import checkmate.moves.model.*
 
@@ -18,26 +19,11 @@ private fun BitmapGameState.executeWhiteMove(move: Move): BitmapGameState {
     newGameState.updateGameStats()
     newGameState.enPassantTarget = 0UL
 
-    move.capture?.let { capturePos ->
-        newGameState.blackPawns = blackPawns and (1UL shl (capturePos.rank * 8 + capturePos.file)).inv()
-        newGameState.blackBishops = blackBishops and (1UL shl (capturePos.rank * 8 + capturePos.file)).inv()
-        newGameState.blackKnights = blackKnights and (1UL shl (capturePos.rank * 8 + capturePos.file)).inv()
-        newGameState.blackRooks = blackRooks and (1UL shl (capturePos.rank * 8 + capturePos.file)).inv()
-        newGameState.blackQueens = blackQueens and (1UL shl (capturePos.rank * 8 + capturePos.file)).inv()
-    }
+    newGameState.whiteCaptures(move)
+    newGameState.whitePawnMoves(move)
+    newGameState.whiteRookMoves(move)
 
-    if (newGameState.whitePawns and (1UL shl (move.from.rank * 8 + move.from.file)) != 0UL) {
-        newGameState.whitePawns = newGameState.whitePawns and (1UL shl (move.from.rank * 8 + move.from.file)).inv()
-        if (move.promotion != null) {
-            newGameState.promoteWhitePawn(move)
-        } else {
-            newGameState.whitePawns = newGameState.whitePawns or (1UL shl (move.to.rank * 8 + move.to.file))
-        }
-        if (move.from.rank == 1 && move.to.rank == 3) {
-            newGameState.enPassantTarget = 1UL shl (move.from.rank * 8 + move.from.file + 8)
-        }
-    }
-
+    newGameState.updateCastingRights(move)
     newGameState.updateAllPieces()
 
     return newGameState
@@ -49,45 +35,88 @@ private fun BitmapGameState.executeBlackMove(move: Move): BitmapGameState {
     newGameState.updateGameStats()
     newGameState.enPassantTarget = 0UL
 
-    move.capture?.let { capturePos ->
-        newGameState.whitePawns = whitePawns and (1UL shl (capturePos.rank * 8 + capturePos.file)).inv()
-        newGameState.whiteBishops = whiteBishops and (1UL shl (capturePos.rank * 8 + capturePos.file)).inv()
-        newGameState.whiteKnights = whiteKnights and (1UL shl (capturePos.rank * 8 + capturePos.file)).inv()
-        newGameState.whiteRooks = whiteRooks and (1UL shl (capturePos.rank * 8 + capturePos.file)).inv()
-        newGameState.whiteQueens = whiteQueens and (1UL shl (capturePos.rank * 8 + capturePos.file)).inv()
-    }
+    newGameState.blackCaptures(move)
+    newGameState.blackPawnMoves(move)
+    newGameState.blackRookMoves(move)
 
-    if (newGameState.blackPawns and (1UL shl (move.from.rank * 8 + move.from.file)) != 0UL) {
-        newGameState.blackPawns = newGameState.blackPawns and (1UL shl (move.from.rank * 8 + move.from.file)).inv()
-        if (move.promotion != null) {
-            newGameState.promoteBlackPawn(move)
-        } else {
-            newGameState.blackPawns = newGameState.blackPawns or (1UL shl (move.to.rank * 8 + move.to.file))
-        }
-        if (move.from.rank == 6 && move.to.rank == 4) {
-            newGameState.enPassantTarget = 1UL shl (move.from.rank * 8 + move.from.file - 8)
-        }
-    }
-
+    newGameState.updateCastingRights(move)
     newGameState.updateAllPieces()
 
     return newGameState
 }
 
+private fun BitmapGameState.whiteCaptures(move: Move) = move.capture?.let { capturePos ->
+    blackPawns = blackPawns and (1UL shl capturePos.bitboardIndex()).inv()
+    blackBishops = blackBishops and (1UL shl capturePos.bitboardIndex()).inv()
+    blackKnights = blackKnights and (1UL shl capturePos.bitboardIndex()).inv()
+    blackRooks = blackRooks and (1UL shl capturePos.bitboardIndex()).inv()
+    blackQueens = blackQueens and (1UL shl capturePos.bitboardIndex()).inv()
+}
+
+private fun BitmapGameState.blackCaptures(move: Move) = move.capture?.let { capturePos ->
+    whitePawns = whitePawns and (1UL shl capturePos.bitboardIndex()).inv()
+    whiteBishops = whiteBishops and (1UL shl capturePos.bitboardIndex()).inv()
+    whiteKnights = whiteKnights and (1UL shl capturePos.bitboardIndex()).inv()
+    whiteRooks = whiteRooks and (1UL shl capturePos.bitboardIndex()).inv()
+    whiteQueens = whiteQueens and (1UL shl capturePos.bitboardIndex()).inv()
+}
+
+private fun BitmapGameState.whitePawnMoves(move: Move) {
+    if (whitePawns and (1UL shl move.from.bitboardIndex()) != 0UL) {
+        whitePawns = whitePawns and (1UL shl move.from.bitboardIndex()).inv()
+        if (move.promotion != null) {
+            promoteWhitePawn(move)
+        } else {
+            whitePawns = whitePawns or (1UL shl move.to.bitboardIndex())
+        }
+        if (move.from.rank == 1 && move.to.rank == 3) {
+            enPassantTarget = 1UL shl (move.from.bitboardIndex() + 8)
+        }
+    }
+}
+
+private fun BitmapGameState.blackPawnMoves(move: Move) {
+    if (blackPawns and (1UL shl move.from.bitboardIndex()) != 0UL) {
+        blackPawns = blackPawns and (1UL shl move.from.bitboardIndex()).inv()
+        if (move.promotion != null) {
+            promoteBlackPawn(move)
+        } else {
+            blackPawns = blackPawns or (1UL shl move.to.bitboardIndex())
+        }
+        if (move.from.rank == 6 && move.to.rank == 4) {
+            enPassantTarget = 1UL shl (move.from.bitboardIndex() - 8)
+        }
+    }
+}
+
+private fun BitmapGameState.whiteRookMoves(move: Move) {
+    if (whiteRooks and (1UL shl move.from.bitboardIndex()) != 0UL) {
+        whiteRooks = whiteRooks and (1UL shl move.from.bitboardIndex()).inv()
+        whiteRooks = whiteRooks or (1UL shl move.to.bitboardIndex())
+    }
+}
+
+private fun BitmapGameState.blackRookMoves(move: Move) {
+    if (blackRooks and (1UL shl move.from.bitboardIndex()) != 0UL) {
+        blackRooks = blackRooks and (1UL shl move.from.bitboardIndex()).inv()
+        blackRooks = blackRooks or (1UL shl move.to.bitboardIndex())
+    }
+}
+
 private fun BitmapGameState.promoteWhitePawn(move: Move) =
     when (move.promotion) {
-        Type.QUEEN -> whiteQueens = whiteQueens or (1UL shl (move.to.rank * 8 + move.to.file))
-        Type.ROOK -> whiteRooks = whiteRooks or (1UL shl (move.to.rank * 8 + move.to.file))
-        Type.BISHOP -> whiteBishops = whiteBishops or (1UL shl (move.to.rank * 8 + move.to.file))
-        else -> whiteKnights = whiteKnights or (1UL shl (move.to.rank * 8 + move.to.file))
+        Type.QUEEN -> whiteQueens = whiteQueens or (1UL shl move.to.bitboardIndex())
+        Type.ROOK -> whiteRooks = whiteRooks or (1UL shl move.to.bitboardIndex())
+        Type.BISHOP -> whiteBishops = whiteBishops or (1UL shl move.to.bitboardIndex())
+        else -> whiteKnights = whiteKnights or (1UL shl move.to.bitboardIndex())
     }
 
 private fun BitmapGameState.promoteBlackPawn(move: Move) =
     when (move.promotion) {
-        Type.QUEEN -> blackQueens = blackQueens or (1UL shl (move.to.rank * 8 + move.to.file))
-        Type.ROOK -> blackRooks = blackRooks or (1UL shl (move.to.rank * 8 + move.to.file))
-        Type.BISHOP -> blackBishops = blackBishops or (1UL shl (move.to.rank * 8 + move.to.file))
-        else -> blackKnights = blackKnights or (1UL shl (move.to.rank * 8 + move.to.file))
+        Type.QUEEN -> blackQueens = blackQueens or (1UL shl move.to.bitboardIndex())
+        Type.ROOK -> blackRooks = blackRooks or (1UL shl move.to.bitboardIndex())
+        Type.BISHOP -> blackBishops = blackBishops or (1UL shl move.to.bitboardIndex())
+        else -> blackKnights = blackKnights or (1UL shl move.to.bitboardIndex())
     }
 
 private fun BitmapGameState.updateGameStats() {
@@ -111,79 +140,6 @@ private fun BitmapGameState.updateCastingRights(move: Move) {
     }
 }
 
-//private fun BitmapGameState.executeWhiteMove(move: Move): BitmapGameState {
-//    val newGameState = this.copy()
-//    newGameState.isWhiteTurn = !isWhiteTurn
-//    newGameState.halfmoveClock++
-//    if (!isWhiteTurn) {
-//        newGameState.fullmoveNumber++
-//    }
-//    move.capture?.let { capturePos ->
-//        newGameState.whitePawns = whitePawns and (1UL shl (move.from.rank * 8 + move.from.file)).inv()
-//        newGameState.whiteKnights = whiteKnights and (1UL shl (move.from.rank * 8 + move.from.file)).inv()
-//        newGameState.whiteBishops = whiteBishops and (1UL shl (move.from.rank * 8 + move.from.file)).inv()
-//        newGameState.whiteRooks = whiteRooks and (1UL shl (move.from.rank * 8 + move.from.file)).inv()
-//        newGameState.whiteQueens = whiteQueens and (1UL shl (move.from.rank * 8 + move.from.file)).inv()
-//    }
-//
-//    if (whitePawns and (1UL shl (move.from.rank * 8 + move.from.file)) != 0UL) {
-//        newGameState.whitePawns = whitePawns and (1UL shl (move.from.rank * 8 + move.from.file)).inv()
-//        newGameState.whitePawns = whitePawns or (1UL shl (move.to.rank * 8 + move.to.file))
-//    }
-//    if (whiteKnights and (1UL shl (move.from.rank * 8 + move.from.file)) != 0UL) {
-//        newGameState.whiteKnights = whiteKnights and (1UL shl (move.from.rank * 8 + move.from.file)).inv()
-//        newGameState.whiteKnights = whiteKnights or (1UL shl (move.to.rank * 8 + move.to.file))
-//    }
-//    if (whiteBishops and (1UL shl (move.from.rank * 8 + move.from.file)) != 0UL) {
-//        newGameState.whiteBishops = whiteBishops and (1UL shl (move.from.rank * 8 + move.from.file)).inv()
-//        newGameState.whiteBishops = whiteBishops or (1UL shl (move.to.rank * 8 + move.to.file))
-//    }
-//    if (whiteRooks and (1UL shl (move.from.rank * 8 + move.from.file)) != 0UL) {
-//        newGameState.whiteRooks = whiteRooks and (1UL shl (move.from.rank * 8 + move.from.file)).inv()
-//        newGameState.whiteRooks = whiteRooks or (1UL shl (move.to.rank * 8 + move.to.file))
-//    }
-//    if (whiteQueens and (1UL shl (move.from.rank * 8 + move.from.file)) != 0UL) {
-//        newGameState.whiteQueens = whiteQueens and (1UL shl (move.from.rank * 8 + move.from.file)).inv()
-//        newGameState.whiteQueens = whiteQueens or (1UL shl (move.to.rank * 8 + move.to.file))
-//    }
-//    // TODO: Update castling rook
-//    // TODO: Perform promotion
-//    // TODO: Evaluate game state
-//    newGameState.updateAllPieces()
-//    return newGameState
-//}
-//
-//private fun BitmapGameState.executeBlackMove(move: Move): BitmapGameState {
-//    val newGameState = this.copy()
-//    move.capture?.let { capturePos ->
-//        newGameState.blackPawns = blackPawns and (1UL shl (move.from.rank * 8 + move.from.file)).inv()
-//        newGameState.blackKnights = blackKnights and (1UL shl (move.from.rank * 8 + move.from.file)).inv()
-//        newGameState.blackBishops = blackBishops and (1UL shl (move.from.rank * 8 + move.from.file)).inv()
-//        newGameState.blackRooks = blackRooks and (1UL shl (move.from.rank * 8 + move.from.file)).inv()
-//        newGameState.blackQueens = blackQueens and (1UL shl (move.from.rank * 8 + move.from.file)).inv()
-//    }
-//
-//    if (blackPawns and (1UL shl (move.from.rank * 8 + move.from.file)) != 0UL) {
-//        newGameState.blackPawns = blackPawns and (1UL shl (move.from.rank * 8 + move.from.file)).inv()
-//        newGameState.blackPawns = blackPawns or (1UL shl (move.to.rank * 8 + move.to.file))
-//    }
-//    if (blackKnights and (1UL shl (move.from.rank * 8 + move.from.file)) != 0UL) {
-//        newGameState.blackKnights = blackKnights and (1UL shl (move.from.rank * 8 + move.from.file)).inv()
-//        newGameState.blackKnights = blackKnights or (1UL shl (move.to.rank * 8 + move.to.file))
-//    }
-//    if (blackBishops and (1UL shl (move.from.rank * 8 + move.from.file)) != 0UL) {
-//        newGameState.blackBishops = blackBishops and (1UL shl (move.from.rank * 8 + move.from.file)).inv()
-//        newGameState.blackBishops = blackBishops or (1UL shl (move.to.rank * 8 + move.to.file))
-//    }
-//    if (blackRooks and (1UL shl (move.from.rank * 8 + move.from.file)) != 0UL) {
-//        newGameState.blackRooks = blackRooks and (1UL shl (move.from.rank * 8 + move.from.file)).inv()
-//        newGameState.blackRooks = blackRooks or (1UL shl (move.to.rank * 8 + move.to.file))
-//    }
-//    if (blackQueens and (1UL shl (move.from.rank * 8 + move.from.file)) != 0UL) {
-//        newGameState.blackQueens = blackQueens and (1UL shl (move.from.rank * 8 + move.from.file)).inv()
-//        newGameState.blackQueens = blackQueens or (1UL shl (move.to.rank * 8 + move.to.file))
-//    }
-//    // TODO: Execute second move if castling
-//    newGameState.updateAllPieces()
-//    return newGameState
-//}
+private fun Position.bitboardIndex(): Int {
+    return rank * 8 + file
+}
