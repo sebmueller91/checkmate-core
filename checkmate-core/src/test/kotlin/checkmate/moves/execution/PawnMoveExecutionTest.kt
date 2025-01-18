@@ -188,4 +188,109 @@ internal class PawnMoveExecutionTest {
 
         assert(expectedGameState.compareTo(result))
     }
+
+    @Test
+    fun `white pawn can promote to queen`() {
+        val emptyGameState = generateEmptyBoardGameState()
+        val gameState = emptyGameState.copy(
+            currentPlayer = Player.WHITE,
+            board = emptyGameState.board.map { it.toMutableList() }.toMutableList()
+                .apply {
+                    this[6][3] = Piece(type = Type.PAWN, color = Player.WHITE)
+                }).toBitmapGameState()
+
+        val result = gameState.executeMove(Move(from = Position(6, 3), to = Position(7, 3), promotion = Type.QUEEN))
+
+        val expectedGameState = emptyGameState.copy(
+            board = emptyGameState.board.map { it.toMutableList() }.toMutableList()
+                .apply {
+                    this[7][3] = Piece(type = Type.QUEEN, color = Player.WHITE)
+                }).toBitmapGameState()
+
+        assert(expectedGameState.compareTo(result))
+    }
+
+    @Test
+    fun `white pawn can promote to rook`() {
+        val emptyGameState = generateEmptyBoardGameState()
+        val gameState = emptyGameState.copy(
+            currentPlayer = Player.WHITE,
+            board = emptyGameState.board.map { it.toMutableList() }.toMutableList()
+                .apply {
+                    this[6][3] = Piece(type = Type.PAWN, color = Player.WHITE)
+                }).toBitmapGameState()
+
+        val result = gameState.executeMove(Move(from = Position(6, 3), to = Position(7, 3), promotion = Type.ROOK))
+
+        val expectedGameState = emptyGameState.copy(
+            board = emptyGameState.board.map { it.toMutableList() }.toMutableList()
+                .apply {
+                    this[7][3] = Piece(type = Type.ROOK, color = Player.WHITE)
+                }).toBitmapGameState()
+
+        assert(expectedGameState.compareTo(result))
+    }
+
+    @Test
+    fun `white pawn can promote to bishop`() {
+        val emptyGameState = generateEmptyBoardGameState()
+        val gameState = emptyGameState.copy(
+            currentPlayer = Player.WHITE,
+            board = emptyGameState.board.map { it.toMutableList() }.toMutableList()
+                .apply {
+                    this[6][3] = Piece(type = Type.PAWN, color = Player.WHITE)
+                }).toBitmapGameState()
+
+        val result = gameState.executeMove(Move(from = Position(6, 3), to = Position(7, 3), promotion = Type.BISHOP))
+
+        val expectedGameState = emptyGameState.copy(
+            board = emptyGameState.board.map { it.toMutableList() }.toMutableList()
+                .apply {
+                    this[7][3] = Piece(type = Type.BISHOP, color = Player.WHITE)
+                }).toBitmapGameState()
+
+        assert(expectedGameState.compareTo(result))
+    }
+
+    @Test
+    fun `white pawn can promote to knight`() {
+        val emptyGameState = generateEmptyBoardGameState()
+        val gameState = emptyGameState.copy(
+            currentPlayer = Player.WHITE,
+            board = emptyGameState.board.map { it.toMutableList() }.toMutableList()
+                .apply {
+                    this[6][3] = Piece(type = Type.PAWN, color = Player.WHITE)
+                }).toBitmapGameState()
+
+        val result = gameState.executeMove(Move(from = Position(6, 3), to = Position(7, 3), promotion = Type.KNIGHT))
+
+        val expectedGameState = emptyGameState.copy(
+            board = emptyGameState.board.map { it.toMutableList() }.toMutableList()
+                .apply {
+                    this[7][3] = Piece(type = Type.KNIGHT, color = Player.WHITE)
+                }).toBitmapGameState()
+
+        assert(expectedGameState.compareTo(result))
+    }
+
+    @Test
+    fun `black pawn can promote to queen`() {
+        val emptyGameState = generateEmptyBoardGameState()
+        val gameState = emptyGameState.copy(
+            currentPlayer = Player.BLACK,
+            board = emptyGameState.board.map { it.toMutableList() }.toMutableList()
+                .apply {
+                    this[1][3] = Piece(type = Type.PAWN, color = Player.BLACK)
+                }).toBitmapGameState()
+
+        val result = gameState.executeMove(Move(from = Position(1, 3), to = Position(0, 3), promotion = Type.QUEEN))
+
+        val expectedGameState = emptyGameState.copy(
+            board = emptyGameState.board.map { it.toMutableList() }.toMutableList()
+                .apply {
+                    this[0][3] = Piece(type = Type.QUEEN, color = Player.BLACK)
+                }).toBitmapGameState()
+
+        assert(expectedGameState.compareTo(result))
+    }
 }

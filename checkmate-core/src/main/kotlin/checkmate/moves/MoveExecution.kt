@@ -1,6 +1,7 @@
 package checkmate.moves
 
 import checkmate.model.Move
+import checkmate.model.Type
 import checkmate.moves.model.*
 
 internal fun BitmapGameState.executeMove(move: Move): BitmapGameState {
@@ -17,7 +18,7 @@ private fun BitmapGameState.executeWhiteMove(move: Move): BitmapGameState {
     newGameState.updateGameStats()
     newGameState.enPassantTarget = 0UL
 
-        move.capture?.let { capturePos ->
+    move.capture?.let { capturePos ->
         newGameState.blackPawns = blackPawns and (1UL shl (capturePos.rank * 8 + capturePos.file)).inv()
         newGameState.blackBishops = blackBishops and (1UL shl (capturePos.rank * 8 + capturePos.file)).inv()
         newGameState.blackKnights = blackKnights and (1UL shl (capturePos.rank * 8 + capturePos.file)).inv()
@@ -27,7 +28,11 @@ private fun BitmapGameState.executeWhiteMove(move: Move): BitmapGameState {
 
     if (newGameState.whitePawns and (1UL shl (move.from.rank * 8 + move.from.file)) != 0UL) {
         newGameState.whitePawns = newGameState.whitePawns and (1UL shl (move.from.rank * 8 + move.from.file)).inv()
-        newGameState.whitePawns = newGameState.whitePawns or (1UL shl (move.to.rank * 8 + move.to.file))
+        if (move.promotion != null) {
+            newGameState.promoteWhitePawn(move)
+        } else {
+            newGameState.whitePawns = newGameState.whitePawns or (1UL shl (move.to.rank * 8 + move.to.file))
+        }
         if (move.from.rank == 1 && move.to.rank == 3) {
             newGameState.enPassantTarget = 1UL shl (move.from.rank * 8 + move.from.file + 8)
         }
@@ -54,7 +59,11 @@ private fun BitmapGameState.executeBlackMove(move: Move): BitmapGameState {
 
     if (newGameState.blackPawns and (1UL shl (move.from.rank * 8 + move.from.file)) != 0UL) {
         newGameState.blackPawns = newGameState.blackPawns and (1UL shl (move.from.rank * 8 + move.from.file)).inv()
-        newGameState.blackPawns = newGameState.blackPawns or (1UL shl (move.to.rank * 8 + move.to.file))
+        if (move.promotion != null) {
+            newGameState.promoteBlackPawn(move)
+        } else {
+            newGameState.blackPawns = newGameState.blackPawns or (1UL shl (move.to.rank * 8 + move.to.file))
+        }
         if (move.from.rank == 6 && move.to.rank == 4) {
             newGameState.enPassantTarget = 1UL shl (move.from.rank * 8 + move.from.file - 8)
         }
@@ -64,6 +73,22 @@ private fun BitmapGameState.executeBlackMove(move: Move): BitmapGameState {
 
     return newGameState
 }
+
+private fun BitmapGameState.promoteWhitePawn(move: Move) =
+    when (move.promotion) {
+        Type.QUEEN -> whiteQueens = whiteQueens or (1UL shl (move.to.rank * 8 + move.to.file))
+        Type.ROOK -> whiteRooks = whiteRooks or (1UL shl (move.to.rank * 8 + move.to.file))
+        Type.BISHOP -> whiteBishops = whiteBishops or (1UL shl (move.to.rank * 8 + move.to.file))
+        else -> whiteKnights = whiteKnights or (1UL shl (move.to.rank * 8 + move.to.file))
+    }
+
+private fun BitmapGameState.promoteBlackPawn(move: Move) =
+    when (move.promotion) {
+        Type.QUEEN -> blackQueens = blackQueens or (1UL shl (move.to.rank * 8 + move.to.file))
+        Type.ROOK -> blackRooks = blackRooks or (1UL shl (move.to.rank * 8 + move.to.file))
+        Type.BISHOP -> blackBishops = blackBishops or (1UL shl (move.to.rank * 8 + move.to.file))
+        else -> blackKnights = blackKnights or (1UL shl (move.to.rank * 8 + move.to.file))
+    }
 
 private fun BitmapGameState.updateGameStats() {
     halfmoveClock++
