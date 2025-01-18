@@ -15,6 +15,7 @@ private fun BitmapGameState.executeWhiteMove(move: Move): BitmapGameState {
     val newGameState = this.copy()
 
     newGameState.updateGameStats()
+    newGameState.enPassantTarget = 0UL
 
         move.capture?.let { capturePos ->
         newGameState.blackPawns = blackPawns and (1UL shl (capturePos.rank * 8 + capturePos.file)).inv()
@@ -27,6 +28,9 @@ private fun BitmapGameState.executeWhiteMove(move: Move): BitmapGameState {
     if (newGameState.whitePawns and (1UL shl (move.from.rank * 8 + move.from.file)) != 0UL) {
         newGameState.whitePawns = newGameState.whitePawns and (1UL shl (move.from.rank * 8 + move.from.file)).inv()
         newGameState.whitePawns = newGameState.whitePawns or (1UL shl (move.to.rank * 8 + move.to.file))
+        if (move.from.rank == 1 && move.to.rank == 3) {
+            newGameState.enPassantTarget = 1UL shl (move.from.rank * 8 + move.from.file + 8)
+        }
     }
 
     newGameState.updateAllPieces()
@@ -38,6 +42,7 @@ private fun BitmapGameState.executeBlackMove(move: Move): BitmapGameState {
     val newGameState = this.copy()
 
     newGameState.updateGameStats()
+    newGameState.enPassantTarget = 0UL
 
     move.capture?.let { capturePos ->
         newGameState.whitePawns = whitePawns and (1UL shl (capturePos.rank * 8 + capturePos.file)).inv()
@@ -50,6 +55,9 @@ private fun BitmapGameState.executeBlackMove(move: Move): BitmapGameState {
     if (newGameState.blackPawns and (1UL shl (move.from.rank * 8 + move.from.file)) != 0UL) {
         newGameState.blackPawns = newGameState.blackPawns and (1UL shl (move.from.rank * 8 + move.from.file)).inv()
         newGameState.blackPawns = newGameState.blackPawns or (1UL shl (move.to.rank * 8 + move.to.file))
+        if (move.from.rank == 6 && move.to.rank == 4) {
+            newGameState.enPassantTarget = 1UL shl (move.from.rank * 8 + move.from.file - 8)
+        }
     }
 
     newGameState.updateAllPieces()

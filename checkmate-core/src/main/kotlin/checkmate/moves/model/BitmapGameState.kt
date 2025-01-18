@@ -89,26 +89,4 @@ internal class BitmapGameState {
 
         return copy
     }
-
-    fun isEqualTo(gameState: BitmapGameState): Boolean =
-        this.whitePawns == gameState.whitePawns &&
-                this.whiteKnights == gameState.whiteKnights &&
-                this.whiteBishops == gameState.whiteBishops &&
-                this.whiteRooks == gameState.whiteRooks &&
-                this.whiteQueens == gameState.whiteQueens &&
-                this.whiteKing == gameState.whiteKing &&
-                this.blackPawns == gameState.blackPawns &&
-                this.blackKnights == gameState.blackKnights &&
-                this.blackBishops == gameState.blackBishops &&
-                this.blackRooks == gameState.blackRooks &&
-                this.blackQueens == gameState.blackQueens &&
-                this.blackKing == gameState.blackKing &&
-                this.whitePieces == gameState.whitePieces &&
-                this.blackPieces == gameState.blackPieces &&
-                this.allPieces == gameState.allPieces &&
-                this.isWhiteTurn == gameState.isWhiteTurn &&
-                this.castlingRights == gameState.castlingRights &&
-                this.enPassantTarget == gameState.enPassantTarget &&
-                this.halfmoveClock == gameState.halfmoveClock &&
-                this.fullmoveNumber == gameState.fullmoveNumber
 }
