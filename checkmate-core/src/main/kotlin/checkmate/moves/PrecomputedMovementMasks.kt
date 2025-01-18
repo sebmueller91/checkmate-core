@@ -3,6 +3,7 @@ import checkmate.moves.model.RANK_MASKS
 
 internal object PrecomputedMovementMasks {
 
+    // TODO: Remove if unused
     val straightMasks = Array(64) { 0UL }
     val diagonalMasks = Array(64) { 0UL }
     val knightMasks = Array(64) { 0UL }

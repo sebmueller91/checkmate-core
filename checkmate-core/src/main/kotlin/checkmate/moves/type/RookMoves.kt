@@ -35,7 +35,7 @@ internal object RookMoves: PieceMoves() {
     }
 
     override fun generateLegalMoves(gameState: BitmapGameState): List<Move> =
-        KingMoves.generatePseudoLegalMoves(gameState).filter { isLegalMove(gameState, it) }.toMutableList()
+        generatePseudoLegalMoves(gameState).filter { isLegalMove(gameState, it) }.toMutableList()
 
     override fun generateAttackMap(gameState: BitmapGameState, player: Player): ULong {
         val rooks = if (player == Player.WHITE) gameState.whiteRooks else gameState.blackRooks

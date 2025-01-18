@@ -39,7 +39,7 @@ internal object QueenMoves: PieceMoves() {
     }
 
     override fun generateLegalMoves(gameState: BitmapGameState): List<Move> =
-        KingMoves.generatePseudoLegalMoves(gameState).filter { isLegalMove(gameState, it) }.toMutableList()
+        generatePseudoLegalMoves(gameState).filter { isLegalMove(gameState, it) }.toMutableList()
 
     override fun generateAttackMap(gameState: BitmapGameState, player: Player): ULong {
         val queens = if (player == Player.WHITE) gameState.whiteQueens else gameState.blackQueens

@@ -31,12 +31,11 @@ internal object BishopMoves : PieceMoves() {
             })
         }
 
-        println(moves.size)
         return moves
     }
 
     override fun generateLegalMoves(gameState: BitmapGameState): List<Move> =
-        KingMoves.generatePseudoLegalMoves(gameState).filter { isLegalMove(gameState, it) }.toMutableList()
+        generatePseudoLegalMoves(gameState).filter { isLegalMove(gameState, it) }.toMutableList()
 
     override fun generateAttackMap(gameState: BitmapGameState, player: Player): ULong {
         val bishops = if (player == Player.WHITE) gameState.whiteBishops else gameState.blackBishops

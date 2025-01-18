@@ -16,7 +16,7 @@ internal fun getPlayerAttackMap(gameState: BitmapGameState, player: Player): ULo
     return attackMap
 }
 
-internal fun isKingInCheck(gameState: BitmapGameState, player: Player): Boolean { // TODO: Test
+internal fun isKingInCheck(gameState: BitmapGameState, player: Player): Boolean {
     val attackMap = getPlayerAttackMap(gameState, player.opponent())
     val kingBitboard = if (player == Player.WHITE) gameState.whiteKing else gameState.blackKing
     return attackMap and kingBitboard != 0UL
@@ -24,17 +24,15 @@ internal fun isKingInCheck(gameState: BitmapGameState, player: Player): Boolean 
 
 internal fun isLegalMove(gameState: BitmapGameState, move: Move): Boolean {
     val newGameState = gameState.executeMove(move)
-    return !isKingInCheck(newGameState, if (gameState.isWhiteTurn) Player.WHITE else Player.BLACK)
+    return !isKingInCheck(newGameState, gameState.getPlayer())
 }
 
-internal fun isStalemate(gameState: BitmapGameState): Boolean { // TODO: Test
-    val player = if (gameState.isWhiteTurn) Player.WHITE else Player.BLACK
-    return !isKingInCheck(gameState, player) && !canPerformMove(gameState)
+internal fun isStalemate(gameState: BitmapGameState): Boolean {
+    return !isKingInCheck(gameState, gameState.getPlayer()) && !canPerformMove(gameState)
 }
 
-internal fun isCheckmate(gameState: BitmapGameState): Boolean { // TODO: Test
-    val player = if (gameState.isWhiteTurn) Player.WHITE else Player.BLACK
-    return isKingInCheck(gameState, player) && !canPerformMove(gameState)
+internal fun isCheckmate(gameState: BitmapGameState): Boolean {
+    return isKingInCheck(gameState, gameState.getPlayer()) && !canPerformMove(gameState)
 }
 
 private fun canPerformMove(gameState: BitmapGameState): Boolean =
@@ -44,3 +42,5 @@ private fun canPerformMove(gameState: BitmapGameState): Boolean =
             || KnightMoves.generateLegalMoves(gameState).isNotEmpty()
             || QueenMoves.generateLegalMoves(gameState).isNotEmpty()
             || KingMoves.generateLegalMoves(gameState).isNotEmpty()
+
+private fun BitmapGameState.getPlayer() = if (isWhiteTurn) Player.WHITE else Player.BLACK
