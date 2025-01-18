@@ -38,9 +38,9 @@ internal fun isCheckmate(gameState: BitmapGameState): Boolean { // TODO: Test
 }
 
 private fun canPerformMove(gameState: BitmapGameState): Boolean =
-    PawnMoves.generateMoves(gameState).isNotEmpty()
-            || RookMoves.generateMoves(gameState).isNotEmpty()
-            || BishopMoves.generateMoves(gameState).isNotEmpty()
-            || KnightMoves.generateMoves(gameState).isNotEmpty()
-            || QueenMoves.generateMoves(gameState).isNotEmpty()
-            || KingMoves.generateMoves(gameState).isNotEmpty()
+    PawnMoves.generateLegalMoves(gameState).isNotEmpty()
+            || RookMoves.generateLegalMoves(gameState).isNotEmpty()
+            || BishopMoves.generateLegalMoves(gameState).isNotEmpty()
+            || KnightMoves.generateLegalMoves(gameState).isNotEmpty()
+            || QueenMoves.generateLegalMoves(gameState).isNotEmpty()
+            || KingMoves.generateLegalMoves(gameState).isNotEmpty()

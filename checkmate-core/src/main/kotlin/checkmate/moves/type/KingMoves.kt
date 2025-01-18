@@ -32,7 +32,7 @@ internal object KingMoves : PieceMoves() {
         return moves
     }
 
-    override fun generateMoves(gameState: BitmapGameState): List<Move> {
+    override fun generateLegalMoves(gameState: BitmapGameState): List<Move> {
         val legalMoves = generatePseudoLegalMoves(gameState).filter { isLegalMove(gameState, it) }.toMutableList()
         legalMoves.addAll(getCastlingMoves(gameState))
         return legalMoves

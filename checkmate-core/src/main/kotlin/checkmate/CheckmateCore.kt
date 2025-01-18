@@ -47,7 +47,7 @@ class CheckmateCore {
         val pieceType = gameState.board[position.rank][position.file]?.type ?: return listOf()
         val pieceMoves = getPieceMoves(pieceType)
 
-        return pieceMoves.generateMoves(bitmapGameState, position)
+        return pieceMoves.generateLegalMoves(bitmapGameState, position)
     }
 
     fun executeMove(move: Move, game: Game, moveIndex: Int? = null): Game { // TODO: Test

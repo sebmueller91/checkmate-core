@@ -35,7 +35,7 @@ internal object BishopMoves : PieceMoves() {
         return moves
     }
 
-    override fun generateMoves(gameState: BitmapGameState): List<Move> =
+    override fun generateLegalMoves(gameState: BitmapGameState): List<Move> =
         KingMoves.generatePseudoLegalMoves(gameState).filter { isLegalMove(gameState, it) }.toMutableList()
 
     override fun generateAttackMap(gameState: BitmapGameState, player: Player): ULong {
