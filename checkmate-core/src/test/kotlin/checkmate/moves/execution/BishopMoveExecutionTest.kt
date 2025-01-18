@@ -7,7 +7,7 @@ import checkmate.moves.executeMove
 import checkmate.util.toBitmapGameState
 import org.junit.jupiter.api.Test
 
-class BishopMoveExecutionTest {
+internal class BishopMoveExecutionTest {
     @Test
     fun `white bishop can perform simple move`() {
         val emptyGameState = generateEmptyBoardGameState()

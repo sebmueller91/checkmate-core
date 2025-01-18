@@ -25,6 +25,7 @@ private fun BitmapGameState.executeWhiteMove(move: Move): BitmapGameState {
     newGameState.whiteBishopMoves(move)
     newGameState.whiteKnightMoves(move)
     newGameState.whiteQueenMoves(move)
+    newGameState.whiteKingMoves(move)
 
     newGameState.updateCastingRights(move)
     newGameState.updateAllPieces()
@@ -44,6 +45,7 @@ private fun BitmapGameState.executeBlackMove(move: Move): BitmapGameState {
     newGameState.blackBishopMoves(move)
     newGameState.blackKnightMoves(move)
     newGameState.blackQueenMoves(move)
+    newGameState.blackKingMoves(move)
 
     newGameState.updateCastingRights(move)
     newGameState.updateAllPieces()
@@ -141,6 +143,30 @@ private fun BitmapGameState.whiteQueenMoves(move: Move) {
     if (whiteQueens and (1UL shl move.from.bitboardIndex()) != 0UL) {
         whiteQueens = whiteQueens and (1UL shl move.from.bitboardIndex()).inv()
         whiteQueens = whiteQueens or (1UL shl move.to.bitboardIndex())
+    }
+}
+
+private fun BitmapGameState.whiteKingMoves(move: Move) {
+    if (whiteKing and (1UL shl move.from.bitboardIndex()) != 0UL) {
+        whiteKing = whiteKing and (1UL shl move.from.bitboardIndex()).inv()
+        whiteKing = whiteKing or (1UL shl move.to.bitboardIndex())
+    }
+    move.castlingRookFromTo?.let { (from, to) ->
+        whiteRooks = whiteRooks and (1UL shl from.bitboardIndex()).inv()
+        whiteRooks = whiteRooks or (1UL shl to.bitboardIndex())
+        castlingRights = castlingRights and WHITE_KING_SIDE_CASTLING.inv() and WHITE_QUEEN_SIDE_CASTLING.inv()
+    }
+}
+
+private fun BitmapGameState.blackKingMoves(move: Move) {
+    if (blackKing and (1UL shl move.from.bitboardIndex()) != 0UL) {
+        blackKing = blackKing and (1UL shl move.from.bitboardIndex()).inv()
+        blackKing = blackKing or (1UL shl move.to.bitboardIndex())
+    }
+    move.castlingRookFromTo?.let { (from, to) ->
+        blackRooks = blackRooks and (1UL shl from.bitboardIndex()).inv()
+        blackRooks = blackRooks or (1UL shl to.bitboardIndex())
+        castlingRights = castlingRights and BLACK_KING_SIDE_CASTLING.inv() and BLACK_QUEEN_SIDE_CASTLING.inv()
     }
 }
 

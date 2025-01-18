@@ -6,7 +6,7 @@ import checkmate.moves.executeMove
 import checkmate.util.toBitmapGameState
 import org.junit.jupiter.api.Test
 
-class BasicMoveExecutionTest {
+internal class BasicMoveExecutionTest {
     @Test
     fun `isWhiteTurn set to false after white move `() {
         val emptyGameState = generateEmptyBoardGameState()

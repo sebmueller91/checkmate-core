@@ -7,7 +7,7 @@ import checkmate.moves.executeMove
 import checkmate.util.toBitmapGameState
 import org.junit.jupiter.api.Test
 
-class KnightMovesTest {
+internal class KnightMovesTest {
     @Test
     fun `white knight can perform simple move`() {
         val emptyGameState = generateEmptyBoardGameState()
