@@ -22,6 +22,7 @@ private fun BitmapGameState.executeWhiteMove(move: Move): BitmapGameState {
     newGameState.whiteCaptures(move)
     newGameState.whitePawnMoves(move)
     newGameState.whiteRookMoves(move)
+    newGameState.whiteBishopMoves(move)
 
     newGameState.updateCastingRights(move)
     newGameState.updateAllPieces()
@@ -38,6 +39,7 @@ private fun BitmapGameState.executeBlackMove(move: Move): BitmapGameState {
     newGameState.blackCaptures(move)
     newGameState.blackPawnMoves(move)
     newGameState.blackRookMoves(move)
+    newGameState.blackBishopMoves(move)
 
     newGameState.updateCastingRights(move)
     newGameState.updateAllPieces()
@@ -100,6 +102,20 @@ private fun BitmapGameState.blackRookMoves(move: Move) {
     if (blackRooks and (1UL shl move.from.bitboardIndex()) != 0UL) {
         blackRooks = blackRooks and (1UL shl move.from.bitboardIndex()).inv()
         blackRooks = blackRooks or (1UL shl move.to.bitboardIndex())
+    }
+}
+
+private fun BitmapGameState.whiteBishopMoves(move: Move) {
+    if (whiteBishops and (1UL shl move.from.bitboardIndex()) != 0UL) {
+        whiteBishops = whiteBishops and (1UL shl move.from.bitboardIndex()).inv()
+        whiteBishops = whiteBishops or (1UL shl move.to.bitboardIndex())
+    }
+}
+
+private fun BitmapGameState.blackBishopMoves(move: Move) {
+    if (blackBishops and (1UL shl move.from.bitboardIndex()) != 0UL) {
+        blackBishops = blackBishops and (1UL shl move.from.bitboardIndex()).inv()
+        blackBishops = blackBishops or (1UL shl move.to.bitboardIndex())
     }
 }
 
