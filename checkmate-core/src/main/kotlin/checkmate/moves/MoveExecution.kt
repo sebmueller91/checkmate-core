@@ -23,6 +23,8 @@ private fun BitmapGameState.executeWhiteMove(move: Move): BitmapGameState {
     newGameState.whitePawnMoves(move)
     newGameState.whiteRookMoves(move)
     newGameState.whiteBishopMoves(move)
+    newGameState.whiteKnightMoves(move)
+    newGameState.whiteQueenMoves(move)
 
     newGameState.updateCastingRights(move)
     newGameState.updateAllPieces()
@@ -40,6 +42,8 @@ private fun BitmapGameState.executeBlackMove(move: Move): BitmapGameState {
     newGameState.blackPawnMoves(move)
     newGameState.blackRookMoves(move)
     newGameState.blackBishopMoves(move)
+    newGameState.blackKnightMoves(move)
+    newGameState.blackQueenMoves(move)
 
     newGameState.updateCastingRights(move)
     newGameState.updateAllPieces()
@@ -116,6 +120,34 @@ private fun BitmapGameState.blackBishopMoves(move: Move) {
     if (blackBishops and (1UL shl move.from.bitboardIndex()) != 0UL) {
         blackBishops = blackBishops and (1UL shl move.from.bitboardIndex()).inv()
         blackBishops = blackBishops or (1UL shl move.to.bitboardIndex())
+    }
+}
+
+private fun BitmapGameState.whiteKnightMoves(move: Move) {
+    if (whiteKnights and (1UL shl move.from.bitboardIndex()) != 0UL) {
+        whiteKnights = whiteKnights and (1UL shl move.from.bitboardIndex()).inv()
+        whiteKnights = whiteKnights or (1UL shl move.to.bitboardIndex())
+    }
+}
+
+private fun BitmapGameState.blackKnightMoves(move: Move) {
+    if (blackKnights and (1UL shl move.from.bitboardIndex()) != 0UL) {
+        blackKnights = blackKnights and (1UL shl move.from.bitboardIndex()).inv()
+        blackKnights = blackKnights or (1UL shl move.to.bitboardIndex())
+    }
+}
+
+private fun BitmapGameState.whiteQueenMoves(move: Move) {
+    if (whiteQueens and (1UL shl move.from.bitboardIndex()) != 0UL) {
+        whiteQueens = whiteQueens and (1UL shl move.from.bitboardIndex()).inv()
+        whiteQueens = whiteQueens or (1UL shl move.to.bitboardIndex())
+    }
+}
+
+private fun BitmapGameState.blackQueenMoves(move: Move) {
+    if (blackQueens and (1UL shl move.from.bitboardIndex()) != 0UL) {
+        blackQueens = blackQueens and (1UL shl move.from.bitboardIndex()).inv()
+        blackQueens = blackQueens or (1UL shl move.to.bitboardIndex())
     }
 }
 
