@@ -8,19 +8,52 @@ internal fun BitmapGameState.executeMove(move: Move): BitmapGameState {
         true -> executeWhiteMove(move)
         false -> executeBlackMove(move)
     }
-    newGameState.updateCastingRights(move)
     return newGameState
 }
 
 private fun BitmapGameState.executeWhiteMove(move: Move): BitmapGameState {
     val newGameState = this.copy()
+
     newGameState.updateGameStats()
+
+        move.capture?.let { capturePos ->
+        newGameState.blackPawns = blackPawns and (1UL shl (capturePos.rank * 8 + capturePos.file)).inv()
+        newGameState.blackBishops = blackBishops and (1UL shl (capturePos.rank * 8 + capturePos.file)).inv()
+        newGameState.blackKnights = blackKnights and (1UL shl (capturePos.rank * 8 + capturePos.file)).inv()
+        newGameState.blackRooks = blackRooks and (1UL shl (capturePos.rank * 8 + capturePos.file)).inv()
+        newGameState.blackQueens = blackQueens and (1UL shl (capturePos.rank * 8 + capturePos.file)).inv()
+    }
+
+    if (newGameState.whitePawns and (1UL shl (move.from.rank * 8 + move.from.file)) != 0UL) {
+        newGameState.whitePawns = newGameState.whitePawns and (1UL shl (move.from.rank * 8 + move.from.file)).inv()
+        newGameState.whitePawns = newGameState.whitePawns or (1UL shl (move.to.rank * 8 + move.to.file))
+    }
+
+    newGameState.updateAllPieces()
+
     return newGameState
 }
 
 private fun BitmapGameState.executeBlackMove(move: Move): BitmapGameState {
     val newGameState = this.copy()
+
     newGameState.updateGameStats()
+
+    move.capture?.let { capturePos ->
+        newGameState.whitePawns = whitePawns and (1UL shl (capturePos.rank * 8 + capturePos.file)).inv()
+        newGameState.whiteBishops = whiteBishops and (1UL shl (capturePos.rank * 8 + capturePos.file)).inv()
+        newGameState.whiteKnights = whiteKnights and (1UL shl (capturePos.rank * 8 + capturePos.file)).inv()
+        newGameState.whiteRooks = whiteRooks and (1UL shl (capturePos.rank * 8 + capturePos.file)).inv()
+        newGameState.whiteQueens = whiteQueens and (1UL shl (capturePos.rank * 8 + capturePos.file)).inv()
+    }
+
+    if (newGameState.blackPawns and (1UL shl (move.from.rank * 8 + move.from.file)) != 0UL) {
+        newGameState.blackPawns = newGameState.blackPawns and (1UL shl (move.from.rank * 8 + move.from.file)).inv()
+        newGameState.blackPawns = newGameState.blackPawns or (1UL shl (move.to.rank * 8 + move.to.file))
+    }
+
+    newGameState.updateAllPieces()
+
     return newGameState
 }
 

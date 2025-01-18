@@ -12,6 +12,7 @@ internal class PawnMoveExecutionTest {
         val emptyGameState = generateEmptyBoardGameState()
         val gameState = emptyGameState.copy(
             currentPlayer = Player.WHITE,
+
             board = emptyGameState.board.map { it.toMutableList() }.toMutableList()
                 .apply {
                     this[1][3] = Piece(type = Type.PAWN, color = Player.WHITE)
@@ -21,12 +22,14 @@ internal class PawnMoveExecutionTest {
 
         val expectedGameState = emptyGameState.copy(
             currentPlayer = Player.BLACK,
+            halfMoveClock = gameState.halfmoveClock+1,
+            fullMoveNumber = gameState.fullmoveNumber,
             board = emptyGameState.board.map { it.toMutableList() }.toMutableList()
                 .apply {
                     this[2][3] = Piece(type = Type.PAWN, color = Player.WHITE)
                 }).toBitmapGameState()
 
-        assert(result == expectedGameState)
+        assert(expectedGameState.isEqualTo(result))
     }
 
     @Test
@@ -43,12 +46,14 @@ internal class PawnMoveExecutionTest {
 
         val expectedGameState = emptyGameState.copy(
             currentPlayer = Player.WHITE,
+            halfMoveClock = gameState.halfmoveClock+1,
+            fullMoveNumber = gameState.fullmoveNumber+1,
             board = emptyGameState.board.map { it.toMutableList() }.toMutableList()
                 .apply {
                     this[3][3] = Piece(type = Type.PAWN, color = Player.BLACK)
                 }).toBitmapGameState()
 
-        assert(result == expectedGameState)
+        assert(expectedGameState.isEqualTo(result))
     }
 
     @Test
@@ -66,12 +71,14 @@ internal class PawnMoveExecutionTest {
 
         val expectedGameState = emptyGameState.copy(
             currentPlayer = Player.BLACK,
+            halfMoveClock = gameState.halfmoveClock+1,
+            fullMoveNumber = gameState.fullmoveNumber,
             board = emptyGameState.board.map { it.toMutableList() }.toMutableList()
                 .apply {
                     this[2][4] = Piece(type = Type.PAWN, color = Player.WHITE)
                 }).toBitmapGameState()
 
-        assert(result == expectedGameState)
+        assert(expectedGameState.isEqualTo(result))
     }
 
     @Test
@@ -89,11 +96,13 @@ internal class PawnMoveExecutionTest {
 
         val expectedGameState = emptyGameState.copy(
             currentPlayer = Player.WHITE,
+            halfMoveClock = gameState.halfmoveClock+1,
+            fullMoveNumber = gameState.fullmoveNumber+1,
             board = emptyGameState.board.map { it.toMutableList() }.toMutableList()
                 .apply {
                     this[3][4] = Piece(type = Type.PAWN, color = Player.BLACK)
                 }).toBitmapGameState()
 
-        assert(result == expectedGameState)
+        assert(expectedGameState.isEqualTo(result))
     }
 }
