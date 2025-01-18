@@ -129,4 +129,20 @@ internal class LegalMovesTest {
             )
         )
     }
+
+    @Test
+    fun `get valid moves returns moves of all pieces`() {
+        val emptyGameState = generateEmptyBoardGameState()
+        val gameState = emptyGameState.copy(
+            currentPlayer = Player.BLACK,
+            board = emptyGameState.board.map { it.toMutableList() }.toMutableList()
+                .apply {
+                    this[1][7] = Piece(type = Type.PAWN, color = Player.BLACK)
+                    this[3][7] = Piece(type = Type.ROOK, color = Player.BLACK)
+                    this[4][4] = Piece(type = Type.KING, color = Player.BLACK)
+                })
+
+        val validMoves = checkmateCore.getValidMoves(gameState)
+        assert(validMoves.size > 10)
+    }
 }

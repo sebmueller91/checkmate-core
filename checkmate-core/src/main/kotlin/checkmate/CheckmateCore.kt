@@ -16,7 +16,7 @@ class CheckmateCore {
         gameStates = listOf(BitmapGameState().apply { initializeStartingPosition() }.toGameState(lastMove = null))
     )
 
-    fun getValidMoves(gameState: GameState): List<Move> { // TODO: Test
+    fun getValidMoves(gameState: GameState): List<Move> {
         val validMoves = mutableListOf<Move>()
         for (rank in 0..7) {
             for (file in 0..7) {
@@ -36,7 +36,7 @@ class CheckmateCore {
 
     fun getValidMoves(gameState: GameState, position: Position): List<Move> {
         if (position.rank !in 0..7 || position.file !in 0..7) {
-            throw InvalidPositionException("Position $position is not valid.") // TODO: Test
+            throw InvalidPositionException("Position $position is not valid.")
         }
 
         if (gameState.currentPlayer != gameState.board[position.rank][position.file]?.color) {
