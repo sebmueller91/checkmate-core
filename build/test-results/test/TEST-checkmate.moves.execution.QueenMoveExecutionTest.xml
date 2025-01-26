@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="checkmate.moves.execution.QueenMoveExecutionTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2025-01-18T12:54:29" hostname="MacBook-Pro.fritz.box" time="0.003">
+<testsuite name="checkmate.moves.execution.QueenMoveExecutionTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2025-01-26T09:27:56" hostname="MacBook-Pro.fritz.box" time="0.001">
   <properties/>
-  <testcase name="black queen can capture white piece()" classname="checkmate.moves.execution.QueenMoveExecutionTest" time="0.001"/>
-  <testcase name="white queen can capture black piece()" classname="checkmate.moves.execution.QueenMoveExecutionTest" time="0.001"/>
+  <testcase name="black queen can capture white piece()" classname="checkmate.moves.execution.QueenMoveExecutionTest" time="0.0"/>
+  <testcase name="white queen can capture black piece()" classname="checkmate.moves.execution.QueenMoveExecutionTest" time="0.0"/>
   <testcase name="white queen can perform simple move()" classname="checkmate.moves.execution.QueenMoveExecutionTest" time="0.0"/>
-  <testcase name="black queen can perform simple move()" classname="checkmate.moves.execution.QueenMoveExecutionTest" time="0.001"/>
+  <testcase name="black queen can perform simple move()" classname="checkmate.moves.execution.QueenMoveExecutionTest" time="0.0"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="checkmate.moves.MoveVerificationTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2025-01-26T09:27:56" hostname="MacBook-Pro.fritz.box" time="0.007">
+  <properties/>
+  <testcase name="move is invalid when own king is in check by queen()" classname="checkmate.moves.MoveVerificationTest" time="0.001"/>
+  <testcase name="possible moves are legal and checking does not alter game state()" classname="checkmate.moves.MoveVerificationTest" time="0.001"/>
+  <testcase name="player can perform move that frees the king from check()" classname="checkmate.moves.MoveVerificationTest" time="0.001"/>
+  <testcase name="move is invalid when own king is in check by other king()" classname="checkmate.moves.MoveVerificationTest" time="0.001"/>
+  <testcase name="move is invalid when own king is in check by pawn()" classname="checkmate.moves.MoveVerificationTest" time="0.0"/>
+  <testcase name="move is invalid when own king is in check by rook()" classname="checkmate.moves.MoveVerificationTest" time="0.0"/>
+  <testcase name="move is invalid when own king is in check by bishop()" classname="checkmate.moves.MoveVerificationTest" time="0.0"/>
+  <testcase name="move is invalid when own king is in check by knight()" classname="checkmate.moves.MoveVerificationTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

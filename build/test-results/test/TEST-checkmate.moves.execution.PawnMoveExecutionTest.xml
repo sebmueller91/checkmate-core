@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="checkmate.moves.execution.PawnMoveExecutionTest" tests="13" skipped="0" failures="0" errors="0" timestamp="2025-01-18T12:54:29" hostname="MacBook-Pro.fritz.box" time="0.007">
+<testsuite name="checkmate.moves.execution.PawnMoveExecutionTest" tests="13" skipped="0" failures="0" errors="0" timestamp="2025-01-26T09:27:56" hostname="MacBook-Pro.fritz.box" time="0.004">
   <properties/>
   <testcase name="white pawn can perform simple move()" classname="checkmate.moves.execution.PawnMoveExecutionTest" time="0.0"/>
   <testcase name="white pawn can capture()" classname="checkmate.moves.execution.PawnMoveExecutionTest" time="0.0"/>
-  <testcase name="black pawn can promote to queen()" classname="checkmate.moves.execution.PawnMoveExecutionTest" time="0.001"/>
-  <testcase name="white pawn can promote to bishop()" classname="checkmate.moves.execution.PawnMoveExecutionTest" time="0.001"/>
+  <testcase name="black pawn can promote to queen()" classname="checkmate.moves.execution.PawnMoveExecutionTest" time="0.0"/>
+  <testcase name="white pawn can promote to bishop()" classname="checkmate.moves.execution.PawnMoveExecutionTest" time="0.0"/>
   <testcase name="white pawn can capture en passant()" classname="checkmate.moves.execution.PawnMoveExecutionTest" time="0.0"/>
-  <testcase name="white pawn can promote to knight()" classname="checkmate.moves.execution.PawnMoveExecutionTest" time="0.001"/>
+  <testcase name="white pawn can promote to knight()" classname="checkmate.moves.execution.PawnMoveExecutionTest" time="0.0"/>
   <testcase name="black pawn can perform simple move()" classname="checkmate.moves.execution.PawnMoveExecutionTest" time="0.0"/>
   <testcase name="black pawn can capture en passant()" classname="checkmate.moves.execution.PawnMoveExecutionTest" time="0.0"/>
   <testcase name="white pawn can promote to rook()" classname="checkmate.moves.execution.PawnMoveExecutionTest" time="0.0"/>
   <testcase name="white pawn can promote to queen()" classname="checkmate.moves.execution.PawnMoveExecutionTest" time="0.0"/>
   <testcase name="white pawn double move sets en passant target()" classname="checkmate.moves.execution.PawnMoveExecutionTest" time="0.0"/>
-  <testcase name="black pawn double move sets en passant target()" classname="checkmate.moves.execution.PawnMoveExecutionTest" time="0.001"/>
+  <testcase name="black pawn double move sets en passant target()" classname="checkmate.moves.execution.PawnMoveExecutionTest" time="0.0"/>
   <testcase name="black pawn can capture()" classname="checkmate.moves.execution.PawnMoveExecutionTest" time="0.0"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>

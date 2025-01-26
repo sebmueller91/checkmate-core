@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="checkmate.moves.execution.RookMoveExecutionTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2025-01-18T12:54:29" hostname="MacBook-Pro.fritz.box" time="0.004">
+<testsuite name="checkmate.moves.execution.RookMoveExecutionTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2025-01-26T09:27:56" hostname="MacBook-Pro.fritz.box" time="0.003">
   <properties/>
   <testcase name="black right rook move clears king side castling rights()" classname="checkmate.moves.execution.RookMoveExecutionTest" time="0.0"/>
   <testcase name="white left rook move clears queen side castling rights()" classname="checkmate.moves.execution.RookMoveExecutionTest" time="0.0"/>
   <testcase name="white right rook move clears king side castling rights()" classname="checkmate.moves.execution.RookMoveExecutionTest" time="0.0"/>
-  <testcase name="white rook can capture black piece()" classname="checkmate.moves.execution.RookMoveExecutionTest" time="0.001"/>
+  <testcase name="white rook can capture black piece()" classname="checkmate.moves.execution.RookMoveExecutionTest" time="0.0"/>
   <testcase name="black rook can capture white piece()" classname="checkmate.moves.execution.RookMoveExecutionTest" time="0.0"/>
-  <testcase name="white rook can perform simple move()" classname="checkmate.moves.execution.RookMoveExecutionTest" time="0.0"/>
-  <testcase name="black rook can perform simple move()" classname="checkmate.moves.execution.RookMoveExecutionTest" time="0.0"/>
-  <testcase name="black left rook move clears queen side castling rights()" classname="checkmate.moves.execution.RookMoveExecutionTest" time="0.001"/>
+  <testcase name="white rook can perform simple move()" classname="checkmate.moves.execution.RookMoveExecutionTest" time="0.001"/>
+  <testcase name="black rook can perform simple move()" classname="checkmate.moves.execution.RookMoveExecutionTest" time="0.001"/>
+  <testcase name="black left rook move clears queen side castling rights()" classname="checkmate.moves.execution.RookMoveExecutionTest" time="0.0"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>
