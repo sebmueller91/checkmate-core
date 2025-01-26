@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="checkmate.moves.pseudolegal.KnightPseudoLegalMovesTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2025-01-26T09:50:44" hostname="MacBook-Pro.fritz.box" time="0.001">
-  <properties/>
-  <testcase name="black knight should move and capture correct cells()" classname="checkmate.moves.pseudolegal.KnightPseudoLegalMovesTest" time="0.0"/>
-  <testcase name="white knight should move and capture correct cells()" classname="checkmate.moves.pseudolegal.KnightPseudoLegalMovesTest" time="0.0"/>
-  <testcase name="knight should not move when when all possible cells are blocked()" classname="checkmate.moves.pseudolegal.KnightPseudoLegalMovesTest" time="0.0"/>
-  <system-out><![CDATA[]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>

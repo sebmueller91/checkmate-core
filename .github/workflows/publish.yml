@@ -29,18 +29,12 @@ jobs:
     - name: Print environment
       run: env
 
-    - name: List directory contents
-      run: ls -la
-
     - name: Extract version
       id: extract_version
       run: |
         VERSION=$(grep '^version' build.gradle.kts | awk '{print $3}' | tr -d '"')
         echo "VERSION=$VERSION" >> $GITHUB_ENV
         echo "Extracted version: $VERSION"
-
-    - name: List directory contents before tests
-      run: ls -la
 
     - name: Run tests
       run: ./gradlew test
