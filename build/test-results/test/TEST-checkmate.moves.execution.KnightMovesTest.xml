@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="checkmate.moves.execution.KnightMovesTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2025-01-18T12:54:29" hostname="MacBook-Pro.fritz.box" time="0.018">
+  <properties/>
+  <testcase name="black knight can capture white piece()" classname="checkmate.moves.execution.KnightMovesTest" time="0.016"/>
+  <testcase name="white knight can capture black piece()" classname="checkmate.moves.execution.KnightMovesTest" time="0.0"/>
+  <testcase name="black knight can perform simple move()" classname="checkmate.moves.execution.KnightMovesTest" time="0.001"/>
+  <testcase name="white knight can perform simple move()" classname="checkmate.moves.execution.KnightMovesTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
