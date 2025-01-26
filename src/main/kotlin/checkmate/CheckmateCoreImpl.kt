@@ -30,7 +30,7 @@ internal class CheckmateCoreImpl: CheckmateCore {
         return validMoves
     }
 
-    override fun isValidMove(gameState: GameState, move: Move): Boolean = // TODO: Test
+    override fun isValidMove(gameState: GameState, move: Move): Boolean =
         move in getValidMoves(gameState)
 
     override fun getValidMoves(gameState: GameState, position: Position): List<Move> {
@@ -49,7 +49,7 @@ internal class CheckmateCoreImpl: CheckmateCore {
         return pieceMoves.generateLegalMoves(bitmapGameState, position)
     }
 
-    override fun executeMove(move: Move, game: Game, moveIndex: Int?): Game { // TODO: Test
+    override fun executeMove(move: Move, game: Game, moveIndex: Int?): Game {
         if (moveIndex != null && moveIndex !in game.gameStates.indices) {
             throw InvalidParameterException("Can not execute move at index $moveIndex. Valid indices are between 0 and ${game.gameStates.size - 1}.")
         }
