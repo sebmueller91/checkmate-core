@@ -23,6 +23,8 @@ dependencies {
 }
 ```
 
+[![](https://jitpack.io/v/sebmueller91/checkmate-core.svg)](https://jitpack.io/#sebmueller91/checkmate-core)
+
 ## Usage
 ```kotlin
 Here is a basic example of how to use the Checkmate Core library:
