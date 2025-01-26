@@ -1,9 +1,10 @@
 plugins {
     kotlin("jvm") version "2.0.21"
+    id("maven-publish")
 }
 
 group = "com.github.sebmu91.checkmate"
-version = "0.1.8-SNAPSHOT"
+version = "0.1.9-SNAPSHOT"
 
 repositories {
     mavenCentral()
@@ -21,6 +22,21 @@ dependencies {
 
 tasks.test {
     useJUnitPlatform()
+}
+
+publishing {
+    publications {
+        create<MavenPublication>("mavenJava") {
+            from(components["java"])
+            groupId = project.group.toString()
+            artifactId = project.name
+            version = project.version.toString()
+        }
+    }
+}
+
+tasks.withType<PublishToMavenLocal> {
+    dependsOn(tasks.assemble)
 }
 
 kotlin {
