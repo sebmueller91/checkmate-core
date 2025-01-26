@@ -1,11 +1,10 @@
-package checkmate.moves
+package checkmate
 
-import checkmate.CheckmateCoreImpl
-import checkmate.generateEmptyBoardGameState
 import checkmate.model.CastlingRights
 import checkmate.model.Piece
 import checkmate.model.Player
 import checkmate.model.Type
+import checkmate.moves.isStalemate
 import checkmate.util.toBitmapGameState
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
