@@ -19,7 +19,7 @@ internal class ConversionTest {
     @Test
     fun `generateInitialState should return a chess board with initial setup`() {
 
-        val result: Game = checkmateCore.generateInitialState()
+        val result: Game = checkmateCore.getInitialGame()
 
         assert(result.gameStates.size == 1)
         val gameState = result.gameStates[0]
@@ -60,7 +60,7 @@ internal class ConversionTest {
 
     @Test
     fun `transformation from initial GameState to BitmapGameState and back to GameState should be correct`() {
-        val initialState: GameState = checkmateCore.generateInitialState().gameStates[0]
+        val initialState: GameState = checkmateCore.getInitialGame().gameStates[0]
         val bitmapGameState = initialState.toBitmapGameState()
         val transformedGameState = bitmapGameState.toGameState(null)
 
@@ -69,7 +69,7 @@ internal class ConversionTest {
 
     @Test
     fun `transformation from mofified GameState to BitmapGameState and back to GameState should be correct`() {
-        val initialState = checkmateCore.generateInitialState().gameStates[0]
+        val initialState = checkmateCore.getInitialGame().gameStates[0]
         val modifiedState: GameState = initialState.copy(
             currentPlayer = Player.BLACK,
             castlingRights = CastlingRights(false, true, false, false),
@@ -90,7 +90,7 @@ internal class ConversionTest {
 
     @Test
     fun `transformation from mofified GameState to BitmapGameState and back to GameState should be correct with no en passant target`() {
-        val initialState = checkmateCore.generateInitialState().gameStates[0]
+        val initialState = checkmateCore.getInitialGame().gameStates[0]
         val modifiedState: GameState = initialState.copy(
             currentPlayer = Player.BLACK,
             castlingRights = CastlingRights(false, true, false, false),

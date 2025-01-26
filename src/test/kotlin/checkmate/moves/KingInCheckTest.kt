@@ -19,14 +19,14 @@ internal class KingInCheckTest {
 
     @Test
     fun `white is not in check in initial setup`() {
-        val initialState = checkmateCore.generateInitialState().gameStates.last()
+        val initialState = checkmateCore.getInitialGame().gameStates.last()
         val isKingInCheck = isKingInCheck(initialState.toBitmapGameState(), Player.WHITE)
         assert(!isKingInCheck)
     }
 
     @Test
     fun `black is not in check in initial setup`() {
-        val initialState = checkmateCore.generateInitialState().gameStates.last()
+        val initialState = checkmateCore.getInitialGame().gameStates.last()
         val isKingInCheck = isKingInCheck(initialState.toBitmapGameState(), Player.BLACK)
         assert(!isKingInCheck)
     }

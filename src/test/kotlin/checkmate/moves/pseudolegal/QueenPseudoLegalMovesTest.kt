@@ -19,7 +19,7 @@ internal class QueenPseudoLegalMovesTest {
 
     @Test
     fun `queen should not move when blocked from all sides by own pieces`() {
-        val game = checkmateCore.generateInitialState()
+        val game = checkmateCore.getInitialGame()
         val gameStateWhite = game.gameStates.last().copy(currentPlayer = Player.WHITE).toBitmapGameState()
         val gameStateBlack = game.gameStates.last().copy(currentPlayer = Player.BLACK).toBitmapGameState()
 
@@ -31,7 +31,7 @@ internal class QueenPseudoLegalMovesTest {
 
     @Test
     fun `white queen should be able to perform expected moves`() {
-        val game = checkmateCore.generateInitialState()
+        val game = checkmateCore.getInitialGame()
         val gameState = game.gameStates.last().let { state ->
             state.copy(
                 currentPlayer = Player.WHITE,
@@ -74,7 +74,7 @@ internal class QueenPseudoLegalMovesTest {
 
     @Test
     fun `black queen should be able to perform expected moves`() {
-        val game = checkmateCore.generateInitialState()
+        val game = checkmateCore.getInitialGame()
         val gameState = game.gameStates.last().let { state ->
             state.copy(
                 currentPlayer = Player.BLACK,
@@ -117,7 +117,7 @@ internal class QueenPseudoLegalMovesTest {
 
     @Test
     fun `white queen should not move through own or opponent pieces`() {
-        val game = checkmateCore.generateInitialState()
+        val game = checkmateCore.getInitialGame()
         val gameState = game.gameStates.last().let { state ->
             state.copy(
                 currentPlayer = Player.WHITE,
@@ -154,7 +154,7 @@ internal class QueenPseudoLegalMovesTest {
 
     @Test
     fun `black queen should not move through own or opponent pieces`() {
-        val game = checkmateCore.generateInitialState()
+        val game = checkmateCore.getInitialGame()
         val gameState = game.gameStates.last().let { state ->
             state.copy(
                 currentPlayer = Player.BLACK,

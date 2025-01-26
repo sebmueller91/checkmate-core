@@ -11,7 +11,7 @@ import toGameState
 import java.security.InvalidParameterException
 
 internal class CheckmateCoreImpl: CheckmateCore {
-    override fun generateInitialState(): Game = Game(
+    override fun getInitialGame(): Game = Game(
         gameStates = listOf(BitmapGameState().apply { initializeStartingPosition() }.toGameState(lastMove = null))
     )
 

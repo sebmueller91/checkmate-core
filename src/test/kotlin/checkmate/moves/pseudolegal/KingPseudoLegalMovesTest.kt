@@ -19,7 +19,7 @@ internal class KingPseudoLegalMovesTest {
 
     @Test
     fun `king should not move when blocked from all sides by own pieces`() {
-        val game = checkmateCore.generateInitialState()
+        val game = checkmateCore.getInitialGame()
         val gameStateWhite = game.gameStates.last().copy(currentPlayer = Player.WHITE).toBitmapGameState()
         val gameStateBlack = game.gameStates.last().copy(currentPlayer = Player.BLACK).toBitmapGameState()
 
@@ -32,7 +32,7 @@ internal class KingPseudoLegalMovesTest {
 
     @Test
     fun `white king should be able to perform expected moves`() {
-        val game = checkmateCore.generateInitialState()
+        val game = checkmateCore.getInitialGame()
         val gameState = game.gameStates.last().let { state ->
             state.copy(
                 currentPlayer = Player.WHITE,
@@ -61,7 +61,7 @@ internal class KingPseudoLegalMovesTest {
 
     @Test
     fun `black king should be able to perform expected moves`() {
-        val game = checkmateCore.generateInitialState()
+        val game = checkmateCore.getInitialGame()
         val gameState = game.gameStates.last().let { state ->
             state.copy(
                 currentPlayer = Player.BLACK,

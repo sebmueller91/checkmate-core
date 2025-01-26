@@ -15,7 +15,7 @@ interface CheckmateCore {
      *
      * @return the initial Game object representing the starting state of the game.
      */
-    fun generateInitialState(): Game
+    fun getInitialGame(): Game
 
     /**
      * Retrieves a list of valid moves for the given game state.

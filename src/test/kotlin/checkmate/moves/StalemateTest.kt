@@ -20,14 +20,14 @@ internal class StalemateTest {
 
     @Test
     fun `white is not stalemate in initial setup`() {
-        val initialState = checkmateCore.generateInitialState().gameStates.last()
+        val initialState = checkmateCore.getInitialGame().gameStates.last()
         val isStalemate = isStalemate(initialState.toBitmapGameState())
         assert(isStalemate.not())
     }
 
     @Test
     fun `black is not stalemate in initial setup`() {
-        val initialState = checkmateCore.generateInitialState().gameStates.last()
+        val initialState = checkmateCore.getInitialGame().gameStates.last()
         val isStalemate = isStalemate(initialState.toBitmapGameState())
         assert(isStalemate.not())
     }

@@ -19,7 +19,7 @@ internal class KnightPseudoLegalMovesTest {
 
     @Test
     fun `knight should not move when when all possible cells are blocked`() {
-        val game = checkmateCore.generateInitialState()
+        val game = checkmateCore.getInitialGame()
         val gameStateBlack = game.gameStates.last().let { state ->
             state.copy(
                 currentPlayer = Player.BLACK,
@@ -53,7 +53,7 @@ internal class KnightPseudoLegalMovesTest {
 
     @Test
     fun `white knight should move and capture correct cells`() {
-        val game = checkmateCore.generateInitialState()
+        val game = checkmateCore.getInitialGame()
         val gameState = game.gameStates.last().let { state ->
             state.copy(
                 currentPlayer = Player.WHITE,
@@ -81,7 +81,7 @@ internal class KnightPseudoLegalMovesTest {
 
     @Test
     fun `black knight should move and capture correct cells`() {
-        val game = checkmateCore.generateInitialState()
+        val game = checkmateCore.getInitialGame()
         val gameState = game.gameStates.last().let { state ->
             state.copy(
                 currentPlayer = Player.BLACK,

@@ -19,14 +19,14 @@ internal class CheckmateTest {
 
     @Test
     fun `white is not checkmate in initial setup`() {
-        val initialState = checkmateCore.generateInitialState().gameStates.last()
+        val initialState = checkmateCore.getInitialGame().gameStates.last()
         val isCheckmate = isCheckmate(initialState.toBitmapGameState())
         assert(!isCheckmate)
     }
 
     @Test
     fun `black is not checkmate in initial setup`() {
-        val initialState = checkmateCore.generateInitialState().gameStates.last()
+        val initialState = checkmateCore.getInitialGame().gameStates.last()
         val isCheckmate = isCheckmate(initialState.toBitmapGameState())
         assert(!isCheckmate)
     }
