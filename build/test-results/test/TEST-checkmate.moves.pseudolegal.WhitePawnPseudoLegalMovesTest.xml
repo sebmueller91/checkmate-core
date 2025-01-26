@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="checkmate.moves.pseudolegal.WhitePawnPseudoLegalMovesTest" tests="16" skipped="0" failures="0" errors="0" timestamp="2025-01-26T09:42:24" hostname="MacBook-Pro.fritz.box" time="0.014">
+<testsuite name="checkmate.moves.pseudolegal.WhitePawnPseudoLegalMovesTest" tests="16" skipped="0" failures="0" errors="0" timestamp="2025-01-26T09:50:44" hostname="MacBook-Pro.fritz.box" time="0.006">
   <properties/>
   <testcase name="white pawn should move 1 or 2 fields forward from initial position()" classname="checkmate.moves.pseudolegal.WhitePawnPseudoLegalMovesTest" time="0.0"/>
-  <testcase name="white pawn should not promote if not on the last row()" classname="checkmate.moves.pseudolegal.WhitePawnPseudoLegalMovesTest" time="0.002"/>
+  <testcase name="white pawn should not promote if not on the last row()" classname="checkmate.moves.pseudolegal.WhitePawnPseudoLegalMovesTest" time="0.001"/>
   <testcase name="white pawn should capture diagonally to the left()" classname="checkmate.moves.pseudolegal.WhitePawnPseudoLegalMovesTest" time="0.0"/>
-  <testcase name="white pawn should not capture from right edge to left edge of the board()" classname="checkmate.moves.pseudolegal.WhitePawnPseudoLegalMovesTest" time="0.001"/>
-  <testcase name="white pawn should promote when capturing on the last row()" classname="checkmate.moves.pseudolegal.WhitePawnPseudoLegalMovesTest" time="0.001"/>
-  <testcase name="white pawn should not move when blocked by another piece()" classname="checkmate.moves.pseudolegal.WhitePawnPseudoLegalMovesTest" time="0.002"/>
+  <testcase name="white pawn should not capture from right edge to left edge of the board()" classname="checkmate.moves.pseudolegal.WhitePawnPseudoLegalMovesTest" time="0.0"/>
+  <testcase name="white pawn should promote when capturing on the last row()" classname="checkmate.moves.pseudolegal.WhitePawnPseudoLegalMovesTest" time="0.0"/>
+  <testcase name="white pawn should not move when blocked by another piece()" classname="checkmate.moves.pseudolegal.WhitePawnPseudoLegalMovesTest" time="0.001"/>
   <testcase name="white pawn should not perform left en-passant from left edge to right edge()" classname="checkmate.moves.pseudolegal.WhitePawnPseudoLegalMovesTest" time="0.0"/>
   <testcase name="white pawn should capture en-passant only immediately after the opponent's double move()" classname="checkmate.moves.pseudolegal.WhitePawnPseudoLegalMovesTest" time="0.0"/>
-  <testcase name="white pawn should be able to perform left en-passant()" classname="checkmate.moves.pseudolegal.WhitePawnPseudoLegalMovesTest" time="0.0"/>
-  <testcase name="white pawn should capture diagonally to the right()" classname="checkmate.moves.pseudolegal.WhitePawnPseudoLegalMovesTest" time="0.0"/>
-  <testcase name="white pawn should be able to perform right en-passant()" classname="checkmate.moves.pseudolegal.WhitePawnPseudoLegalMovesTest" time="0.0"/>
-  <testcase name="white pawn should promote when reaching the last row()" classname="checkmate.moves.pseudolegal.WhitePawnPseudoLegalMovesTest" time="0.001"/>
+  <testcase name="white pawn should be able to perform left en-passant()" classname="checkmate.moves.pseudolegal.WhitePawnPseudoLegalMovesTest" time="0.001"/>
+  <testcase name="white pawn should capture diagonally to the right()" classname="checkmate.moves.pseudolegal.WhitePawnPseudoLegalMovesTest" time="0.001"/>
+  <testcase name="white pawn should be able to perform right en-passant()" classname="checkmate.moves.pseudolegal.WhitePawnPseudoLegalMovesTest" time="0.001"/>
+  <testcase name="white pawn should promote when reaching the last row()" classname="checkmate.moves.pseudolegal.WhitePawnPseudoLegalMovesTest" time="0.0"/>
   <testcase name="white pawn should not perform right en-passant from right edge to left edge()" classname="checkmate.moves.pseudolegal.WhitePawnPseudoLegalMovesTest" time="0.0"/>
-  <testcase name="white pawn should move 1 field forward from the middle of the board()" classname="checkmate.moves.pseudolegal.WhitePawnPseudoLegalMovesTest" time="0.0"/>
+  <testcase name="white pawn should move 1 field forward from the middle of the board()" classname="checkmate.moves.pseudolegal.WhitePawnPseudoLegalMovesTest" time="0.001"/>
   <testcase name="white pawn should not capture from left edge to right edge of the board()" classname="checkmate.moves.pseudolegal.WhitePawnPseudoLegalMovesTest" time="0.0"/>
-  <testcase name="getValidMoves should return an empty list for an empty field()" classname="checkmate.moves.pseudolegal.WhitePawnPseudoLegalMovesTest" time="0.001"/>
+  <testcase name="getValidMoves should return an empty list for an empty field()" classname="checkmate.moves.pseudolegal.WhitePawnPseudoLegalMovesTest" time="0.0"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

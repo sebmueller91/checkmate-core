@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="checkmate.moves.legal.LegalMovesTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2025-01-26T09:42:24" hostname="MacBook-Pro.fritz.box" time="0.004">
+<testsuite name="checkmate.moves.legal.LegalMovesTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2025-01-26T09:50:44" hostname="MacBook-Pro.fritz.box" time="0.004">
   <properties/>
-  <testcase name="black rook should be able to perform move when king can be freed from check()" classname="checkmate.moves.legal.LegalMovesTest" time="0.001"/>
+  <testcase name="black rook should be able to perform move when king can be freed from check()" classname="checkmate.moves.legal.LegalMovesTest" time="0.0"/>
   <testcase name="black pawn should be able to perform legal move()" classname="checkmate.moves.legal.LegalMovesTest" time="0.0"/>
   <testcase name="white pawn should be able to perform legal move()" classname="checkmate.moves.legal.LegalMovesTest" time="0.0"/>
   <testcase name="white bishop not should be able to perform move when king is in check()" classname="checkmate.moves.legal.LegalMovesTest" time="0.0"/>
   <testcase name="white rook should be able to perform move when king can be freed from check()" classname="checkmate.moves.legal.LegalMovesTest" time="0.0"/>
-  <testcase name="get valid moves returns moves of all pieces()" classname="checkmate.moves.legal.LegalMovesTest" time="0.0"/>
+  <testcase name="get valid moves returns moves of all pieces()" classname="checkmate.moves.legal.LegalMovesTest" time="0.001"/>
   <testcase name="black bishop not should be able to perform move when king is in check()" classname="checkmate.moves.legal.LegalMovesTest" time="0.001"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>

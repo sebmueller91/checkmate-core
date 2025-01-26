@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="checkmate.moves.KingInCheckTest" tests="16" skipped="0" failures="0" errors="0" timestamp="2025-01-26T09:42:24" hostname="MacBook-Pro.fritz.box" time="0.009">
+<testsuite name="checkmate.moves.KingInCheckTest" tests="16" skipped="0" failures="0" errors="0" timestamp="2025-01-26T09:50:44" hostname="MacBook-Pro.fritz.box" time="0.007">
   <properties/>
-  <testcase name="white can be in check by black Bishop()" classname="checkmate.moves.KingInCheckTest" time="0.001"/>
+  <testcase name="white can be in check by black Bishop()" classname="checkmate.moves.KingInCheckTest" time="0.0"/>
   <testcase name="white can be in check by black king()" classname="checkmate.moves.KingInCheckTest" time="0.0"/>
   <testcase name="white can be in check by black pawn()" classname="checkmate.moves.KingInCheckTest" time="0.0"/>
   <testcase name="white can be in check by black rook()" classname="checkmate.moves.KingInCheckTest" time="0.0"/>
@@ -9,14 +9,14 @@
   <testcase name="black can be in check by white Bishop()" classname="checkmate.moves.KingInCheckTest" time="0.0"/>
   <testcase name="black not in check when path is blocked()" classname="checkmate.moves.KingInCheckTest" time="0.0"/>
   <testcase name="white can be in check by black knight()" classname="checkmate.moves.KingInCheckTest" time="0.0"/>
-  <testcase name="black can be in check by white queen()" classname="checkmate.moves.KingInCheckTest" time="0.001"/>
+  <testcase name="black can be in check by white queen()" classname="checkmate.moves.KingInCheckTest" time="0.0"/>
   <testcase name="black can be in check by white knight()" classname="checkmate.moves.KingInCheckTest" time="0.001"/>
   <testcase name="black can be in check by white king()" classname="checkmate.moves.KingInCheckTest" time="0.0"/>
-  <testcase name="black can be in check by white pawn()" classname="checkmate.moves.KingInCheckTest" time="0.0"/>
+  <testcase name="black can be in check by white pawn()" classname="checkmate.moves.KingInCheckTest" time="0.001"/>
   <testcase name="black can be in check by white rook()" classname="checkmate.moves.KingInCheckTest" time="0.0"/>
   <testcase name="white is not in check in initial setup()" classname="checkmate.moves.KingInCheckTest" time="0.0"/>
   <testcase name="white can be in check by black queen()" classname="checkmate.moves.KingInCheckTest" time="0.001"/>
-  <testcase name="black is not in check in initial setup()" classname="checkmate.moves.KingInCheckTest" time="0.001"/>
+  <testcase name="black is not in check in initial setup()" classname="checkmate.moves.KingInCheckTest" time="0.0"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

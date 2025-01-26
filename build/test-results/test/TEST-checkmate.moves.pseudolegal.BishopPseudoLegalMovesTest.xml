@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="checkmate.moves.pseudolegal.BishopPseudoLegalMovesTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2025-01-26T09:42:24" hostname="MacBook-Pro.fritz.box" time="0.009">
+<testsuite name="checkmate.moves.pseudolegal.BishopPseudoLegalMovesTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2025-01-26T09:50:44" hostname="MacBook-Pro.fritz.box" time="0.012">
   <properties/>
-  <testcase name="black bishop should be able to perform expected moves()" classname="checkmate.moves.pseudolegal.BishopPseudoLegalMovesTest" time="0.004"/>
-  <testcase name="white bishop should be able to perform expected moves()" classname="checkmate.moves.pseudolegal.BishopPseudoLegalMovesTest" time="0.0"/>
-  <testcase name="bishop should not move when blocked from all sides from own pieces()" classname="checkmate.moves.pseudolegal.BishopPseudoLegalMovesTest" time="0.004"/>
+  <testcase name="black bishop should be able to perform expected moves()" classname="checkmate.moves.pseudolegal.BishopPseudoLegalMovesTest" time="0.005"/>
+  <testcase name="white bishop should be able to perform expected moves()" classname="checkmate.moves.pseudolegal.BishopPseudoLegalMovesTest" time="0.001"/>
+  <testcase name="bishop should not move when blocked from all sides from own pieces()" classname="checkmate.moves.pseudolegal.BishopPseudoLegalMovesTest" time="0.003"/>
   <testcase name="black bishop should not move through own or opponent pieces()" classname="checkmate.moves.pseudolegal.BishopPseudoLegalMovesTest" time="0.001"/>
   <testcase name="white bishop should not move through own or opponent pieces()" classname="checkmate.moves.pseudolegal.BishopPseudoLegalMovesTest" time="0.0"/>
   <system-out><![CDATA[]]></system-out>

@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="checkmate.moves.execution.KingMoveExecutionTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2025-01-26T09:42:24" hostname="MacBook-Pro.fritz.box" time="0.002">
+<testsuite name="checkmate.moves.execution.KingMoveExecutionTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2025-01-26T09:50:44" hostname="MacBook-Pro.fritz.box" time="0.003">
   <properties/>
-  <testcase name="black king can castle king side()" classname="checkmate.moves.execution.KingMoveExecutionTest" time="0.0"/>
+  <testcase name="black king can castle king side()" classname="checkmate.moves.execution.KingMoveExecutionTest" time="0.001"/>
   <testcase name="white king can capture black piece()" classname="checkmate.moves.execution.KingMoveExecutionTest" time="0.0"/>
   <testcase name="black king can capture white piece()" classname="checkmate.moves.execution.KingMoveExecutionTest" time="0.0"/>
-  <testcase name="white king can perform simple move()" classname="checkmate.moves.execution.KingMoveExecutionTest" time="0.0"/>
+  <testcase name="white king can perform simple move()" classname="checkmate.moves.execution.KingMoveExecutionTest" time="0.001"/>
   <testcase name="white king can castle queen side()" classname="checkmate.moves.execution.KingMoveExecutionTest" time="0.0"/>
   <testcase name="black king can perform simple move()" classname="checkmate.moves.execution.KingMoveExecutionTest" time="0.0"/>
-  <testcase name="black king can castle queen side()" classname="checkmate.moves.execution.KingMoveExecutionTest" time="0.001"/>
-  <testcase name="white king can castle king side()" classname="checkmate.moves.execution.KingMoveExecutionTest" time="0.0"/>
+  <testcase name="black king can castle queen side()" classname="checkmate.moves.execution.KingMoveExecutionTest" time="0.0"/>
+  <testcase name="white king can castle king side()" classname="checkmate.moves.execution.KingMoveExecutionTest" time="0.001"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

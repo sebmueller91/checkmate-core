@@ -39,6 +39,9 @@ jobs:
         echo "VERSION=$VERSION" >> $GITHUB_ENV
         echo "Extracted version: $VERSION"
 
+    - name: List directory contents before tests
+      run: ls -la
+
     - name: Run tests
       run: ./gradlew test
 
