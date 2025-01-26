@@ -1,10 +1,13 @@
 package checkmate.moves.legal
 
 import checkmate.CheckmateCoreImpl
+import checkmate.exception.InvalidPositionException
 import checkmate.generateEmptyBoardGameState
 import checkmate.model.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
+import kotlin.test.assertEquals
 
 internal class LegalMovesTest {
     private lateinit var checkmateCore: CheckmateCoreImpl
@@ -12,6 +15,39 @@ internal class LegalMovesTest {
     @BeforeEach
     fun setUp() {
         checkmateCore = CheckmateCoreImpl()
+    }
+
+    @Test
+    fun `getting moves from invalid position throws InvalidPositionException`() {
+        val emptyGameState = generateEmptyBoardGameState()
+        val gameState = emptyGameState.copy(
+            currentPlayer = Player.WHITE,
+            board = emptyGameState.board.map { it.toMutableList() }.toMutableList()
+                .apply {
+                    this[1][3] = Piece(type = Type.PAWN, color = Player.WHITE)
+
+                })
+
+        assertThrows<InvalidPositionException>() {
+            checkmateCore.getValidMoves(gameState, Position(8, 3))
+        }
+
+    }
+
+    @Test
+    fun `getting moves from empty position throws InvalidPositionException`() {
+        val emptyGameState = generateEmptyBoardGameState()
+        val gameState = emptyGameState.copy(
+            currentPlayer = Player.WHITE,
+            board = emptyGameState.board.map { it.toMutableList() }.toMutableList()
+                .apply {
+                    this[1][3] = Piece(type = Type.PAWN, color = Player.WHITE)
+
+                })
+
+        val result = checkmateCore.getValidMoves(gameState, Position(4, 4))
+
+        assertEquals(emptyList(), result)
     }
 
     @Test
