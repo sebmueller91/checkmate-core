@@ -58,7 +58,6 @@ internal class CheckmateCoreImpl: CheckmateCore {
         if (!isValidMove(curGameState, move)) {
             throw InvalidMoveException("Can not execute move because it is not valid. Move: $move")
         }
-        // TODO: Remove print
         val newGameState = curGameState.toBitmapGameState().executeMove(move).toGameState(move)
         return game.copy(gameStates = game.gameStates.subList(0, toIndex+1) + newGameState)
     }
