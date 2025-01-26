@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="checkmate.moves.StalemateTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2025-01-26T09:27:56" hostname="MacBook-Pro.fritz.box" time="0.007">
+<testsuite name="checkmate.moves.StalemateTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2025-01-26T09:42:24" hostname="MacBook-Pro.fritz.box" time="0.004">
   <properties/>
   <testcase name="stalemate returns true if white is stalemate()" classname="checkmate.moves.StalemateTest" time="0.001"/>
-  <testcase name="stalemate returns false if white is checkmate()" classname="checkmate.moves.StalemateTest" time="0.001"/>
+  <testcase name="stalemate returns false if white is checkmate()" classname="checkmate.moves.StalemateTest" time="0.0"/>
   <testcase name="stalemate returns false if black can move piece()" classname="checkmate.moves.StalemateTest" time="0.001"/>
   <testcase name="stalemate returns false if white can move piece()" classname="checkmate.moves.StalemateTest" time="0.0"/>
   <testcase name="white is not stalemate in initial setup()" classname="checkmate.moves.StalemateTest" time="0.001"/>
-  <testcase name="stalemate returns true if black is stalemate()" classname="checkmate.moves.StalemateTest" time="0.001"/>
-  <testcase name="black is not stalemate in initial setup()" classname="checkmate.moves.StalemateTest" time="0.0"/>
+  <testcase name="stalemate returns true if black is stalemate()" classname="checkmate.moves.StalemateTest" time="0.0"/>
+  <testcase name="black is not stalemate in initial setup()" classname="checkmate.moves.StalemateTest" time="0.001"/>
   <testcase name="stalemate returns false if black is checkmate()" classname="checkmate.moves.StalemateTest" time="0.0"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>

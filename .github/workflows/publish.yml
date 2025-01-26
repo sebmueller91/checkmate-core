@@ -31,6 +31,7 @@ jobs:
       run: |
         VERSION=$(grep '^version' build.gradle.kts | awk '{print $3}' | tr -d '"')
         echo "VERSION=$VERSION" >> $GITHUB_ENV
+        echo "Extracted version: $VERSION"
 
     - name: Run tests
       run: ./gradlew test

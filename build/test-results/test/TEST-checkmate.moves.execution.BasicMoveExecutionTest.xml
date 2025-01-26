@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="checkmate.moves.execution.BasicMoveExecutionTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2025-01-26T09:27:56" hostname="MacBook-Pro.fritz.box" time="0.003">
+<testsuite name="checkmate.moves.execution.BasicMoveExecutionTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2025-01-26T09:42:24" hostname="MacBook-Pro.fritz.box" time="0.004">
   <properties/>
-  <testcase name="half move clock gets incremented after black move()" classname="checkmate.moves.execution.BasicMoveExecutionTest" time="0.0"/>
+  <testcase name="half move clock gets incremented after black move()" classname="checkmate.moves.execution.BasicMoveExecutionTest" time="0.001"/>
   <testcase name="isWhiteTurn set to true after black move()" classname="checkmate.moves.execution.BasicMoveExecutionTest" time="0.0"/>
   <testcase name="isWhiteTurn set to false after white move ()" classname="checkmate.moves.execution.BasicMoveExecutionTest" time="0.0"/>
   <testcase name="half move clock gets incremented after white move()" classname="checkmate.moves.execution.BasicMoveExecutionTest" time="0.001"/>
