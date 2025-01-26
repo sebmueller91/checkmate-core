@@ -9,11 +9,11 @@ import org.junit.jupiter.api.Test
 import toGameState
 
 internal class ConversionTest {
-    private lateinit var checkmateCore: CheckmateCore
+    private lateinit var checkmateCore: CheckmateCoreImpl
 
     @BeforeEach
     fun setUp() {
-        checkmateCore = CheckmateCore()
+        checkmateCore = CheckmateCoreImpl()
     }
 
     @Test

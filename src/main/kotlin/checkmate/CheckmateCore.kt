@@ -1,74 +1,56 @@
 package checkmate
 
-import checkmate.exception.InvalidMoveException
-import checkmate.exception.InvalidPositionException
-import checkmate.model.*
-import checkmate.moves.executeMove
-import checkmate.moves.model.BitmapGameState
-import checkmate.moves.type.*
-import checkmate.util.toBitmapGameState
-import toGameState
-import java.security.InvalidParameterException
+import checkmate.model.Game
+import checkmate.model.GameState
+import checkmate.model.Move
+import checkmate.model.Position
 
-// TODO: Document interface
-class CheckmateCore {
-    fun generateInitialState(): Game = Game(
-        gameStates = listOf(BitmapGameState().apply { initializeStartingPosition() }.toGameState(lastMove = null))
-    )
+/**
+ * The CheckmateCore interface defines the core functionalities required for managing a chess game.
+ */
+interface CheckmateCore {
 
-    fun getValidMoves(gameState: GameState): List<Move> {
-        val validMoves = mutableListOf<Move>()
-        for (rank in 0..7) {
-            for (file in 0..7) {
-                val piece = gameState.board[rank][file] ?: continue
-                if (piece.color != gameState.currentPlayer) {
-                    continue
-                }
+    /**
+     * Generates the initial state of the game.
+     *
+     * @return the initial Game object representing the starting state of the game.
+     */
+    fun generateInitialState(): Game
 
-                validMoves.addAll(getValidMoves(gameState, Position(rank, file)))
-            }
-        }
-        return validMoves
-    }
+    /**
+     * Retrieves a list of valid moves for the given game state.
+     *
+     * @param gameState the current state of the game.
+     * @return a list of valid Move objects.
+     */
+    fun getValidMoves(gameState: GameState): List<Move>
 
+    /**
+     * Checks if a given move is valid for the current game state.
+     *
+     * @param gameState the current state of the game.
+     * @param move the move to be validated.
+     * @return true if the move is valid, false otherwise.
+     */
     fun isValidMove(gameState: GameState, move: Move): Boolean = // TODO: Test
         move in getValidMoves(gameState)
 
-    fun getValidMoves(gameState: GameState, position: Position): List<Move> {
-        if (position.rank !in 0..7 || position.file !in 0..7) {
-            throw InvalidPositionException("Position $position is not valid.")
-        }
+    /**
+     * Retrieves a list of valid moves for a specific position in the given game state.
+     *
+     * @param gameState the current state of the game.
+     * @param position the position on the board to get valid moves for.
+     * @return a list of valid Move objects for the specified position.
+     */
+    fun getValidMoves(gameState: GameState, position: Position): List<Move>
 
-        if (gameState.currentPlayer != gameState.board[position.rank][position.file]?.color) {
-            return listOf()
-        }
-
-        val bitmapGameState = gameState.toBitmapGameState()
-        val pieceType = gameState.board[position.rank][position.file]?.type ?: return listOf()
-        val pieceMoves = getPieceMoves(pieceType)
-
-        return pieceMoves.generateLegalMoves(bitmapGameState, position)
-    }
-
-    fun executeMove(move: Move, game: Game, moveIndex: Int? = null): Game { // TODO: Test
-        if (moveIndex != null && moveIndex !in game.gameStates.indices) {
-            throw InvalidParameterException("Can not execute move at index $moveIndex. Valid indices are between 0 and ${game.gameStates.size - 1}.")
-        }
-        val toIndex = moveIndex ?: (game.gameStates.size - 1)
-        val curGameState = game.gameStates[toIndex]
-        if (!isValidMove(curGameState, move)) {
-            throw InvalidMoveException("Can not execute move because it is not valid. Move: $move")
-        }
-        val newGameState = curGameState.toBitmapGameState().executeMove(move).toGameState(move)
-        return game.copy(gameStates = game.gameStates.subList(0, toIndex+1) + newGameState)
-    }
-
-    private fun getPieceMoves(type: Type) = when (type) {
-        Type.PAWN -> PawnMoves
-        Type.KNIGHT -> KnightMoves
-        Type.BISHOP -> BishopMoves
-        Type.ROOK -> RookMoves
-        Type.QUEEN -> QueenMoves
-        Type.KING -> KingMoves
-    }
+    /**
+     * Executes a move in the given game.
+     *
+     * @param move the move to be executed.
+     * @param game the game in which the move is to be executed.
+     * @param moveIndex an optional index specifying the move order.
+     * * @return the updated game after executing the move.
+     */
+    fun executeMove(move: Move, game: Game, moveIndex: Int? = null): Game
 }

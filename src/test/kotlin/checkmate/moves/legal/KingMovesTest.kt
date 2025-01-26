@@ -1,17 +1,17 @@
 package checkmate.moves.legal
 
-import checkmate.CheckmateCore
+import checkmate.CheckmateCoreImpl
 import checkmate.generateEmptyBoardGameState
 import checkmate.model.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 internal class KingMovesTest {
-    private lateinit var checkmateCore: CheckmateCore
+    private lateinit var checkmateCore: CheckmateCoreImpl
 
     @BeforeEach
     fun setUp() {
-        checkmateCore = CheckmateCore()
+        checkmateCore = CheckmateCoreImpl()
     }
 
     @Test

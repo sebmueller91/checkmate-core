@@ -1,6 +1,6 @@
 package checkmate.moves
 
-import checkmate.CheckmateCore
+import checkmate.CheckmateCoreImpl
 import checkmate.generateEmptyBoardGameState
 import checkmate.model.CastlingRights
 import checkmate.model.Piece
@@ -11,11 +11,11 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 internal class StalemateTest {
-    private lateinit var checkmateCore: CheckmateCore
+    private lateinit var checkmateCore: CheckmateCoreImpl
 
     @BeforeEach
     fun setUp() {
-        checkmateCore = CheckmateCore()
+        checkmateCore = CheckmateCoreImpl()
     }
 
     @Test

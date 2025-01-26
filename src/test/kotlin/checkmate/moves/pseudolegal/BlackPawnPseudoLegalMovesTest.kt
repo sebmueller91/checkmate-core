@@ -1,6 +1,6 @@
 package checkmate.moves.pseudolegal
 
-import checkmate.CheckmateCore
+import checkmate.CheckmateCoreImpl
 import checkmate.model.*
 import checkmate.moves.type.PawnMoves
 import checkmate.util.toBitmapGameState
@@ -9,11 +9,11 @@ import org.junit.jupiter.api.Test
 import kotlin.test.assertTrue
 
 internal class BlackPawnPseudoLegalMovesTest {
-    private lateinit var checkmateCore: CheckmateCore
+    private lateinit var checkmateCore: CheckmateCoreImpl
 
     @BeforeEach
     fun setUp() {
-        checkmateCore = CheckmateCore()
+        checkmateCore = CheckmateCoreImpl()
     }
 
     @Test

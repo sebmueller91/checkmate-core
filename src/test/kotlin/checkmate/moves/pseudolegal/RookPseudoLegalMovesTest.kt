@@ -1,6 +1,6 @@
 package checkmate.moves.pseudolegal
 
-import checkmate.CheckmateCore
+import checkmate.CheckmateCoreImpl
 import checkmate.model.*
 import checkmate.moves.type.RookMoves
 import checkmate.util.toBitmapGameState
@@ -10,11 +10,11 @@ import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 internal class RookPseudoLegalMovesTest {
-    private lateinit var checkmateCore: CheckmateCore
+    private lateinit var checkmateCore: CheckmateCoreImpl
 
     @BeforeEach
     fun setUp() {
-        checkmateCore = CheckmateCore()
+        checkmateCore = CheckmateCoreImpl()
     }
 
     @Test
