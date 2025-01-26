@@ -23,6 +23,12 @@ jobs:
         distribution: 'temurin'
         java-version: '17'
 
+    - name: Set execute permissions for gradlew
+      run: chmod +x gradlew
+
+    - name: Print environment
+      run: env
+
     - name: List directory contents
       run: ls -la
 
