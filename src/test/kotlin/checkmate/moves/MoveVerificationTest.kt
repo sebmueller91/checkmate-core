@@ -1,6 +1,6 @@
 package checkmate.moves
 
-import checkmate.CheckmateCore
+import checkmate.CheckmateCoreImpl
 import checkmate.model.*
 import checkmate.util.toBitmapGameState
 import org.junit.jupiter.api.BeforeEach
@@ -9,16 +9,16 @@ import toGameState
 import kotlin.test.assertEquals
 
 internal class MoveVerificationTest {
-    private lateinit var checkmateCore: CheckmateCore
+    private lateinit var checkmateCore: CheckmateCoreImpl
 
     @BeforeEach
     fun setUp() {
-        checkmateCore = CheckmateCore()
+        checkmateCore = CheckmateCoreImpl()
     }
 
     @Test
     fun `possible moves are legal and checking does not alter game state`() {
-        val game = checkmateCore.generateInitialState()
+        val game = checkmateCore.getInitialGame()
         val gameState = game.gameStates.last().let { state ->
             state.copy(
                 currentPlayer = Player.WHITE,
@@ -44,7 +44,7 @@ internal class MoveVerificationTest {
 
     @Test
     fun `move is invalid when own king is in check by knight`() {
-        val game = checkmateCore.generateInitialState()
+        val game = checkmateCore.getInitialGame()
         val gameState = game.gameStates.last().let { state ->
             state.copy(
                 currentPlayer = Player.WHITE,
@@ -70,7 +70,7 @@ internal class MoveVerificationTest {
 
     @Test
     fun `move is invalid when own king is in check by bishop`() {
-        val game = checkmateCore.generateInitialState()
+        val game = checkmateCore.getInitialGame()
         val gameState = game.gameStates.last().let { state ->
             state.copy(
                 currentPlayer = Player.WHITE,
@@ -95,7 +95,7 @@ internal class MoveVerificationTest {
 
     @Test
     fun `move is invalid when own king is in check by queen`() {
-        val game = checkmateCore.generateInitialState()
+        val game = checkmateCore.getInitialGame()
         val gameState = game.gameStates.last().let { state ->
             state.copy(
                 currentPlayer = Player.WHITE,
@@ -120,7 +120,7 @@ internal class MoveVerificationTest {
 
     @Test
     fun `move is invalid when own king is in check by rook`() {
-        val game = checkmateCore.generateInitialState()
+        val game = checkmateCore.getInitialGame()
         val gameState = game.gameStates.last().let { state ->
             state.copy(
                 currentPlayer = Player.WHITE,
@@ -145,7 +145,7 @@ internal class MoveVerificationTest {
 
     @Test
     fun `move is invalid when own king is in check by other king`() {
-        val game = checkmateCore.generateInitialState()
+        val game = checkmateCore.getInitialGame()
         val gameState = game.gameStates.last().let { state ->
             state.copy(
                 currentPlayer = Player.WHITE,
@@ -169,7 +169,7 @@ internal class MoveVerificationTest {
 
     @Test
     fun `move is invalid when own king is in check by pawn`() {
-        val game = checkmateCore.generateInitialState()
+        val game = checkmateCore.getInitialGame()
         val gameState = game.gameStates.last().let { state ->
             state.copy(
                 currentPlayer = Player.WHITE,
@@ -193,7 +193,7 @@ internal class MoveVerificationTest {
 
     @Test
     fun `player can perform move that frees the king from check`() {
-        val game = checkmateCore.generateInitialState()
+        val game = checkmateCore.getInitialGame()
         val gameState = game.gameStates.last().let { state ->
             state.copy(
                 currentPlayer = Player.BLACK,

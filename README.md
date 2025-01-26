@@ -34,8 +34,19 @@ import checkmate.model.GameState
 import checkmate.model.Move
 import checkmate.model.Position
 
-val checkmateCore: CheckmateCoreBuilder.build()
+fun main() {
+    // Create the builder
+    val builder = CheckmateCoreBuilder()
 
-val gameState = checkmateCore.generateInitialState()
-// Will be updated before initial release...
+    // Build the CheckmateCore instance
+    val checkmateCore = builder.build()
+
+    // Use the CheckmateCore instance to generate an intial chess game
+    val initialState = checkmateCore.generateInitialState()
+    
+    val move = checkmateCore.g
+
+    // Close the builder to clean up the Koin context
+    builder.close()
+}
 ```

@@ -1,6 +1,6 @@
 package checkmate.moves
 
-import checkmate.CheckmateCore
+import checkmate.CheckmateCoreImpl
 import checkmate.generateEmptyBoardGameState
 import checkmate.model.Piece
 import checkmate.model.Player
@@ -10,23 +10,23 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 internal class KingInCheckTest {
-    private lateinit var checkmateCore: CheckmateCore
+    private lateinit var checkmateCore: CheckmateCoreImpl
 
     @BeforeEach
     fun setUp() {
-        checkmateCore = CheckmateCore()
+        checkmateCore = CheckmateCoreImpl()
     }
 
     @Test
     fun `white is not in check in initial setup`() {
-        val initialState = checkmateCore.generateInitialState().gameStates.last()
+        val initialState = checkmateCore.getInitialGame().gameStates.last()
         val isKingInCheck = isKingInCheck(initialState.toBitmapGameState(), Player.WHITE)
         assert(!isKingInCheck)
     }
 
     @Test
     fun `black is not in check in initial setup`() {
-        val initialState = checkmateCore.generateInitialState().gameStates.last()
+        val initialState = checkmateCore.getInitialGame().gameStates.last()
         val isKingInCheck = isKingInCheck(initialState.toBitmapGameState(), Player.BLACK)
         assert(!isKingInCheck)
     }

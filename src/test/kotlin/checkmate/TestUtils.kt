@@ -5,7 +5,7 @@ import checkmate.model.Player
 import checkmate.moves.model.BitmapGameState
 
 internal fun generateEmptyBoardGameState(): GameState {
-    val game = CheckmateCore().generateInitialState()
+    val game = CheckmateCoreImpl().getInitialGame()
     return game.gameStates.last().let { state ->
         state.copy(
             currentPlayer = Player.WHITE,

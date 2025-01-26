@@ -1,6 +1,6 @@
 package checkmate.moves.pseudolegal
 
-import checkmate.CheckmateCore
+import checkmate.CheckmateCoreImpl
 import checkmate.model.*
 import checkmate.moves.type.RookMoves
 import checkmate.util.toBitmapGameState
@@ -10,16 +10,16 @@ import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 internal class RookPseudoLegalMovesTest {
-    private lateinit var checkmateCore: CheckmateCore
+    private lateinit var checkmateCore: CheckmateCoreImpl
 
     @BeforeEach
     fun setUp() {
-        checkmateCore = CheckmateCore()
+        checkmateCore = CheckmateCoreImpl()
     }
 
     @Test
     fun `rook should not move when blocked from all sides from own pieces`() {
-        val game = checkmateCore.generateInitialState()
+        val game = checkmateCore.getInitialGame()
         val gameStateWhite = game.gameStates.last().copy(currentPlayer = Player.WHITE).toBitmapGameState()
         val gameStateBlack = game.gameStates.last().copy(currentPlayer = Player.BLACK).toBitmapGameState()
 
@@ -33,7 +33,7 @@ internal class RookPseudoLegalMovesTest {
 
     @Test
     fun `white rook should be able to perform expected moves`() {
-        val game = checkmateCore.generateInitialState()
+        val game = checkmateCore.getInitialGame()
         val gameState = game.gameStates.last().let { state ->
             state.copy(
                 currentPlayer = Player.WHITE,
@@ -63,7 +63,7 @@ internal class RookPseudoLegalMovesTest {
 
     @Test
     fun `black rook should be able to perform expected moves`() {
-        val game = checkmateCore.generateInitialState()
+        val game = checkmateCore.getInitialGame()
         val gameState = game.gameStates.last().let { state ->
             state.copy(
                 currentPlayer = Player.BLACK,
@@ -93,7 +93,7 @@ internal class RookPseudoLegalMovesTest {
 
     @Test
     fun `white rook should not move through own or opponent pieces`() {
-        val game = checkmateCore.generateInitialState()
+        val game = checkmateCore.getInitialGame()
         val gameState = game.gameStates.last().let { state ->
             state.copy(
                 currentPlayer = Player.WHITE,
@@ -120,7 +120,7 @@ internal class RookPseudoLegalMovesTest {
 
     @Test
     fun `black rook should not move through own or opponent pieces`() {
-        val game = checkmateCore.generateInitialState()
+        val game = checkmateCore.getInitialGame()
         val gameState = game.gameStates.last().let { state ->
             state.copy(
                 currentPlayer = Player.BLACK,

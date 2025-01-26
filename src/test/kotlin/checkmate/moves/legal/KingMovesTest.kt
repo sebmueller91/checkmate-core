@@ -1,22 +1,22 @@
 package checkmate.moves.legal
 
-import checkmate.CheckmateCore
+import checkmate.CheckmateCoreImpl
 import checkmate.generateEmptyBoardGameState
 import checkmate.model.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 internal class KingMovesTest {
-    private lateinit var checkmateCore: CheckmateCore
+    private lateinit var checkmateCore: CheckmateCoreImpl
 
     @BeforeEach
     fun setUp() {
-        checkmateCore = CheckmateCore()
+        checkmateCore = CheckmateCoreImpl()
     }
 
     @Test
     fun `white king should be able to perform queen side castling`() {
-        val game = checkmateCore.generateInitialState()
+        val game = checkmateCore.getInitialGame()
         val gameState = game.gameStates.last().let { state ->
             state.copy(
                 currentPlayer = Player.WHITE,
@@ -42,7 +42,7 @@ internal class KingMovesTest {
 
     @Test
     fun `white king should not be able to perform queen side castling when its not possible`() {
-        val game = checkmateCore.generateInitialState()
+        val game = checkmateCore.getInitialGame()
         val gameState = game.gameStates.last().let { state ->
             state.copy(
                 currentPlayer = Player.WHITE,
@@ -61,7 +61,7 @@ internal class KingMovesTest {
 
     @Test
     fun `white king should not be able to perform queen side castling when piece in between`() {
-        val game = checkmateCore.generateInitialState()
+        val game = checkmateCore.getInitialGame()
         val gameState = game.gameStates.last().let { state ->
             state.copy(
                 currentPlayer = Player.WHITE,
@@ -79,7 +79,7 @@ internal class KingMovesTest {
 
     @Test
     fun `white king should not be able to perform queen side castling when king is in check`() {
-        val game = checkmateCore.generateInitialState()
+        val game = checkmateCore.getInitialGame()
         val gameState = game.gameStates.last().let { state ->
             state.copy(
                 currentPlayer = Player.WHITE,
@@ -99,7 +99,7 @@ internal class KingMovesTest {
 
     @Test
     fun `white king should not be able to perform queen side castling when king needs to move through check`() {
-        val game = checkmateCore.generateInitialState()
+        val game = checkmateCore.getInitialGame()
         val gameState = game.gameStates.last().let { state ->
             state.copy(
                 currentPlayer = Player.WHITE,
@@ -119,7 +119,7 @@ internal class KingMovesTest {
 
     @Test
     fun `white king should be able to perform king side castling`() {
-        val game = checkmateCore.generateInitialState()
+        val game = checkmateCore.getInitialGame()
         val gameState = game.gameStates.last().let { state ->
             state.copy(
                 currentPlayer = Player.WHITE,
@@ -144,7 +144,7 @@ internal class KingMovesTest {
 
     @Test
     fun `white king should not be able to perform king side castling when its not possible`() {
-        val game = checkmateCore.generateInitialState()
+        val game = checkmateCore.getInitialGame()
         val gameState = game.gameStates.last().let { state ->
             state.copy(
                 currentPlayer = Player.WHITE,
@@ -162,7 +162,7 @@ internal class KingMovesTest {
 
     @Test
     fun `white king should not be able to perform king side castling when piece in between`() {
-        val game = checkmateCore.generateInitialState()
+        val game = checkmateCore.getInitialGame()
         val gameState = game.gameStates.last().let { state ->
             state.copy(
                 currentPlayer = Player.WHITE,
@@ -178,7 +178,7 @@ internal class KingMovesTest {
 
     @Test
     fun `white king should not be able to perform king side castling when king is in check`() {
-        val game = checkmateCore.generateInitialState()
+        val game = checkmateCore.getInitialGame()
         val gameState = game.gameStates.last().let { state ->
             state.copy(
                 currentPlayer = Player.WHITE,
@@ -197,7 +197,7 @@ internal class KingMovesTest {
 
     @Test
     fun `white king should not be able to perform king side castling when king needs to move through check`() {
-        val game = checkmateCore.generateInitialState()
+        val game = checkmateCore.getInitialGame()
         val gameState = game.gameStates.last().let { state ->
             state.copy(
                 currentPlayer = Player.WHITE,
@@ -216,7 +216,7 @@ internal class KingMovesTest {
 
     @Test
     fun `black king should be able to perform queen side castling`() {
-        val game = checkmateCore.generateInitialState()
+        val game = checkmateCore.getInitialGame()
         val gameState = game.gameStates.last().let { state ->
             state.copy(
                 currentPlayer = Player.BLACK,
@@ -242,7 +242,7 @@ internal class KingMovesTest {
 
     @Test
     fun `black king should not be able to perform queen side castling when its not possible`() {
-        val game = checkmateCore.generateInitialState()
+        val game = checkmateCore.getInitialGame()
         val gameState = game.gameStates.last().let { state ->
             state.copy(
                 currentPlayer = Player.BLACK,
@@ -261,7 +261,7 @@ internal class KingMovesTest {
 
     @Test
     fun `black king should not be able to perform queen side castling when piece in between`() {
-        val game = checkmateCore.generateInitialState()
+        val game = checkmateCore.getInitialGame()
         val gameState = game.gameStates.last().let { state ->
             state.copy(
                 currentPlayer = Player.BLACK,
@@ -279,7 +279,7 @@ internal class KingMovesTest {
 
     @Test
     fun `black king should not be able to perform queen side castling when king is in check`() {
-        val game = checkmateCore.generateInitialState()
+        val game = checkmateCore.getInitialGame()
         val gameState = game.gameStates.last().let { state ->
             state.copy(
                 currentPlayer = Player.BLACK,
@@ -299,7 +299,7 @@ internal class KingMovesTest {
 
     @Test
     fun `black king should not be able to perform queen side castling when king needs to move through check`() {
-        val game = checkmateCore.generateInitialState()
+        val game = checkmateCore.getInitialGame()
         val gameState = game.gameStates.last().let { state ->
             state.copy(
                 currentPlayer = Player.BLACK,
@@ -318,7 +318,7 @@ internal class KingMovesTest {
 
     @Test
     fun `black king should be able to perform king side castling`() {
-        val game = checkmateCore.generateInitialState()
+        val game = checkmateCore.getInitialGame()
         val gameState = game.gameStates.last().let { state ->
             state.copy(
                 currentPlayer = Player.BLACK,
@@ -344,7 +344,7 @@ internal class KingMovesTest {
 
     @Test
     fun `black king should not be able to perform king side castling when its not possible`() {
-        val game = checkmateCore.generateInitialState()
+        val game = checkmateCore.getInitialGame()
         val gameState = game.gameStates.last().let { state ->
             state.copy(
                 currentPlayer = Player.BLACK,
@@ -362,7 +362,7 @@ internal class KingMovesTest {
 
     @Test
     fun `black king should not be able to perform king side castling when piece in between`() {
-        val game = checkmateCore.generateInitialState()
+        val game = checkmateCore.getInitialGame()
         val gameState = game.gameStates.last().let { state ->
             state.copy(
                 currentPlayer = Player.BLACK,
@@ -378,7 +378,7 @@ internal class KingMovesTest {
 
     @Test
     fun `black king should not be able to perform king side castling when king is in check`() {
-        val game = checkmateCore.generateInitialState()
+        val game = checkmateCore.getInitialGame()
         val gameState = game.gameStates.last().let { state ->
             state.copy(
                 currentPlayer = Player.BLACK,
@@ -396,7 +396,7 @@ internal class KingMovesTest {
 
     @Test
     fun `black king should not be able to perform king side castling when king needs to move through check`() {
-        val game = checkmateCore.generateInitialState()
+        val game = checkmateCore.getInitialGame()
         val gameState = game.gameStates.last().let { state ->
             state.copy(
                 currentPlayer = Player.BLACK,

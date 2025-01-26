@@ -1,6 +1,6 @@
 package checkmate.moves.pseudolegal
 
-import checkmate.CheckmateCore
+import checkmate.CheckmateCoreImpl
 import checkmate.model.*
 import checkmate.moves.type.PawnMoves
 import checkmate.util.toBitmapGameState
@@ -9,16 +9,16 @@ import org.junit.jupiter.api.Test
 import kotlin.test.assertTrue
 
 internal class BlackPawnPseudoLegalMovesTest {
-    private lateinit var checkmateCore: CheckmateCore
+    private lateinit var checkmateCore: CheckmateCoreImpl
 
     @BeforeEach
     fun setUp() {
-        checkmateCore = CheckmateCore()
+        checkmateCore = CheckmateCoreImpl()
     }
 
     @Test
     fun `getValidMoves should return an empty list for an empty field`() {
-        val game = checkmateCore.generateInitialState()
+        val game = checkmateCore.getInitialGame()
         val gameState = game.gameStates.last().toBitmapGameState()
         val emptyPosition = Position(4, 4)
         val validMoves = PawnMoves.generatePseudoLegalMoves(gameState, emptyPosition)
@@ -29,7 +29,7 @@ internal class BlackPawnPseudoLegalMovesTest {
     fun `black pawn should move 1 or 2 fields forward from initial position`() {
         val startingPos = Position(6, 4)
 
-        val game = checkmateCore.generateInitialState()
+        val game = checkmateCore.getInitialGame()
         val gameState = game.gameStates.last().copy(currentPlayer = Player.BLACK).toBitmapGameState()
         val validMoves = PawnMoves.generatePseudoLegalMoves(gameState, startingPos)
         val expectedMoves = listOf(
@@ -41,7 +41,7 @@ internal class BlackPawnPseudoLegalMovesTest {
 
     @Test
     fun `black pawn should move 1 field forward from the middle of the board`() {
-        val game = checkmateCore.generateInitialState()
+        val game = checkmateCore.getInitialGame()
         val gameState = game.gameStates.last().let { state ->
             state.copy(
                 currentPlayer = Player.BLACK,
@@ -61,7 +61,7 @@ internal class BlackPawnPseudoLegalMovesTest {
 
     @Test
     fun `black pawn should not move when blocked by another piece`() {
-        val game = checkmateCore.generateInitialState()
+        val game = checkmateCore.getInitialGame()
         val gameState = game.gameStates.last().let { state ->
             state.copy(
                 currentPlayer = Player.BLACK,
@@ -79,7 +79,7 @@ internal class BlackPawnPseudoLegalMovesTest {
 
     @Test
     fun `black pawn should capture diagonally to the left`() {
-        val game = checkmateCore.generateInitialState()
+        val game = checkmateCore.getInitialGame()
         val gameState = game.gameStates.last().let { state ->
             state.copy(
                 currentPlayer = Player.BLACK,
@@ -98,7 +98,7 @@ internal class BlackPawnPseudoLegalMovesTest {
 
     @Test
     fun `black pawn should capture diagonally to the right`() {
-        val game = checkmateCore.generateInitialState()
+        val game = checkmateCore.getInitialGame()
         val gameState = game.gameStates.last().let { state ->
             state.copy(
                 currentPlayer = Player.BLACK,
@@ -116,7 +116,7 @@ internal class BlackPawnPseudoLegalMovesTest {
 
     @Test
     fun `black pawn should be able to perform left en-passant`() {
-        val game = checkmateCore.generateInitialState()
+        val game = checkmateCore.getInitialGame()
         val gameState = game.gameStates.last().let { state ->
             state.copy(
                 currentPlayer = Player.BLACK,
@@ -136,7 +136,7 @@ internal class BlackPawnPseudoLegalMovesTest {
 
     @Test
     fun `black pawn should be able to perform right en-passant`() {
-        val game = checkmateCore.generateInitialState()
+        val game = checkmateCore.getInitialGame()
         val gameState = game.gameStates.last().let { state ->
             state.copy(
                 currentPlayer = Player.BLACK,
@@ -156,7 +156,7 @@ internal class BlackPawnPseudoLegalMovesTest {
 
     @Test
     fun `black pawn should promote when reaching the last row`() {
-        val game = checkmateCore.generateInitialState()
+        val game = checkmateCore.getInitialGame()
         val gameState = game.gameStates.last().let { state ->
             state.copy(
                 currentPlayer = Player.BLACK,
@@ -195,7 +195,7 @@ internal class BlackPawnPseudoLegalMovesTest {
 
     @Test
     fun `black pawn should promote when capturing on the last row`() {
-        val game = checkmateCore.generateInitialState()
+        val game = checkmateCore.getInitialGame()
         val gameState = game.gameStates.last().let { state ->
             state.copy(
                 currentPlayer = Player.BLACK,
@@ -219,7 +219,7 @@ internal class BlackPawnPseudoLegalMovesTest {
 
     @Test
     fun `black pawn should not promote if not on the last row`() {
-        val game = checkmateCore.generateInitialState()
+        val game = checkmateCore.getInitialGame()
         val gameState = game.gameStates.last().let { state ->
             state.copy(
                 currentPlayer = Player.BLACK,
@@ -236,7 +236,7 @@ internal class BlackPawnPseudoLegalMovesTest {
 
     @Test
     fun `black pawn should capture en-passant only immediately after the opponent's double move`() {
-        val game = checkmateCore.generateInitialState()
+        val game = checkmateCore.getInitialGame()
         val gameState = game.gameStates.last().let { state ->
             state.copy(
                 currentPlayer = Player.BLACK,
@@ -254,7 +254,7 @@ internal class BlackPawnPseudoLegalMovesTest {
 
     @Test
     fun `black pawn should not capture from left edge to right edge of the board`() {
-        val game = checkmateCore.generateInitialState()
+        val game = checkmateCore.getInitialGame()
         val gameState = game.gameStates.last().let { state ->
             state.copy(
                 currentPlayer = Player.BLACK,
@@ -271,7 +271,7 @@ internal class BlackPawnPseudoLegalMovesTest {
 
     @Test
     fun `black pawn should not capture from right edge to left edge of the board`() {
-        val game = checkmateCore.generateInitialState()
+        val game = checkmateCore.getInitialGame()
         val gameState = game.gameStates.last().let { state ->
             state.copy(
                 currentPlayer = Player.BLACK,
@@ -288,7 +288,7 @@ internal class BlackPawnPseudoLegalMovesTest {
 
     @Test
     fun `black pawn should not perform left en-passant from left edge to right edge`() {
-        val game = checkmateCore.generateInitialState()
+        val game = checkmateCore.getInitialGame()
         val gameState = game.gameStates.last().let { state ->
             state.copy(
                 currentPlayer = Player.BLACK,
@@ -306,7 +306,7 @@ internal class BlackPawnPseudoLegalMovesTest {
 
     @Test
     fun `black pawn should not perform right en-passant from right edge to left edge`() {
-        val game = checkmateCore.generateInitialState()
+        val game = checkmateCore.getInitialGame()
         val gameState = game.gameStates.last().let { state ->
             state.copy(
                 currentPlayer = Player.BLACK,

@@ -1,6 +1,6 @@
 package checkmate.moves.pseudolegal
 
-import checkmate.CheckmateCore
+import checkmate.CheckmateCoreImpl
 import checkmate.model.*
 import checkmate.moves.type.BishopMoves
 import checkmate.util.toBitmapGameState
@@ -10,16 +10,16 @@ import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 internal class BishopPseudoLegalMovesTest {
-    private lateinit var checkmateCore: CheckmateCore
+    private lateinit var checkmateCore: CheckmateCoreImpl
 
     @BeforeEach
     fun setUp() {
-        checkmateCore = CheckmateCore()
+        checkmateCore = CheckmateCoreImpl()
     }
 
     @Test
     fun `bishop should not move when blocked from all sides from own pieces`() {
-        val game = checkmateCore.generateInitialState()
+        val game = checkmateCore.getInitialGame()
         val gameStateWhite = game.gameStates.last().copy(currentPlayer = Player.WHITE).toBitmapGameState()
         val gameStateBlack = game.gameStates.last().copy(currentPlayer = Player.BLACK).toBitmapGameState()
 
@@ -34,7 +34,7 @@ internal class BishopPseudoLegalMovesTest {
 
     @Test
     fun `white bishop should be able to perform expected moves`() {
-        val game = checkmateCore.generateInitialState()
+        val game = checkmateCore.getInitialGame()
         val gameState = game.gameStates.last().let { state ->
             state.copy(
                 currentPlayer = Player.WHITE,
@@ -62,7 +62,7 @@ internal class BishopPseudoLegalMovesTest {
 
     @Test
     fun `black bishop should be able to perform expected moves`() {
-        val game = checkmateCore.generateInitialState()
+        val game = checkmateCore.getInitialGame()
         val gameState = game.gameStates.last().let { state ->
             state.copy(
                 currentPlayer = Player.BLACK,
@@ -91,7 +91,7 @@ internal class BishopPseudoLegalMovesTest {
 
     @Test
     fun `white bishop should not move through own or opponent pieces`() {
-        val game = checkmateCore.generateInitialState()
+        val game = checkmateCore.getInitialGame()
         val gameState = game.gameStates.last().let { state ->
             state.copy(
                 currentPlayer = Player.WHITE,
@@ -117,7 +117,7 @@ internal class BishopPseudoLegalMovesTest {
 
     @Test
     fun `black bishop should not move through own or opponent pieces`() {
-        val game = checkmateCore.generateInitialState()
+        val game = checkmateCore.getInitialGame()
         val gameState = game.gameStates.last().let { state ->
             state.copy(
                 currentPlayer = Player.BLACK,
