@@ -32,7 +32,7 @@ fun Application.configureRouting() {
         // ── Human vs Human ──────────────────────────────────────────────────
 
         webSocket("/game/new") {
-            val userId = call.request.header("Authorization")?.extractBearerUserId()
+            val userId = call.resolveUserId()
             val timeMs = call.request.queryParameters["time"]?.toLongOrNull()?.times(1000)
             val incrementMs = call.request.queryParameters["increment"]?.toLongOrNull()?.times(1000) ?: 0L
             val clock = if (timeMs != null) ClockConfig(timeMs, incrementMs) else null
@@ -50,7 +50,7 @@ fun Application.configureRouting() {
                 close()
                 return@webSocket
             }
-            val userId = call.request.header("Authorization")?.extractBearerUserId()
+            val userId = call.resolveUserId()
             val color = room.join(this, userId) ?: run {
                 sendMsg(ServerMessage.Error("Room is full"))
                 close()
@@ -80,7 +80,7 @@ fun Application.configureRouting() {
             val room = BotRoom(humanColor, difficulty) { fen ->
                 engineService.bestMove(fen, difficulty.movetimeMs, difficulty.skillLevel)
             }
-            room.humanUserId = call.request.header("Authorization")?.extractBearerUserId()
+            room.humanUserId = call.resolveUserId()
             room.join(this)
             sendMsg(ServerMessage.Joined(humanColor.name.lowercase(), "bot:${difficulty.name.lowercase()}"))
             room.sendSnapshot(this)
@@ -98,6 +98,12 @@ private fun String.extractBearerUserId(): UUID? {
         UUID.fromString(JwtConfig.verifier.verify(token).getClaim("userId").asString())
     }.getOrNull()
 }
+
+// Browser WebSocket API cannot send custom headers during the upgrade handshake,
+// so the web client passes the JWT as ?token= instead.
+private fun io.ktor.server.application.ApplicationCall.resolveUserId(): UUID? =
+    (request.header("Authorization")?.extractBearerUserId())
+        ?: request.queryParameters["token"]?.let { it.extractBearerUserId() }
 
 // ── WebSocket helpers ────────────────────────────────────────────────────────
 
