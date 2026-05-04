@@ -21,6 +21,7 @@ export interface GameState {
   drawOfferedBy: PlayerColor | null
   result: GameResult | null
   endReason: GameEndReason | null
+  moveUciHistory: string[]
 
   opponentConnected: boolean
 
@@ -51,6 +52,7 @@ const initial: Omit<GameState, 'startHumanGame' | 'startBotGame' | 'applyState' 
   result: null,
   endReason: null,
   opponentConnected: false,
+  moveUciHistory: [],
 }
 
 export const useGameStore = create<GameState>()((set) => ({
@@ -59,13 +61,17 @@ export const useGameStore = create<GameState>()((set) => ({
   startHumanGame: (path) => set({ ...initial, wsPath: path, status: 'waiting' }),
   startBotGame:   (path) => set({ ...initial, wsPath: path, status: 'waiting' }),
 
-  applyState: (msg) => set({
+  applyState: (msg) => set((prev) => ({
     fen: msg.fen,
     lastMove: msg.lastMove,
     turn: msg.turn,
     clocks: msg.clocks ?? null,
     status: msg.status === 'ongoing' ? 'ongoing' : 'ended',
-  }),
+    // Append move only when there's a new one (avoids duplicate on reconnect snapshot)
+    moveUciHistory: msg.lastMove && msg.lastMove !== prev.moveUciHistory.at(-1)
+      ? [...prev.moveUciHistory, msg.lastMove]
+      : prev.moveUciHistory,
+  })),
 
   setJoined: (color, inviteCode) => set({ myColor: color, inviteCode }),
 
